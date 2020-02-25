@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="BufferLayout.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\detail\compute_common.hpp" />
     <ClInclude Include="glm\detail\compute_vector_relational.hpp" />

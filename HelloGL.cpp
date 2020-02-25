@@ -12,14 +12,19 @@
 //maybe make input manager a static object
 //Add lighting
 
-HelloGL::HelloGL(int argc, char* argv[]) : _cRefreshRate(16)
+HelloGL::HelloGL(int argc, char* argv[])
 {
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowSize(800, 800);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(cInitWindowWidth, cInitWindowHeight);
+	glutInitWindowPosition(cInitWindowPositionX, cInitWindowPositionY);
 	glutCreateWindow("Simple OpenGL Program");
+
+	windowHeight = cInitWindowHeight;
+	windowWidth = cInitWindowWidth;
+	glViewport(0, 0, windowWidth, windowHeight);
+	aspectRatio = ((float)((float)windowWidth / (float)(windowHeight)));
 
 	if (glewInit() != GLEW_OK)
 		std::cout << "Error!" << std::endl;
@@ -27,9 +32,10 @@ HelloGL::HelloGL(int argc, char* argv[]) : _cRefreshRate(16)
 	std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
 	glutDisplayFunc(GLUTCallbacks::Display);
-	glutTimerFunc(_cRefreshRate, GLUTCallbacks::Timer, _cRefreshRate);
+	glutTimerFunc(cRefreshRate, GLUTCallbacks::Timer, cRefreshRate);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
+	glutReshapeFunc(GLUTCallbacks::WindowResize);
 
 	shader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
 
@@ -69,7 +75,7 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	viewProjMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 1000.0f) * 
+	viewProjMatrix = glm::perspective(45.0f, aspectRatio, 0.1f, 1000.0f) * 
 		glm::lookAt(camera->eye,camera->center, camera->up);
 	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
 
@@ -95,4 +101,12 @@ void HelloGL::Update(float deltaTime)
 	}
 
 	glutPostRedisplay();
+}
+
+void HelloGL::OnResize(int height, int width)
+{
+	windowHeight = height;
+	windowWidth = width;
+	glViewport(0, 0, windowWidth, windowHeight);
+	aspectRatio = ((float)((float)windowWidth / (float)(windowHeight)));
 }

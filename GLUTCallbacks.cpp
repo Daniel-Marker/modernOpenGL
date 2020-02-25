@@ -44,4 +44,9 @@ namespace GLUTCallbacks
 	{
 		helloGL->inputManager->KeyboardUp(key, x, y);
 	}
+
+	void WindowResize(int height, int width)
+	{
+		helloGL->OnResize(width, height);
+	}
 }

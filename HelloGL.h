@@ -10,6 +10,7 @@
 #include "Structures.h"
 #include "SceneObject.h"
 #include "Shader.h"
+#include "Constants.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -23,13 +24,12 @@ public:
 	~HelloGL();
 	void Display();
 	void Update(float deltaTime);
+	void OnResize(int height, int width);
 
 	InputManager* inputManager;
 
 
 private:
-	const int _cRefreshRate;
-
 	Camera* camera;
 
 	SceneObject* pyramids[200];
@@ -37,5 +37,7 @@ private:
 
 	glm::mat4 viewProjMatrix;
 
+	int windowWidth, windowHeight;
+	float aspectRatio;
 };
 
