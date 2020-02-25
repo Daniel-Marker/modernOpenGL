@@ -39,11 +39,9 @@ HelloGL::HelloGL(int argc, char* argv[]) : _cRefreshRate(16)
 		pyramids[i] = new SceneObject(shader, inputManager);
 
 	camera = new Camera;
-	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = -5.0f;
-	//camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
-	//camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
-	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
-	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
+	camera->eye = glm::vec3(0.0f, 0.0f, -5.0f);
+	camera->center = glm::vec3(0.0f, 0.0f, 0.0f);
+	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	viewProjMatrix = glm::mat4(1.0f);
 	for (int i = 0; i < 200; i++)
@@ -71,10 +69,8 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	viewProjMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 1000.0f) * glm::lookAt(
-		glm::vec3(camera->eye.x, camera->eye.y, camera->eye.z),
-		glm::vec3(camera->center.x, camera->center.y, camera->center.z),
-		glm::vec3(camera->up.x, camera->up.y, camera->up.z));
+	viewProjMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 1000.0f) * 
+		glm::lookAt(camera->eye,camera->center, camera->up);
 	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
 
 	for(int i = 0; i < 200; i++)
@@ -84,18 +80,18 @@ void HelloGL::Display()
 	glutSwapBuffers();
 }
 
-void HelloGL::Update()
+void HelloGL::Update(float deltaTime)
 {
 	for(int i = 0; i < 200; i++)
-		pyramids[i]->Update();
+		pyramids[i]->Update(deltaTime);
 
 	if (inputManager->GetKeyDown('8'))
 	{
-		camera->eye.z += 0.1f;
+		camera->eye.z += 5.0f * deltaTime;
 	}
 	else if (inputManager->GetKeyDown('2'))
 	{
-		camera->eye.z -= 0.1f;
+		camera->eye.z -= 5.0f * deltaTime;
 	}
 
 	glutPostRedisplay();

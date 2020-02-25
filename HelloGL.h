@@ -8,7 +8,6 @@
 #include "GLUTCallbacks.h"
 #include "InputManager.h"
 #include "Structures.h"
-#include "Cube.h"
 #include "SceneObject.h"
 #include "Shader.h"
 
@@ -23,7 +22,7 @@ public:
 	HelloGL(int argc, char* argv[]);
 	~HelloGL();
 	void Display();
-	void Update();
+	void Update(float deltaTime);
 
 	InputManager* inputManager;
 
@@ -32,7 +31,6 @@ private:
 	const int _cRefreshRate;
 
 	Camera* camera;
-	Cube* cube[200];
 
 	SceneObject* pyramids[200];
 	Shader* shader;

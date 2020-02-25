@@ -50,31 +50,31 @@ void SceneObject::Render(glm::mat4 viewProjMatrix)
 	renderer.Render(vao, shader);
 }
 
-void SceneObject::Update()
+void SceneObject::Update(float deltaTime)
 {
 	if (inputManager->GetKeyDown('d'))
-		transform.position.x -= 0.05f;
+		transform.position.x -= 5.0f * deltaTime;
 
 	if (inputManager->GetKeyDown('a'))
-		transform.position.x += 0.05f;
+		transform.position.x += 5.0f * deltaTime;
 
 	if (inputManager->GetKeyDown('w'))
-		transform.position.y += 0.05f;
+		transform.position.y += 5.0f * deltaTime;
 
 	if (inputManager->GetKeyDown('s'))
-		transform.position.y -= 0.05f;
+		transform.position.y -= 5.0f * deltaTime;
 
 
 	if (inputManager->GetKeyDown('z'))
-		transform.rotation.x += 0.05f;
+		transform.rotation.x += 5.0f * deltaTime;
 	if (inputManager->GetKeyDown('x'))
-		transform.rotation.y += 0.05f;
+		transform.rotation.y += 5.0f * deltaTime;
 	if (inputManager->GetKeyDown('c'))
-		transform.rotation.z += 0.05f;
+		transform.rotation.z += 5.0f * deltaTime;
 
 
 	if (inputManager->GetKeyDown('j'))
-		transform.scale.x -= 0.005f;
+		transform.scale.x -= 0.5f * deltaTime;
 	if (inputManager->GetKeyDown('k'))
-		transform.scale.x += 0.005f;
+		transform.scale.x += 0.5f * deltaTime;
 }

@@ -29,7 +29,7 @@ public:
 	SceneObject(Shader* shader, InputManager* inputManagerInput);
 	~SceneObject();
 	void Render(glm::mat4 viewProjMatrix);
-	void Update();
+	void Update(float deltaTime);
 
 public:
 	Transform transform;
