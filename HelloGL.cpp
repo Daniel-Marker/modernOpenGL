@@ -4,11 +4,10 @@
 #include <string>
 
 //todo
-//Look back over code originating from tutorials and refactor where necessary
+//add special keys callback
 //add mesh objects
 //add load functionality from Cube to sceneobject
 //add texture class and code
-//add special keys callback
 //maybe make input manager a static object
 //Add lighting
 
@@ -80,7 +79,7 @@ void HelloGL::Display()
 	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
 
 	for(int i = 0; i < 200; i++)
-		pyramids[i]->Render(viewProjMatrix);
+		pyramids[i]->Render();
 
 	glFlush();
 	glutSwapBuffers();

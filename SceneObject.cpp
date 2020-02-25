@@ -37,7 +37,7 @@ SceneObject::~SceneObject()
 {
 }
 
-void SceneObject::Render(glm::mat4 viewProjMatrix)
+void SceneObject::Render()
 {
 	//set uniforms
 	glm::mat4 transformMatrix =

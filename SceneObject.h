@@ -28,7 +28,7 @@ private:
 public:
 	SceneObject(Shader* shader, InputManager* inputManagerInput);
 	~SceneObject();
-	void Render(glm::mat4 viewProjMatrix);
+	void Render();
 	void Update(float deltaTime);
 
 public:
