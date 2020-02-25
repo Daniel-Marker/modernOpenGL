@@ -19,7 +19,7 @@ unsigned int SceneObject::indices[] =
 	0, 4, 3
 };
 
-SceneObject::SceneObject(GLuint shaderInput, InputManager* inputManagerInput):
+SceneObject::SceneObject(Shader* shaderInput, InputManager* inputManagerInput):
 	shader(shaderInput), inputManager(inputManagerInput)
 {
 	glGenVertexArrays(1, &vao);
@@ -46,11 +46,11 @@ SceneObject::~SceneObject()
 
 void SceneObject::Render(glm::mat4 viewProjMatrix)
 {
-	glUseProgram(shader);
+	shader->BindShader();
 	glBindVertexArray(vao);
 
 	//set uniforms
-	int location = glGetUniformLocation(shader, "u_Transform");
+	int location = shader->GetUniformLocation("u_Transform");
 	if (location != -1)
 	{
 		glm::mat4 transformMatrix =

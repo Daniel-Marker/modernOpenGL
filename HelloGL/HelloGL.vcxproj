@@ -136,6 +136,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h" />
@@ -387,6 +388,7 @@
     <ClInclude Include="HelloGL.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Structures.h" />
   </ItemGroup>
   <ItemGroup>

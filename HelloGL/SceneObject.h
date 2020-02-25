@@ -5,6 +5,7 @@
 
 #include "Structures.h"
 #include "InputManager.h"
+#include "Shader.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -13,7 +14,7 @@
 class SceneObject
 {
 private:
-	GLuint shader;
+	Shader* shader;
 	GLuint vao;
 	
 	InputManager* inputManager;
@@ -22,7 +23,7 @@ private:
 	static unsigned int indices[];
 
 public:
-	SceneObject(GLuint shader, InputManager* inputManagerInput);
+	SceneObject(Shader* shader, InputManager* inputManagerInput);
 	~SceneObject();
 	void Render(glm::mat4 viewProjMatrix);
 	void Update();

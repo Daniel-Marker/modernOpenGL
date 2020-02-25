@@ -4,105 +4,15 @@
 #include <string>
 
 //todo
+//create class for vao's
+//create class for buffers
+//create class for renderer
+//add mesh objects
 //add load functionality from Cube to sceneobject
+//add texture class and code
 //add special keys callback
 //maybe make input manager a static object
-
-//CompileShader and CreateShader are both adapted from code in these videos https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
-static GLuint CompileShader(GLuint type, const std::string& sourcePath)
-{
-	GLuint shader = glCreateShader(type);
-
-	std::string source;
-	std::string line;
-	std::ifstream inFile(sourcePath);
-
-	//Check if the file failed to open
-	if (inFile.fail())
-	{
-		std::cerr << "Can't open shader source file " << sourcePath << std::endl;
-		return 0;
-	}
-
-	//Read in source code
-	while (!inFile.eof())
-	{
-		std::getline(inFile, line);
-		source = source + line + '\n';
-	}
-	inFile.close();
-
-	const char* src = source.c_str();
-	glShaderSource(shader, 1, &src, nullptr);
-	glCompileShader(shader);
-
-	int compileState;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileState);
-	if(compileState == GL_FALSE)
-	{
-		std::cout << "Shader " << sourcePath << " failed to compile" << std::endl;
-
-		//get the length of the error message
-		int length;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-
-		if (length > 0) {
-			//create a char array and put the error message into it
-			char* errorMessage;
-			errorMessage = new char[length];
-			glGetShaderInfoLog(shader, length, NULL, errorMessage);
-
-			std::cout << errorMessage << std::endl;
-
-			delete[] errorMessage;
-		}
-	}
-
-	return shader;
-}
-
-static GLuint CreateShader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
-{
-	GLuint vertexShader;
-	GLuint fragmentShader;
-	GLuint program;
-
-	vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderPath);
-	fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderPath);
-
-	program = glCreateProgram();
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-	glLinkProgram(program);
-
-	GLint result;
-	glValidateProgram(program);
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &result);
-	if (result == GL_FALSE)
-	{
-		std::cout << "Program failed to validate" << std::endl;
-
-		//get the length of the error message
-		int length;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-
-		if (length > 0) {
-			//create a char array and put the error message into it
-			char* errorMessage;
-			errorMessage = new char[length];
-			glGetProgramInfoLog(program, length, NULL, errorMessage);
-
-			std::cout << errorMessage << std::endl;
-
-			delete[] errorMessage;
-		}
-	}
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return program;
-}
+//Add lighting
 
 HelloGL::HelloGL(int argc, char* argv[]) : _cRefreshRate(16)
 {
@@ -123,8 +33,7 @@ HelloGL::HelloGL(int argc, char* argv[]) : _cRefreshRate(16)
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 
-	shader = CreateShader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
-	glUseProgram(shader);
+	shader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
 
 	inputManager = new InputManager();
 
@@ -164,7 +73,7 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	int location = glGetUniformLocation(shader, "u_VP");
+	int location = shader->GetUniformLocation("u_VP");
 	if (location != -1)
 	{
 		viewProjMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 1000.0f) * glm::lookAt(

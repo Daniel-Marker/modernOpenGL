@@ -10,6 +10,7 @@
 #include "Structures.h"
 #include "Cube.h"
 #include "SceneObject.h"
+#include "Shader.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -34,7 +35,7 @@ private:
 	Cube* cube[200];
 
 	SceneObject* pyramids[200];
-	GLuint shader;
+	Shader* shader;
 
 	glm::mat4 viewProjMatrix;
 
