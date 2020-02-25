@@ -39,9 +39,6 @@ SceneObject::~SceneObject()
 
 void SceneObject::Render(glm::mat4 viewProjMatrix)
 {
-	shader->BindShader();
-	vao->BindVao();
-
 	//set uniforms
 	glm::mat4 transformMatrix =
 		glm::translate(glm::mat4(1.0f), transform.position) *
@@ -49,7 +46,8 @@ void SceneObject::Render(glm::mat4 viewProjMatrix)
 		glm::scale(glm::mat4(1.0f), transform.scale);
 	shader->SetUniformMatrix(transformMatrix, "u_Transform");
 
-	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
+	Renderer renderer;
+	renderer.Render(vao, shader);
 }
 
 void SceneObject::Update()

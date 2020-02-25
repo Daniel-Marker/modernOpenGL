@@ -8,6 +8,7 @@
 
 #include "Shader.h"
 #include "Vao.h"
+#include "Renderer.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

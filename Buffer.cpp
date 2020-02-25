@@ -1,7 +1,7 @@
 #include "Buffer.h"
 
 Buffer::Buffer(GLenum bufferType, const void* data, unsigned int size):
-	_bufferType(bufferType)
+	_bufferType(bufferType), _size(size)
 {
 	glGenBuffers(1, &_bufferID);
 	BindBuffer();

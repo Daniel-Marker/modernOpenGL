@@ -21,6 +21,8 @@ public:
 	void CreateIndexBuffer(const void* data, unsigned int size);
 	void CreateVertexBuffer(const void* data, unsigned int size, BufferLayout layout);
 
+	Buffer* GetIndexBuffer(){ return _indexBuffer; };
+
 	void BindVao();
 };
 
