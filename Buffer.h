@@ -7,10 +7,10 @@ class Buffer
 {
 private:
 	GLuint _bufferID;
-	GLuint _bufferType;
+	GLenum _bufferType;
 
 public:
-	Buffer(GLuint bufferType, const void* data, unsigned int size);
+	Buffer(GLenum bufferType, const void* data, unsigned int size);
 	~Buffer();
 
 	void BindBuffer();

@@ -1,6 +1,6 @@
 #include "Buffer.h"
 
-Buffer::Buffer(GLuint bufferType, const void* data, unsigned int size):
+Buffer::Buffer(GLenum bufferType, const void* data, unsigned int size):
 	_bufferType(bufferType)
 {
 	glGenBuffers(1, &_bufferID);

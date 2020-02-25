@@ -4,6 +4,7 @@
 #include "GL\freeglut.h"
 
 #include "Buffer.h"
+#include "BufferLayout.h"
 
 class Vao
 {
@@ -18,7 +19,7 @@ public:
 	~Vao();
 
 	void CreateIndexBuffer(const void* data, unsigned int size);
-	void CreateVertexBuffer(const void* data, unsigned int size);
+	void CreateVertexBuffer(const void* data, unsigned int size, BufferLayout layout);
 
 	void BindVao();
 };

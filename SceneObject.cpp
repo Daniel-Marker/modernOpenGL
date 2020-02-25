@@ -25,12 +25,10 @@ SceneObject::SceneObject(Shader* shaderInput, InputManager* inputManagerInput):
 	vao = new Vao();
 	vao->BindVao();
 
-	//vao needs to have 2 buffer objects for vertex and index buffer and something to say the layout of the vertex buffer
-
-	vao->CreateVertexBuffer(positions, sizeof(positions));
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	BufferLayout layout;
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, 3 * sizeof(float));
+	layout.AddElement(positionsLayout);
+	vao->CreateVertexBuffer(positions, sizeof(positions), layout);
 
 	vao->CreateIndexBuffer(indices, sizeof(indices));
 }

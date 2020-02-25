@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="BufferLayout.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="glm\detail\glm.cpp" />
     <ClCompile Include="GLUTCallbacks.cpp" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="BufferLayout.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\detail\compute_common.hpp" />
