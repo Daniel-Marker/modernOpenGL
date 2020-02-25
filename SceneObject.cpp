@@ -25,19 +25,14 @@ SceneObject::SceneObject(Shader* shaderInput, InputManager* inputManagerInput):
 	vao = new Vao();
 	vao->BindVao();
 
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 15 * sizeof(float), positions, GL_STATIC_DRAW);
+	//vao needs to have 2 buffer objects for vertex and index buffer and something to say the layout of the vertex buffer
+
+	vao->CreateVertexBuffer(positions, sizeof(positions));
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
-	unsigned int indexBuffer;
-	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 18 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
-
+	vao->CreateIndexBuffer(indices, sizeof(indices));
 }
 
 SceneObject::~SceneObject()

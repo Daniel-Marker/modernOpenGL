@@ -4,8 +4,9 @@
 #include <string>
 
 //todo
-//create class for buffers
+//create class for layout of vertex buffer
 //create class for renderer
+//Look back over code originating from tutorials and refactor where necessary
 //add mesh objects
 //add load functionality from Cube to sceneobject
 //add texture class and code
