@@ -1,6 +1,7 @@
 #include "BufferLayout.h"
 
-BufferLayout::BufferLayout()
+BufferLayout::BufferLayout():
+	_stride(0)
 {
 }
 
@@ -16,4 +17,5 @@ const std::vector<layoutElement> BufferLayout::GetLayout()
 void BufferLayout::AddElement(layoutElement element)
 {
 	layout.push_back(element);
+	_stride += element._size * sizeof(float);
 }

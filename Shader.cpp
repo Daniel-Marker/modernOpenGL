@@ -125,3 +125,12 @@ void Shader::SetUniformMatrix(glm::mat4& matrix, std::string uniformName)
 	if(location != -1)
 		glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
+
+void Shader::SetUniformInt(int value, std::string uniformName)
+{
+	BindShader();
+
+	int location = GetUniformLocation(uniformName);
+	if (location != -1)
+		glUniform1i(location, value);
+}

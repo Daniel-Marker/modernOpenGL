@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "Vao.h"
 #include "Renderer.h"
+#include "Texture2D.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -17,16 +18,18 @@
 class SceneObject
 {
 private:
-	Shader* shader;
-	Vao* vao;
+	Shader* _shader;
+	Vao* _vao;
 	
-	InputManager* inputManager;
+	Texture2D* _texture;
 
-	static float positions[];
+	InputManager* _inputManager;
+
+	static float vertexData[];
 	static unsigned int indices[];
 
 public:
-	SceneObject(Shader* shader, InputManager* inputManagerInput);
+	SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture);
 	~SceneObject();
 	void Render();
 	void Update(float deltaTime);

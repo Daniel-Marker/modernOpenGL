@@ -1,36 +1,65 @@
 #include "SceneObject.h"
 
-float SceneObject::positions[] =
+float SceneObject::vertexData[] =
 {
-	-1, -1, 1,
-	1, -1, 1,
-	1,-1,-1,
-	-1,-1,-1,
-	0, 1, 0
+	 1, 1, 1,		1, 0,
+	- 1, 1, 1,		1, 1,
+	- 1, - 1, 1,	0, 1,	
+	1, - 1, 1,		0, 0,
+	1, 1, 1,		1, 0, 
+	1, - 1, 1,		1, 1, 
+	1, - 1, - 1,	0, 1,
+	1, 1, - 1,		0, 0,
+	1, 1, 1,		1, 0,
+	1, 1, - 1,		1, 1,	
+	- 1, 1, - 1,	0, 1,
+	- 1, 1, 1,		0, 0,
+	- 1, 1, 1,		1, 0,
+	- 1, 1, - 1,	1, 1,
+	- 1, - 1, - 1,	0, 1,
+	- 1, - 1, 1,	0, 0,
+	- 1, - 1, - 1,	1, 0,
+	1, - 1, - 1,	1, 1,
+	1, - 1, 1,		0, 1,
+	- 1, - 1, 1,	0, 0,
+	1, -1, -1,		1, 0,
+	-1, -1, -1,		1, 1,
+	-1, 1, -1,		0, 1,
+	1, 1, -1,		0, 0
 };
 
 unsigned int SceneObject::indices[] =
-{
-	2, 1, 0,
-	0, 3, 2,
-	1, 4, 0,
-	2, 4, 1,
-	3, 4, 2,
-	0, 4, 3
+{	   
+	0, 1, 2,
+	2, 3, 0,
+	4, 5, 6,
+	6, 7, 4,
+	8, 9, 10,
+	10, 11, 8,
+	12, 13, 14,
+	14, 15, 12,
+	16, 17, 18,
+	18, 19, 16,
+	20, 21, 22,
+	22, 23, 20
 };
 
-SceneObject::SceneObject(Shader* shaderInput, InputManager* inputManagerInput):
-	shader(shaderInput), inputManager(inputManagerInput)
+SceneObject::SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture):
+	_shader(shader), _inputManager(inputManager), _texture(texture)
 {
-	vao = new Vao();
-	vao->BindVao();
+	_vao = new Vao();
+	_vao->BindVao();
 
 	BufferLayout layout;
-	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, 3 * sizeof(float));
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false);
 	layout.AddElement(positionsLayout);
-	vao->CreateVertexBuffer(positions, sizeof(positions), layout);
+	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false);
+	layout.AddElement(textureLayout);
+	_vao->CreateVertexBuffer(vertexData, sizeof(vertexData), layout);
 
-	vao->CreateIndexBuffer(indices, sizeof(indices));
+	_vao->CreateIndexBuffer(indices, sizeof(indices));
+
+	_shader->SetUniformInt(0, "u_Texture");
 }
 
 SceneObject::~SceneObject()
@@ -44,37 +73,37 @@ void SceneObject::Render()
 		glm::translate(glm::mat4(1.0f), transform.position) *
 		glm::eulerAngleXYZ(transform.rotation.x, transform.rotation.y, transform.rotation.z) *
 		glm::scale(glm::mat4(1.0f), transform.scale);
-	shader->SetUniformMatrix(transformMatrix, "u_Transform");
+	_shader->SetUniformMatrix(transformMatrix, "u_Transform");
 
 	Renderer renderer;
-	renderer.Render(vao, shader);
+	renderer.Render(_vao, _shader, _texture);
 }
 
 void SceneObject::Update(float deltaTime)
 {
-	if (inputManager->GetKeyDown('d'))
+	if (_inputManager->GetKeyDown('d'))
 		transform.position.x -= 5.0f * deltaTime;
 
-	if (inputManager->GetKeyDown('a'))
+	if (_inputManager->GetKeyDown('a'))
 		transform.position.x += 5.0f * deltaTime;
 
-	if (inputManager->GetKeyDown('w'))
+	if (_inputManager->GetKeyDown('w'))
 		transform.position.y += 5.0f * deltaTime;
 
-	if (inputManager->GetKeyDown('s'))
+	if (_inputManager->GetKeyDown('s'))
 		transform.position.y -= 5.0f * deltaTime;
 
 
-	if (inputManager->GetKeyDown('z'))
+	if (_inputManager->GetKeyDown('z'))
 		transform.rotation.x += 5.0f * deltaTime;
-	if (inputManager->GetKeyDown('x'))
+	if (_inputManager->GetKeyDown('x'))
 		transform.rotation.y += 5.0f * deltaTime;
-	if (inputManager->GetKeyDown('c'))
+	if (_inputManager->GetKeyDown('c'))
 		transform.rotation.z += 5.0f * deltaTime;
 
 
-	if (inputManager->GetKeyDown('j'))
+	if (_inputManager->GetKeyDown('j'))
 		transform.scale.x -= 0.5f * deltaTime;
-	if (inputManager->GetKeyDown('k'))
+	if (_inputManager->GetKeyDown('k'))
 		transform.scale.x += 0.5f * deltaTime;
 }
