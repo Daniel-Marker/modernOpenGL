@@ -17,5 +17,5 @@ const std::vector<layoutElement> BufferLayout::GetLayout()
 void BufferLayout::AddElement(layoutElement element)
 {
 	layout.push_back(element);
-	_stride += element._size * sizeof(float);
+	_stride += element._size * element.GetSizeOfType();
 }

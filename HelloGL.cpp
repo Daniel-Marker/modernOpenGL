@@ -4,7 +4,6 @@
 #include <string>
 
 //todo
-//update bufferlayout class so that the size of the type is used instead of sizeof(float)
 //add special keys callback
 //add mesh objects
 //add load functionality from Cube to sceneobject

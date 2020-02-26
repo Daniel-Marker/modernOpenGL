@@ -38,7 +38,7 @@ void Vao::CreateVertexBuffer(const void* data, unsigned int size, BufferLayout l
 		glEnableVertexAttribArray(i);
 		glVertexAttribPointer(i, bufferLayout[i]._size, bufferLayout[i]._type, bufferLayout[i]._normalized, layout.GetStride(),(void*)offset);
 
-		offset += bufferLayout[i]._size * sizeof(float);
+		offset += bufferLayout[i]._size * bufferLayout[i].GetSizeOfType();
 	}
 }
 

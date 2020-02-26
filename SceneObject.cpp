@@ -2,30 +2,30 @@
 
 float SceneObject::vertexData[] =
 {
-	1, 1, 1,		1, 0,
-	-1, 1, 1,		1, 1,
-	-1, -1, 1,		0, 1,
-	1, -1, 1,		0, 0,
-	1, 1, 1,		1, 0,
-	1, -1, 1,		1, 1,
-	1, -1, -1,		0, 1,
-	1, 1, -1,		0, 0,
-	1, 1, 1,		1, 0,
-	1, 1, -1,		1, 1,
-	-1, 1, -1,		0, 1,
-	-1, 1, 1,		0, 0,
-	-1, 1, 1,		1, 0,
-	-1, 1, -1,		1, 1,
-	-1, -1, -1,		0, 1,
-	-1, -1, 1,		0, 0,
-	-1, -1, -1,		1, 0,
-	1, -1, -1,		1, 1,
-	1, -1, 1,		0, 1,
-	-1, -1, 1,		0, 0,
-	1, -1, -1,		1, 0,
-	-1, -1, -1,		1, 1,
-	-1, 1, -1,		0, 1,
-	1, 1, -1,		0, 0
+	1, 1, 1,		1, 0,	0,
+	-1, 1, 1,		1, 1,	1,
+	-1, -1, 1,		0, 1,	2,
+	1, -1, 1,		0, 0,	0,
+	1, 1, 1,		1, 0,	1,
+	1, -1, 1,		1, 1,	2,
+	1, -1, -1,		0, 1,	0,
+	1, 1, -1,		0, 0,	1,
+	1, 1, 1,		1, 0,	2,
+	1, 1, -1,		1, 1,	0,
+	-1, 1, -1,		0, 1,	1,
+	-1, 1, 1,		0, 0,	2,
+	-1, 1, 1,		1, 0,	0,
+	-1, 1, -1,		1, 1,	1,
+	-1, -1, -1,		0, 1,	2,
+	-1, -1, 1,		0, 0,	0,
+	-1, -1, -1,		1, 0,	1,
+	1, -1, -1,		1, 1,	2,
+	1, -1, 1,		0, 1,	0,
+	-1, -1, 1,		0, 0,	1,
+	1, -1, -1,		1, 0,	2,
+	-1, -1, -1,		1, 1,	0,
+	-1, 1, -1,		0, 1,	1,
+	1, 1, -1,		0, 0,	2
 };
 
 unsigned int SceneObject::indices[] =
@@ -51,10 +51,14 @@ SceneObject::SceneObject(Shader* shader, InputManager* inputManager, Texture2D* 
 	_vao->BindVao();
 
 	BufferLayout layout;
+	
 	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false);
 	layout.AddElement(positionsLayout);
 	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false);
 	layout.AddElement(textureLayout);
+	layoutElement indexLayout = layoutElement(1, GL_FLOAT, false);
+	layout.AddElement(indexLayout);
+
 	_vao->CreateVertexBuffer(vertexData, sizeof(vertexData), layout);
 
 	_vao->CreateIndexBuffer(indices, sizeof(indices));
