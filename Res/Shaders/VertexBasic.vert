@@ -14,7 +14,8 @@ vec4 colors[] = {vec4(1.0, 0.0, 0.0, 1.0),vec4(1.0, 1.0, 0.0, 1.0),vec4(1.0, 1.0
 void main()
 {
    //gl_Position = position;
-   gl_Position = u_VP * u_Transform * position;
    //vs_Color = colors[gl_VertexID];
+
+   gl_Position = u_VP * u_Transform * position;
    vs_textureCoord = textureCoord;
 }

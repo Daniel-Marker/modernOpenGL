@@ -35,6 +35,7 @@ private:
 
 	SceneObject* pyramids[200];
 	Shader* shader;
+	Texture2D* texture;
 
 	glm::mat4 viewProjMatrix;
 

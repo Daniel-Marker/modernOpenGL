@@ -4,7 +4,6 @@
 #include <string>
 
 //todo
-//fix bug where textures aren't drawn correctly
 //update bufferlayout class so that the size of the type is used instead of sizeof(float)
 //add special keys callback
 //add mesh objects
@@ -41,7 +40,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	inputManager = new InputManager();
 
-	Texture2D* texture = new Texture2D();
+	texture = new Texture2D();
 	texture->Load((char*)"penguins.raw", 512, 512);
 
 	for(int i = 0; i < 200; i++)

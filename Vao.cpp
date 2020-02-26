@@ -31,12 +31,14 @@ void Vao::CreateVertexBuffer(const void* data, unsigned int size, BufferLayout l
 	_vertexBuffer = new Buffer(GL_ARRAY_BUFFER, data, size);
 
 	std::vector<layoutElement> bufferLayout = layout.GetLayout();
+	int offset = 0;
 
 	for (int i = 0; i < bufferLayout.size(); i++)
 	{
 		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i, bufferLayout[i]._size, bufferLayout[i]._type, bufferLayout[i]._normalized, layout.GetStride(), nullptr);
+		glVertexAttribPointer(i, bufferLayout[i]._size, bufferLayout[i]._type, bufferLayout[i]._normalized, layout.GetStride(),(void*)offset);
 
+		offset += bufferLayout[i]._size * sizeof(float);
 	}
 }
 
