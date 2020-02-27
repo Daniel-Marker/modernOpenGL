@@ -11,6 +11,9 @@ Vao::Vao():
 Vao::~Vao()
 {
 	glDeleteVertexArrays(1, &_vaoID);
+
+	delete _vertexBuffer;
+	delete _indexBuffer;
 }
 
 void Vao::CreateIndexBuffer(const void* data, unsigned int size)

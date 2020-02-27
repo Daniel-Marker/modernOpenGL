@@ -4,8 +4,7 @@
 #include <string>
 
 //todo
-//Separate HelloGL constructor into InitGL and InitObjects
-//Fix memory leak with vao's
+//Set transform in sceneobject to not be public and vao getindexbuffer should return a const index buffer or should move getsize function to vao
 //Refactor SceneObject to be a class with virtual functions and have current SceneObject be a Cube class inherited from SceneObject
 //add special keys callback
 //add mesh objects and meshloader namespace
@@ -16,6 +15,78 @@
 //Figure out if worth using a linked list for list/array of scene objects
 
 HelloGL::HelloGL(int argc, char* argv[])
+{
+	InitGL(argc, argv);
+	InitShaders();
+
+	inputManager = new InputManager();
+
+	LoadTextures();
+
+	camera = new Camera;
+	camera->eye = glm::vec3(0.0f, 0.0f, -5.0f);
+	camera->center = glm::vec3(0.0f, 0.0f, 0.0f);
+	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	InitObjects();
+	glutMainLoop();
+}
+
+
+HelloGL::~HelloGL()
+{
+	delete camera;
+	delete inputManager;
+	delete shader;
+	delete texture;
+
+	for (int i = 0; i < 200; i++)
+	{
+		delete sceneObjects[i];
+	}
+}
+
+void HelloGL::Display()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	viewProjMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist) *
+		glm::lookAt(camera->eye,camera->center, camera->up);
+	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
+
+	for(int i = 0; i < 200; i++)
+		sceneObjects[i]->Render();
+
+	glFlush();
+	glutSwapBuffers();
+}
+
+void HelloGL::Update(float deltaTime)
+{
+	for(int i = 0; i < 200; i++)
+		sceneObjects[i]->Update(deltaTime);
+
+	if (inputManager->GetKeyDown('8'))
+	{
+		camera->eye.z += 5.0f * deltaTime;
+	}
+	else if (inputManager->GetKeyDown('2'))
+	{
+		camera->eye.z -= 5.0f * deltaTime;
+	}
+
+	glutPostRedisplay();
+}
+
+void HelloGL::OnResize(int height, int width)
+{
+	windowHeight = height;
+	windowWidth = width;
+	glViewport(0, 0, windowWidth, windowHeight);
+	aspectRatio = ((float)((float)windowWidth / (float)(windowHeight)));
+}
+
+void HelloGL::InitGL(int argc, char* argv[])
 {
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
@@ -40,79 +111,30 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 	glutReshapeFunc(GLUTCallbacks::WindowResize);
 
-	shader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
-
-	inputManager = new InputManager();
-
-	texture = new Texture2D();
-	texture->Load((char*)"Res/Textures/penguins.raw", 512, 512);
-
-	for(int i = 0; i < 200; i++)
-		pyramids[i] = new SceneObject(shader, inputManager, texture);
-
-	camera = new Camera;
-	camera->eye = glm::vec3(0.0f, 0.0f, -5.0f);
-	camera->center = glm::vec3(0.0f, 0.0f, 0.0f);
-	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	viewProjMatrix = glm::mat4(1.0f);
-	for (int i = 0; i < 200; i++)
-	{
-		pyramids[i]->transform.position = glm::vec3((rand() % 200)/10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
-		pyramids[i]->transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
-		pyramids[i]->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-	}
-
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
-
-	glutMainLoop();
 }
 
-
-HelloGL::~HelloGL()
+void HelloGL::InitObjects()
 {
-	delete camera;
-	delete inputManager;
-}
-
-void HelloGL::Display()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewProjMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist) *
-		glm::lookAt(camera->eye,camera->center, camera->up);
-	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
-
-	for(int i = 0; i < 200; i++)
-		pyramids[i]->Render();
-
-	glFlush();
-	glutSwapBuffers();
-}
-
-void HelloGL::Update(float deltaTime)
-{
-	for(int i = 0; i < 200; i++)
-		pyramids[i]->Update(deltaTime);
-
-	if (inputManager->GetKeyDown('8'))
+	for (int i = 0; i < 200; i++)
 	{
-		camera->eye.z += 5.0f * deltaTime;
-	}
-	else if (inputManager->GetKeyDown('2'))
-	{
-		camera->eye.z -= 5.0f * deltaTime;
-	}
+		sceneObjects[i] = new SceneObject(shader, inputManager, texture);
 
-	glutPostRedisplay();
+		sceneObjects[i]->transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
+		sceneObjects[i]->transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
+		sceneObjects[i]->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+	}
 }
 
-void HelloGL::OnResize(int height, int width)
+void HelloGL::LoadTextures()
 {
-	windowHeight = height;
-	windowWidth = width;
-	glViewport(0, 0, windowWidth, windowHeight);
-	aspectRatio = ((float)((float)windowWidth / (float)(windowHeight)));
+	texture = new Texture2D();
+	texture->Load((char*)"Res/Textures/penguins.raw", 512, 512);
+}
+
+void HelloGL::InitShaders()
+{
+	shader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
 }

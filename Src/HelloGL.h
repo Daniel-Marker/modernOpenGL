@@ -26,6 +26,10 @@ public:
 	void Display();
 	void Update(float deltaTime);
 	void OnResize(int height, int width);
+	void InitGL(int argc, char* argv[]);
+	void InitObjects();
+	void LoadTextures();
+	void InitShaders();
 
 	InputManager* inputManager;
 
@@ -33,7 +37,7 @@ public:
 private:
 	Camera* camera;
 
-	SceneObject* pyramids[200];
+	SceneObject* sceneObjects[200];
 	Shader* shader;
 	Texture2D* texture;
 

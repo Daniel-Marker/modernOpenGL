@@ -68,6 +68,7 @@ SceneObject::SceneObject(Shader* shader, InputManager* inputManager, Texture2D* 
 
 SceneObject::~SceneObject()
 {
+	delete _vao;
 }
 
 void SceneObject::Render()
