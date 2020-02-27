@@ -4,11 +4,18 @@
 #include <string>
 
 //todo
+//Sort folder structure
+
+//Separate HelloGL constructor into InitGL and InitObjects
+//Fix memory leak with vao's
+//Refactor SceneObject to be a class with virtual functions and have current SceneObject be a Cube class inherited from SceneObject
 //add special keys callback
-//add mesh objects
+//add mesh objects and meshloader namespace
 //add load functionality from Cube to sceneobject
 //maybe make input manager a static object
+//Update Texture2D to be able to load textures from: bmp, png and raw files (raw already done)
 //Add lighting
+//Figure out if worth using a linked list for list/array of scene objects
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -76,7 +83,7 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	viewProjMatrix = glm::perspective(45.0f, aspectRatio, 0.1f, 1000.0f) * 
+	viewProjMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist) *
 		glm::lookAt(camera->eye,camera->center, camera->up);
 	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
 
