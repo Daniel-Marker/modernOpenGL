@@ -4,8 +4,6 @@
 #include <string>
 
 //todo
-//Sort folder structure
-
 //Separate HelloGL constructor into InitGL and InitObjects
 //Fix memory leak with vao's
 //Refactor SceneObject to be a class with virtual functions and have current SceneObject be a Cube class inherited from SceneObject
@@ -47,7 +45,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 	inputManager = new InputManager();
 
 	texture = new Texture2D();
-	texture->Load((char*)"penguins.raw", 512, 512);
+	texture->Load((char*)"Res/Textures/penguins.raw", 512, 512);
 
 	for(int i = 0; i < 200; i++)
 		pyramids[i] = new SceneObject(shader, inputManager, texture);
