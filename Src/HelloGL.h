@@ -8,7 +8,7 @@
 #include "GLUTCallbacks.h"
 #include "InputManager.h"
 #include "Structures.h"
-#include "SceneObject.h"
+#include "Cube.h"
 #include "Shader.h"
 #include "Constants.h"
 #include "Texture2D.h"

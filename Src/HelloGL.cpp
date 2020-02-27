@@ -4,8 +4,6 @@
 #include <string>
 
 //todo
-//Set transform in sceneobject to not be public and vao getindexbuffer should return a const index buffer or should move getsize function to vao
-//Refactor SceneObject to be a class with virtual functions and have current SceneObject be a Cube class inherited from SceneObject
 //add special keys callback
 //add mesh objects and meshloader namespace
 //add load functionality from Cube to sceneobject
@@ -120,11 +118,14 @@ void HelloGL::InitObjects()
 {
 	for (int i = 0; i < 200; i++)
 	{
-		sceneObjects[i] = new SceneObject(shader, inputManager, texture);
+		sceneObjects[i] = new Cube(shader, inputManager, texture);
 
-		sceneObjects[i]->transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
-		sceneObjects[i]->transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
-		sceneObjects[i]->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+		Transform transform;
+		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
+		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
+		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		sceneObjects[i]->SetTransform(transform);
 	}
 }
 

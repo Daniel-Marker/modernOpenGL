@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\SceneObject.cpp" />
     <ClCompile Include="Src\Buffer.cpp" />
     <ClCompile Include="Src\BufferLayout.cpp" />
     <ClCompile Include="Src\GLUTCallbacks.cpp" />
@@ -137,12 +138,13 @@
     <ClCompile Include="Src\InputManager.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
-    <ClCompile Include="Src\SceneObject.cpp" />
+    <ClCompile Include="Src\Cube.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
     <ClCompile Include="Src\Texture2D.cpp" />
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\SceneObject.h" />
     <ClInclude Include="Src\Buffer.h" />
     <ClInclude Include="Src\BufferLayout.h" />
     <ClInclude Include="Src\Constants.h" />
@@ -394,7 +396,7 @@
     <ClInclude Include="Include\extern\glm\vector_relational.hpp" />
     <ClInclude Include="Src\InputManager.h" />
     <ClInclude Include="Src\Renderer.h" />
-    <ClInclude Include="Src\SceneObject.h" />
+    <ClInclude Include="Src\Cube.h" />
     <ClInclude Include="Src\Shader.h" />
     <ClInclude Include="Src\Structures.h" />
     <ClInclude Include="Src\Texture2D.h" />

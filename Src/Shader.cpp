@@ -62,6 +62,10 @@ GLuint Shader::CompileShader(GLuint type, const std::string& sourcePath)
 			delete[] errorMessage;
 		}
 	}
+	else 
+	{
+		std::cout << "Shader " << sourcePath << " compiled ok" << std::endl;
+	}
 
 	return shader;
 }
