@@ -3,13 +3,17 @@
 #include <iostream>
 #include <string>
 
-//todo
-//add special keys callback
+//todo to be up to date with tutorials:
+//Have code actually use the return value of texture load
+//Allow for images with alpha
 //add mesh objects and meshloader namespace
-//add load functionality from Cube to sceneobject
-//maybe make input manager a static object
-//Update Texture2D to be able to load textures from: bmp, png and raw files (raw already done)
+//add load functionality for files from tutorials
+//add obj mesh loading
 //Add lighting
+
+//todo after up to date with tutorials:
+//add special keys callback
+//maybe make input manager a static object
 //Figure out if worth using a linked list for list/array of scene objects
 
 HelloGL::HelloGL(int argc, char* argv[])
@@ -36,7 +40,10 @@ HelloGL::~HelloGL()
 	delete camera;
 	delete inputManager;
 	delete shader;
-	delete texture;
+
+	delete penguinTexture;
+	delete parrotTexture;
+	delete parrotTexture32;
 
 	for (int i = 0; i < 200; i++)
 	{
@@ -116,9 +123,21 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, texture);
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture32);
+
+		Transform transform;
+		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
+		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
+		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		sceneObjects[i]->SetTransform(transform);
+	}
+
+	for (int i = 100; i < 200; i++)
+	{
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -131,8 +150,14 @@ void HelloGL::InitObjects()
 
 void HelloGL::LoadTextures()
 {
-	texture = new Texture2D();
-	texture->Load((char*)"Res/Textures/penguins.raw", 512, 512);
+	penguinTexture = new Texture2D();
+	penguinTexture->Load((char*)"Res/Textures/penguins.raw", 512, 512);
+
+	parrotTexture = new Texture2D();
+	parrotTexture->Load((char*)"Res/Textures/parrot.bmp");
+
+	parrotTexture32 = new Texture2D();
+	parrotTexture32->Load((char*)"Res/Textures/parrot32.bmp");
 }
 
 void HelloGL::InitShaders()

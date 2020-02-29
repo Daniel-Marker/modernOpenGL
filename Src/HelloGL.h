@@ -39,7 +39,10 @@ private:
 
 	SceneObject* sceneObjects[200];
 	Shader* shader;
-	Texture2D* texture;
+
+	Texture2D* penguinTexture;
+	Texture2D* parrotTexture;
+	Texture2D* parrotTexture32;
 
 	glm::mat4 viewProjMatrix;
 
