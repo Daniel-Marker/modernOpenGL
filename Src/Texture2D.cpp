@@ -10,7 +10,7 @@ std::string Texture2D::GetFileExtension(std::string path)
 		extension = strPath.substr(dotPosition + 1);
 		
 		//set the extension to be lowercase so that .raw and .RAW are both seen as valid file types
-		for (int i = 0; i < extension.length(); i++)
+		for (unsigned int i = 0; i < extension.length(); i++)
 		{
 			extension[i] = std::tolower(extension[i]);
 		}
@@ -64,7 +64,7 @@ bool Texture2D::BmpLoader(char* path)
 	int compressionMethod;
 	int bpp;
 	char fileHeader[54];
-	char* tempTextureData;
+	unsigned char* tempTextureData;
 
 	inFile.open(path, std::ios::binary);
 
@@ -81,29 +81,30 @@ bool Texture2D::BmpLoader(char* path)
 		return false;
 	}
 
-	compressionMethod = *(int*)&(fileHeader[30]);
+	compressionMethod = *(reinterpret_cast<int*>(&fileHeader[30]));	//gets 4 bytes from array and interprets them as 1 integer
 	if(compressionMethod != 0)
 	{
 		std::cerr << path << " uses compression, so it isn't supported" << std::endl;
 		return false;
 	}
 
-	bpp = *(int*)&(fileHeader[28]);
+	bpp = *(reinterpret_cast<int*>(&fileHeader[28]));
 	if (bpp != 24 && bpp != 32)
 	{
 		std::cerr << path << " isn't a 24-bit or a 32-bit bmp, so it isn't supported" << std::endl;
 		return false;
 	}
 
-	pixelArrayAddress = *(int*)&(fileHeader[10]);
-	_width = *(int*)&(fileHeader[18]);
-	_height = *(int*)&(fileHeader[22]);
+	pixelArrayAddress = *(reinterpret_cast<int*>(&fileHeader[10]));
+	_width = *(reinterpret_cast<int*>(&fileHeader[18]));
+	_height = *(reinterpret_cast<int*>(&fileHeader[22]));
+
 
 	imageSize = _width * _height * bpp / 8;
 
-	tempTextureData = new char[imageSize];
+	tempTextureData = new unsigned char[imageSize];
 	inFile.seekg(std::streampos(pixelArrayAddress));
-	inFile.read(tempTextureData, imageSize);
+	inFile.read((char*)tempTextureData, imageSize);
 	inFile.close();
 
 	std::cout << path << " loaded." << std::endl;
@@ -118,10 +119,69 @@ bool Texture2D::BmpLoader(char* path)
 	switch (bpp) 
 	{
 	case 24:
-		glTexImage2D(GL_TEXTURE_2D, 0, bpp / 8, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
 		break;
 	case 32:
-		glTexImage2D(GL_TEXTURE_2D, 0, bpp / 8, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
+		break;
+	};
+
+	delete[] tempTextureData;
+	return true;
+}
+
+bool Texture2D::TgaLoader(char* path)
+{
+	std::ifstream inFile;
+	char fileHeader[18];
+	unsigned char type;
+	unsigned char bpp;
+	unsigned char* tempTextureData;
+	int imageSize;
+
+	inFile.open(path, std::ios::binary);
+
+	if (!inFile.good())
+	{
+		std::cerr << "Can't open texture file " << path << std::endl;
+		return false;
+	}
+
+	inFile.read(fileHeader, 18);
+
+	type = fileHeader[2];
+	if (type != 2)
+	{
+		std::cerr << path << " is not an uncompressed true-color TGA, so it is not supported" << std::endl;
+		return false;
+	}
+
+	bpp = fileHeader[16];
+
+	_width = *(reinterpret_cast<short int*>(&fileHeader[12])); //gets 2 bytes from array and interprets them as a short integer
+	_height = *(reinterpret_cast<short int*>(&fileHeader[14]));
+	imageSize = _width * _height * bpp / 8;
+
+	tempTextureData = new unsigned char[imageSize];
+	inFile.read((char*)tempTextureData, imageSize);
+	inFile.close();
+
+	std::cout << path << " loaded." << std::endl;
+
+	glGenTextures(1, &_TextureID);
+	glBindTexture(GL_TEXTURE_2D, _TextureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	switch (bpp)
+	{
+	case 24:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
+		break;
+	case 32:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
 		break;
 	};
 
@@ -161,6 +221,8 @@ bool Texture2D::Load(char* path, int width, int height)
 		}
 		else if (fileExtension == "bmp")
 			return BmpLoader(path);
+		else if (fileExtension == "tga")
+			return TgaLoader(path);
 
 		std::cout << "File type " << fileExtension << " is not supported" << std::endl;
 		return false;

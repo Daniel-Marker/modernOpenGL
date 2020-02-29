@@ -43,6 +43,7 @@ private:
 	Texture2D* penguinTexture;
 	Texture2D* parrotTexture;
 	Texture2D* parrotTexture32;
+	Texture2D* parrotTextureTGA;
 
 	glm::mat4 viewProjMatrix;
 

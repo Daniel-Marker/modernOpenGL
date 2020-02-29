@@ -18,6 +18,7 @@ private:
 
 	bool RawLoader(char* path, int width = 0, int height = 0);
 	bool BmpLoader(char* path);
+	bool TgaLoader(char* path);
 
 public:
 	Texture2D();

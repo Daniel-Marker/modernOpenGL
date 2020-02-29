@@ -4,17 +4,17 @@
 #include <string>
 
 //todo to be up to date with tutorials:
-//Have code actually use the return value of texture load
-//Allow for images with alpha
 //add mesh objects and meshloader namespace
 //add load functionality for files from tutorials
 //add obj mesh loading
 //Add lighting
 
 //todo after up to date with tutorials:
+//Have code actually use the return value of texture load
 //add special keys callback
 //maybe make input manager a static object
 //Figure out if worth using a linked list for list/array of scene objects
+//Sort rendering order for transparent objects
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -119,11 +119,39 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_BLEND);
+	glEnable(GL_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void HelloGL::InitObjects()
 {
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 50; i++)
+	{
+		sceneObjects[i] = new Cube(shader, inputManager, penguinTexture);
+
+		Transform transform;
+		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
+		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
+		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		sceneObjects[i]->SetTransform(transform);
+	}
+	
+	for (int i = 50; i < 100; i++)
+	{
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture);
+
+		Transform transform;
+		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
+		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
+		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		sceneObjects[i]->SetTransform(transform);
+	}
+
+	for (int i = 100; i < 150; i++)
 	{
 		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture32);
 
@@ -135,9 +163,9 @@ void HelloGL::InitObjects()
 		sceneObjects[i]->SetTransform(transform);
 	}
 
-	for (int i = 100; i < 200; i++)
+	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture);
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTextureTGA);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -158,6 +186,10 @@ void HelloGL::LoadTextures()
 
 	parrotTexture32 = new Texture2D();
 	parrotTexture32->Load((char*)"Res/Textures/parrot32.bmp");
+
+	parrotTextureTGA = new Texture2D();
+	parrotTextureTGA->Load((char*)"Res/Textures/parrot.tga");
+
 }
 
 void HelloGL::InitShaders()
