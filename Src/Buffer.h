@@ -12,10 +12,12 @@ private:
 
 public:
 	Buffer(GLenum bufferType, const void* data, unsigned int size);
+	Buffer(GLenum bufferType, unsigned int size);
 	~Buffer();
 
 	int GetSize() { return _size; };
 
 	void BindBuffer();
+	void UpdateBuffer(int offset, int size, void* data);
 };
 

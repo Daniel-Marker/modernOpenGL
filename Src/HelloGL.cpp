@@ -4,7 +4,6 @@
 #include <string>
 
 //todo to be up to date with tutorials:
-//add mesh objects and meshloader namespace
 //add load functionality for files from tutorials
 //add obj mesh loading
 //Add lighting
@@ -49,6 +48,8 @@ HelloGL::~HelloGL()
 	{
 		delete sceneObjects[i];
 	}
+
+	delete mesh;
 }
 
 void HelloGL::Display()
@@ -127,9 +128,11 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
+	mesh = new Mesh();
+
 	for (int i = 0; i < 50; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, penguinTexture);
+		sceneObjects[i] = new Cube(shader, inputManager, penguinTexture, mesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -141,7 +144,7 @@ void HelloGL::InitObjects()
 	
 	for (int i = 50; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture);
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture, mesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -153,7 +156,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 100; i < 150; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture32);
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture32, mesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -165,7 +168,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, parrotTextureTGA);
+		sceneObjects[i] = new Cube(shader, inputManager, parrotTextureTGA, mesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);

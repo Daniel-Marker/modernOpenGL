@@ -10,6 +10,14 @@ Buffer::Buffer(GLenum bufferType, const void* data, unsigned int size):
 	glBufferData(_bufferType, size, data, GL_STATIC_DRAW);
 }
 
+Buffer::Buffer(GLenum bufferType, unsigned int size):
+	_bufferType(bufferType), _size(size)
+{
+	glGenBuffers(1, &_bufferID);
+	BindBuffer();
+	glBufferData(_bufferType, _size, 0, GL_STATIC_DRAW);
+}
+
 Buffer::~Buffer()
 {
 	glDeleteBuffers(1, &_bufferID);
@@ -18,4 +26,10 @@ Buffer::~Buffer()
 void Buffer::BindBuffer()
 {
 	glBindBuffer(_bufferType, _bufferID);
+}
+
+void Buffer::UpdateBuffer(int offset, int size, void* data)
+{
+	BindBuffer();
+	glBufferSubData(_bufferType, offset, size, data);
 }

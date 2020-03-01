@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Texture2D.h"
 #include "Vao.h"
+#include "Mesh.h"
 
 class SceneObject
 {
@@ -19,8 +20,10 @@ protected:
 
 	Transform _transform;
 
+	Mesh* _mesh;
+
 public:
-	SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture);
+	SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);

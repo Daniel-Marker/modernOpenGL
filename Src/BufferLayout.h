@@ -10,9 +10,10 @@ struct layoutElement
 	int _size;
 	GLenum _type;
 	bool _normalized;
+	int _count;
 
-	layoutElement(int size, GLenum type, bool normalized):
-		_size(size), _type(type), _normalized(normalized)
+	layoutElement(int size, GLenum type, bool normalized, int count):
+		_size(size), _type(type), _normalized(normalized), _count(count)
 	{
 	}
 
@@ -67,13 +68,11 @@ class BufferLayout
 {
 private:
 	std::vector<layoutElement> layout;
-	int _stride;
 public:
 	BufferLayout();
 	~BufferLayout();
 
 	const std::vector<layoutElement> GetLayout();
 	void AddElement(layoutElement element);
-	int GetStride() { return _stride; };
 };
 

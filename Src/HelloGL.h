@@ -12,6 +12,7 @@
 #include "Shader.h"
 #include "Constants.h"
 #include "Texture2D.h"
+#include "Mesh.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -39,6 +40,7 @@ private:
 
 	SceneObject* sceneObjects[200];
 	Shader* shader;
+	Mesh* mesh;
 
 	Texture2D* penguinTexture;
 	Texture2D* parrotTexture;

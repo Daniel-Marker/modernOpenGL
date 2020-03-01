@@ -1,33 +1,4 @@
 #include "Cube.h"
-
-float Cube::vertexData[] =
-{
-	1, 1, 1,		1, 0,	0,
-	-1, 1, 1,		1, 1,	1,
-	-1, -1, 1,		0, 1,	2,
-	1, -1, 1,		0, 0,	0,
-	1, 1, 1,		1, 0,	1,
-	1, -1, 1,		1, 1,	2,
-	1, -1, -1,		0, 1,	0,
-	1, 1, -1,		0, 0,	1,
-	1, 1, 1,		1, 0,	2,
-	1, 1, -1,		1, 1,	0,
-	-1, 1, -1,		0, 1,	1,
-	-1, 1, 1,		0, 0,	2,
-	-1, 1, 1,		1, 0,	0,
-	-1, 1, -1,		1, 1,	1,
-	-1, -1, -1,		0, 1,	2,
-	-1, -1, 1,		0, 0,	0,
-	-1, -1, -1,		1, 0,	1,
-	1, -1, -1,		1, 1,	2,
-	1, -1, 1,		0, 1,	0,
-	-1, -1, 1,		0, 0,	1,
-	1, -1, -1,		1, 0,	2,
-	-1, -1, -1,		1, 1,	0,
-	-1, 1, -1,		0, 1,	1,
-	1, 1, -1,		0, 0,	2
-};
-
 unsigned int Cube::indices[] =
 {	   
 	0, 1, 2,
@@ -44,24 +15,21 @@ unsigned int Cube::indices[] =
 	22, 23, 20
 };
 
-Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture) :
-	SceneObject(shader, inputManager, texture)
+Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh) :
+	SceneObject(shader, inputManager, texture, mesh)
 {
 	_vao = new Vao();
 	_vao->BindVao();
 
 	BufferLayout layout;
 	
-	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false);
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, 24);
 	layout.AddElement(positionsLayout);
-	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false);
+	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, 24);
 	layout.AddElement(textureLayout);
-	layoutElement indexLayout = layoutElement(1, GL_FLOAT, false);
-	layout.AddElement(indexLayout);
 
-	_vao->CreateVertexBuffer(vertexData, sizeof(vertexData), layout);
-
-	_vao->CreateIndexBuffer(indices, sizeof(indices));
+	_vao->CreateVertexBuffer(_mesh, layout);
+	_vao->CreateIndexBuffer(_mesh);
 
 	_shader->SetUniformInt(0, "u_Texture");
 }

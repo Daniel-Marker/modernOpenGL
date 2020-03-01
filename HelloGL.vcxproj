@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\SceneObject.cpp" />
     <ClCompile Include="Src\Buffer.cpp" />
     <ClCompile Include="Src\BufferLayout.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\SceneObject.h" />
     <ClInclude Include="Src\Buffer.h" />
     <ClInclude Include="Src\BufferLayout.h" />

@@ -5,6 +5,7 @@
 
 #include "Buffer.h"
 #include "BufferLayout.h"
+#include "Mesh.h"
 
 class Vao
 {
@@ -18,8 +19,8 @@ public:
 	Vao();
 	~Vao();
 
-	void CreateIndexBuffer(const void* data, unsigned int size);
-	void CreateVertexBuffer(const void* data, unsigned int size, BufferLayout layout);
+	void CreateIndexBuffer(Mesh* mesh);
+	void CreateVertexBuffer(Mesh* mesh, BufferLayout layout);
 
 	Buffer* const GetIndexBuffer(){ return _indexBuffer; };
 

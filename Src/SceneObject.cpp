@@ -1,7 +1,7 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture):
-	_shader(shader), _inputManager(inputManager), _texture(texture)
+SceneObject::SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh):
+	_shader(shader), _inputManager(inputManager), _texture(texture), _mesh(mesh)
 {
 	_transform.position = glm::vec3(0.0f);
 	_transform.rotation = glm::vec3(0.0f);
