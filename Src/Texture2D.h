@@ -14,8 +14,6 @@ private:
 	int _width;
 	int _height;
 
-	std::string GetFileExtension(std::string path);
-
 	bool RawLoader(char* path, int width = 0, int height = 0);
 	bool BmpLoader(char* path);
 	bool TgaLoader(char* path);

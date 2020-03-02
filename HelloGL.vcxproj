@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Common.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\SceneObject.cpp" />
     <ClCompile Include="Src\Buffer.cpp" />

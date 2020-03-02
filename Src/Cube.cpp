@@ -23,9 +23,9 @@ Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh*
 
 	BufferLayout layout;
 	
-	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, 24);
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, mesh->GetVertexCount());
 	layout.AddElement(positionsLayout);
-	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, 24);
+	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, mesh->GetUVCount());
 	layout.AddElement(textureLayout);
 
 	_vao->CreateVertexBuffer(_mesh, layout);

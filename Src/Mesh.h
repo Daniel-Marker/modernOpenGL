@@ -1,5 +1,9 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
+#include <string>
+
 #include "glm/glm.hpp"
 
 class Mesh
@@ -11,8 +15,12 @@ private:
 
 	int _vertexCount, _uvCount, _indexCount;
 
+	bool LoadFromFile(std::string path);
+	glm::vec3* LoadPositionData(std::ifstream& inFile, int& tempVertexCount);
+	glm::vec2* LoadUVCoordData(std::ifstream& inFile, int& tempUVCount);
+
 public:
-	Mesh();
+	Mesh(std::string path);
 	~Mesh();
 
 	glm::vec3* const GetVertexPositions() { return _vertexPositions; }
