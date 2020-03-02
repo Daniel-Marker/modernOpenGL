@@ -26,20 +26,24 @@ bool Mesh::LoadFromFile(std::string path)
 		return false;
 	}
 
-	tempVertexPositions = LoadPositionData(inFile, tempVertexCount);
-	tempUVCoords = LoadUVCoordData(inFile, tempUVCount);
+	tempVertexPositions = LoadPositionData(path, inFile, tempVertexCount);
+	tempUVCoords = LoadUVCoordData(path, inFile, tempUVCount);
 	if (tempVertexPositions == nullptr || tempUVCoords == nullptr)
 	{
-		std::cout << "Failed to load " << path << std::endl;
 		return false;
 	}
 
-	inFile.seekg(inFile.beg);
-	//This should be able to handle if there is no "f " found
-	while (currentLine.substr(0, 2) != "f ")
+	inFile.close();
+	inFile.open(path, std::ios::in);	//For some reason, trying to read more from the file here didn't work. But reopening it fixed it
+	while (currentLine.substr(0, 2) != "f " && !inFile.eof())
 	{
 		std::getline(inFile, currentLine);
 		faceStart += currentLine.length() + 1;	//add the no of characters from the line
+	}
+	if (inFile.eof())
+	{
+		std::cerr << "Obj file has no faces " << std::endl;
+		return false;
 	}
 	faceStart -= currentLine.length() + 1;		//subtract so that we are at the start of the first face
 
@@ -55,7 +59,7 @@ bool Mesh::LoadFromFile(std::string path)
 	_indexCount = tempFaceCount * 3;
 	_indices = new unsigned int[_indexCount];
 
-	//each vertex has to be repeated 3 times to give faces unique uv coords, so vertexCount = 3 * no of vertices in file
+	
 	_vertexCount = tempFaceCount * 3;
 	_vertexPositions = new glm::vec3[_vertexCount];
 
@@ -90,6 +94,11 @@ bool Mesh::LoadFromFile(std::string path)
 		}
 
 		std::getline(inFile, currentLine);
+		if (currentLine != "")
+		{
+			std::cerr << "Mesh has non-triangle faces. Please triangulate your mesh before importing" << std::endl;
+			return false;
+		}
 	}
 
 	inFile.close();
@@ -98,7 +107,7 @@ bool Mesh::LoadFromFile(std::string path)
 	return true;
 }
 
-glm::vec3* Mesh::LoadPositionData(std::ifstream& inFile, int& tempVertexCount)
+glm::vec3* Mesh::LoadPositionData(std::string path, std::ifstream& inFile, int& tempVertexCount)
 {
 	glm::vec3* tempVertexPositions = nullptr;
 	std::string currentLine = "";
@@ -106,11 +115,15 @@ glm::vec3* Mesh::LoadPositionData(std::ifstream& inFile, int& tempVertexCount)
 	//vertexStart is used to get the position in the file, as tellg() kept returning a position a few lines above where it last read
 
 
-	//This should handle if there is no 'v' found
-	while (currentLine.substr(0, 2) != "v ")
+	while (currentLine.substr(0, 2) != "v " && !inFile.eof())
 	{
 		std::getline(inFile, currentLine);
 		vertexStart += currentLine.length() + 1;	//add the no of characters from the line
+	}
+	if (inFile.eof())
+	{
+		std::cout << path << " has no vertices" << std::endl;
+		return tempVertexPositions;
 	}
 	vertexStart -= currentLine.length() + 1;		//subtract so that we are at the start of the first vertex
 
@@ -141,19 +154,25 @@ glm::vec3* Mesh::LoadPositionData(std::ifstream& inFile, int& tempVertexCount)
 	return tempVertexPositions;
 }
 
-glm::vec2* Mesh::LoadUVCoordData(std::ifstream& inFile, int& tempUVCount)
+glm::vec2* Mesh::LoadUVCoordData(std::string path, std::ifstream& inFile, int& tempUVCount)
 {
 	glm::vec2* tempUVPositions = nullptr;
 	std::string currentLine = "";
 	int uvStart = 0;
 	//tellg doesn't seem to give correct position, so we have to go back to the start of the file and start looking again
 
-	inFile.seekg(inFile.beg);
-	//This should handle if there is no "vt " found
-	while (currentLine.substr(0, 2) != "vt")
+	inFile.close();
+	inFile.open(path);	//For some reason, trying to read more from the file here didn't work. But reopening it fixed it
+
+	while (currentLine.substr(0, 2) != "vt" && !inFile.eof())
 	{
 		std::getline(inFile, currentLine);
 		uvStart += currentLine.length() + 1;	//add the no of characters from the line
+	}
+	if (inFile.eof())
+	{
+		std::cout << path << " has no uv coordinates" << std::endl;
+		return tempUVPositions;
 	}
 	uvStart -= currentLine.length() + 1;		//subtract so that we are at the start of the first uv coordinate
 
@@ -187,6 +206,8 @@ Mesh::Mesh(std::string path)
 {
 	if (!LoadFromFile(path))
 		std::cerr << "Failed to load " << path << std::endl;
+	else
+		std::cout << path << " loaded ok" << std::endl;
 }
 
 Mesh::~Mesh()

@@ -4,12 +4,11 @@
 #include <string>
 
 //todo to be up to date with tutorials:
-//need to fix problems with obj loading, e.g. faces with more than 3 vertices, faces with no texture coordinate
-//fix repeated vertices problem, so that _vertexCount = tempVertexCount * 3, instead of _vertexCount = tempFaceCount * 3;
 //Add lighting
 
 //todo after up to date with tutorials:
 //Have code actually use the return value of texture load
+//fix repeated vertices problem, so that _vertexCount = tempVertexCount * 3, instead of _vertexCount = tempFaceCount * 3;
 //add special keys callback
 //maybe make input manager a static object
 //Figure out if worth using a linked list for list/array of scene objects

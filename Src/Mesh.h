@@ -16,8 +16,8 @@ private:
 	int _vertexCount, _uvCount, _indexCount;
 
 	bool LoadFromFile(std::string path);
-	glm::vec3* LoadPositionData(std::ifstream& inFile, int& tempVertexCount);
-	glm::vec2* LoadUVCoordData(std::ifstream& inFile, int& tempUVCount);
+	glm::vec3* LoadPositionData(std::string path, std::ifstream& inFile, int& tempVertexCount);
+	glm::vec2* LoadUVCoordData(std::string path, std::ifstream& inFile, int& tempUVCount);
 
 public:
 	Mesh(std::string path);
