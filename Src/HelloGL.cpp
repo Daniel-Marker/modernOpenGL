@@ -198,7 +198,7 @@ void HelloGL::LoadTextures()
 	parrotTextureTGA->Load((char*)"Res/Textures/parrot.tga");
 
 	betterCubeTexture = new Texture2D();
-	betterCubeTexture->Load((char*)"Res/Textures/BetterCube.bmp");
+	betterCubeTexture->Load((char*)"Res/Textures/BetterCube32.bmp");
 }
 
 void HelloGL::InitShaders()

@@ -42,7 +42,7 @@ bool Texture2D::RawLoader(char* path, int width, int height)
 bool Texture2D::BmpLoader(char* path)
 {
 	std::ifstream inFile;
-	int imageSize;
+	unsigned int imageSize;
 	int pixelArrayAddress;
 	int compressionMethod;
 	int bpp;
@@ -81,11 +81,15 @@ bool Texture2D::BmpLoader(char* path)
 	pixelArrayAddress = *(reinterpret_cast<int*>(&fileHeader[10]));
 	_width = *(reinterpret_cast<int*>(&fileHeader[18]));
 	_height = *(reinterpret_cast<int*>(&fileHeader[22]));
+	imageSize = *(reinterpret_cast<int*>(&fileHeader[34]));
 
+	tempTextureData = new(std::nothrow) unsigned char[imageSize];
+	if(tempTextureData == nullptr)
+	{
+		std::cerr << "Failed to allocate memory for texture" << std::endl;
+		return false;
+	}
 
-	imageSize = _width * _height * bpp / 8;
-
-	tempTextureData = new unsigned char[imageSize];
 	inFile.seekg(std::streampos(pixelArrayAddress));
 	inFile.read((char*)tempTextureData, imageSize);
 	inFile.close();
