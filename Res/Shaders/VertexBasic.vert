@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec2 textureCoord;
+layout (location = 2) in vec4 normal;
 
 uniform mat4 u_VP;
 uniform mat4 u_Transform;

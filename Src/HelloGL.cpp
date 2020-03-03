@@ -3,12 +3,20 @@
 #include <iostream>
 #include <string>
 
-//todo to be up to date with tutorials:
-//Add lighting
+//todo
+//Update texture code to take a string instead of char as an input
+//Update mesh to use a vector instead of dynamic array
+
+//Todo For lighting:
+//Make material class
+//Make class for lights in the scene
+//Update shaders to handle lighting and taking in all lights as a uniform
 
 //todo after up to date with tutorials:
 //Have code actually use the return value of texture load
 //fix repeated vertices problem, so that _vertexCount = tempVertexCount * 3, instead of _vertexCount = tempFaceCount * 3;
+//auto triangulate faces in obj loader if they consist of more than 3 vertices
+//Have obj loader be able to handle files with multiple objects
 //add special keys callback
 //maybe make input manager a static object
 //Figure out if worth using a linked list for list/array of scene objects

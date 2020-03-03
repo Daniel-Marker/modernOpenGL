@@ -1,20 +1,4 @@
 #include "Cube.h"
-unsigned int Cube::indices[] =
-{	   
-	0, 1, 2,
-	2, 3, 0,
-	4, 5, 6,
-	6, 7, 4,
-	8, 9, 10,
-	10, 11, 8,
-	12, 13, 14,
-	14, 15, 12,
-	16, 17, 18,
-	18, 19, 16,
-	20, 21, 22,
-	22, 23, 20
-};
-
 Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh) :
 	SceneObject(shader, inputManager, texture, mesh)
 {
@@ -27,6 +11,8 @@ Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh*
 	layout.AddElement(positionsLayout);
 	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, mesh->GetUVCount());
 	layout.AddElement(textureLayout);
+	layoutElement normalLayout = layoutElement(3, GL_FLOAT, false, mesh->GetVertexNormalCount());
+	layout.AddElement(normalLayout);
 
 	_vao->CreateVertexBuffer(_mesh, layout);
 	_vao->CreateIndexBuffer(_mesh);

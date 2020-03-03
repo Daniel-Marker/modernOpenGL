@@ -11,6 +11,8 @@ bool Mesh::LoadFromFile(std::string path)
 	int tempVertexCount;
 	glm::vec2* tempUVCoords;
 	int tempUVCount;
+	glm::vec3* tempVertexNormals;
+	int tempNormalCount;
 	int tempFaceCount;
 	int faceStart = 0;
 
@@ -28,7 +30,8 @@ bool Mesh::LoadFromFile(std::string path)
 
 	tempVertexPositions = LoadPositionData(path, inFile, tempVertexCount);
 	tempUVCoords = LoadUVCoordData(path, inFile, tempUVCount);
-	if (tempVertexPositions == nullptr || tempUVCoords == nullptr)
+	tempVertexNormals = LoadNormalData(path, inFile, tempNormalCount);
+	if (tempVertexPositions == nullptr || tempUVCoords == nullptr || tempVertexNormals == nullptr)
 	{
 		return false;
 	}
@@ -67,6 +70,10 @@ bool Mesh::LoadFromFile(std::string path)
 	_uvCount = _vertexCount;
 	_uvCoords = new glm::vec2[_uvCount];
 
+	//each vertex has to have a normal, so normal count = vertex count
+	_normalCount = _vertexCount;
+	_vertexNormals = new glm::vec3[_normalCount];
+
 	inFile.close();
 	inFile.open(path, std::ios::in);	//For some reason, trying to read more from the file here didn't work. But reopening it fixed it
 	inFile.seekg(std::streampos(faceStart));
@@ -90,6 +97,7 @@ bool Mesh::LoadFromFile(std::string path)
 
 			_vertexPositions[3*i + j] = tempVertexPositions[vertexIndex - 1];
 			_uvCoords[3 * i + j] = tempUVCoords[uvIndex - 1];
+			_vertexNormals[3 * i + j] = tempVertexNormals[normIndex - 1];
 			_indices[3 * i + j] = 3 * i + j;			
 		}
 
@@ -200,6 +208,56 @@ glm::vec2* Mesh::LoadUVCoordData(std::string path, std::ifstream& inFile, int& t
 	}
 
 	return tempUVPositions;
+}
+
+glm::vec3* Mesh::LoadNormalData(std::string path, std::ifstream& inFile, int& tempNormalCount)
+{
+	glm::vec3* tempVertexNormals = nullptr;
+	std::string currentLine = "";
+	int normalStart = 0;
+	//tellg doesn't seem to give correct position, so we have to go back to the start of the file and start looking again
+
+	inFile.close();
+	inFile.open(path);	//For some reason, trying to read more from the file here didn't work. But reopening it fixed it
+
+	while (currentLine.substr(0, 2) != "vn" && !inFile.eof())
+	{
+		std::getline(inFile, currentLine);
+		normalStart += currentLine.length() + 1;	//add the no of characters from the line
+	}
+	if (inFile.eof())
+	{
+		std::cout << path << " has no vertex normals" << std::endl;
+		return tempVertexNormals;
+	}
+	normalStart -= currentLine.length() + 1;		//subtract so that we are at the start of the first vertex normal
+
+
+	tempNormalCount = 0;
+	while (currentLine.substr(0, 2) == "vn")
+	{
+		tempNormalCount++;
+		std::getline(inFile, currentLine);
+	}
+	tempVertexNormals = new glm::vec3[tempNormalCount];
+
+
+	inFile.seekg(std::streampos(normalStart));
+	for (int i = 0; i < tempNormalCount; i++)
+	{
+		std::string lineType;
+		float position;
+		inFile >> lineType;
+
+		inFile >> position;
+		tempVertexNormals[i].x = position;
+		inFile >> position;
+		tempVertexNormals[i].y = position;
+		inFile >> position;
+		tempVertexNormals[i].z = position;
+	}
+
+	return tempVertexNormals;
 }
 
 Mesh::Mesh(std::string path)

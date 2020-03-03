@@ -35,10 +35,12 @@ void Vao::CreateVertexBuffer(Mesh* mesh, BufferLayout layout)
 
 	unsigned int sizeOfVertexData = mesh->GetVertexCount() * sizeof(glm::vec3);
 	unsigned int sizeOfUVData = mesh->GetUVCount() * sizeof(glm::vec2);
+	unsigned int sizeOfNormalData = mesh->GetVertexNormalCount() * sizeof(glm::vec3);
 
-	_vertexBuffer = new Buffer(GL_ARRAY_BUFFER, sizeOfVertexData + sizeOfUVData);
+	_vertexBuffer = new Buffer(GL_ARRAY_BUFFER, sizeOfVertexData + sizeOfUVData + sizeOfNormalData);
 	_vertexBuffer->UpdateBuffer(0, sizeOfVertexData, mesh->GetVertexPositions());
 	_vertexBuffer->UpdateBuffer(sizeOfVertexData, sizeOfUVData, mesh->GetUVCoords());
+	_vertexBuffer->UpdateBuffer(sizeOfVertexData + sizeOfUVData, sizeOfNormalData, mesh->GetVertexNormals());
 
 	std::vector<layoutElement> bufferLayout = layout.GetLayout();
 	int offset = 0;
