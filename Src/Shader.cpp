@@ -141,3 +141,21 @@ void Shader::SetUniformInt(int value, std::string uniformName)
 	if (location != -1)
 		glUniform1i(location, value);
 }
+
+void Shader::SetUniformVec3(glm::vec3& vector, std::string uniformName)
+{
+	BindShader();
+
+	int location = GetUniformLocation(uniformName);
+	if (location != -1)
+		glUniform3fv(location, 1, &vector.x);
+}
+
+void Shader::SetUniformFloat(float value, std::string uniformName)
+{
+	BindShader();
+
+	int location = GetUniformLocation(uniformName);
+	if (location != -1)
+		glUniform1f(location, value);
+}

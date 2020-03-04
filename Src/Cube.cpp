@@ -40,19 +40,6 @@ void Cube::Render()
 
 void Cube::Update(float deltaTime)
 {
-	if (_inputManager->GetKeyDown('d'))
-		_transform.position.x -= 5.0f * deltaTime;
-
-	if (_inputManager->GetKeyDown('a'))
-		_transform.position.x += 5.0f * deltaTime;
-
-	if (_inputManager->GetKeyDown('w'))
-		_transform.position.y += 5.0f * deltaTime;
-
-	if (_inputManager->GetKeyDown('s'))
-		_transform.position.y -= 5.0f * deltaTime;
-
-
 	if (_inputManager->GetKeyDown('z'))
 		_transform.rotation.x += 5.0f * deltaTime;
 	if (_inputManager->GetKeyDown('x'))
@@ -61,8 +48,8 @@ void Cube::Update(float deltaTime)
 		_transform.rotation.z += 5.0f * deltaTime;
 
 
-	if (_inputManager->GetKeyDown('j'))
-		_transform.scale.x -= 0.5f * deltaTime;
-	if (_inputManager->GetKeyDown('k'))
-		_transform.scale.x += 0.5f * deltaTime;
+	//if (_inputManager->GetKeyDown('j'))
+	//	_transform.scale.x -= 0.5f * deltaTime;
+	//if (_inputManager->GetKeyDown('k'))
+	//	_transform.scale.x += 0.5f * deltaTime;
 }

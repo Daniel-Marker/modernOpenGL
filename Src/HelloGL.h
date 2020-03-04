@@ -13,6 +13,7 @@
 #include "Constants.h"
 #include "Texture2D.h"
 #include "Mesh.h"
+#include "SceneLight.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -42,6 +43,7 @@ private:
 	Shader* shader;
 	Mesh* cubeMesh;
 	Mesh* betterCubeMesh;
+	SceneLight* light;
 
 	Texture2D* penguinTexture;
 	Texture2D* parrotTexture;

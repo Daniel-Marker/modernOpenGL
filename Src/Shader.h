@@ -23,5 +23,7 @@ public:
 	int GetUniformLocation(const std::string& uniformName);
 	void SetUniformMatrix(glm::mat4& matrix, std::string uniformName);
 	void SetUniformInt(int value, std::string uniformName);
+	void SetUniformVec3(glm::vec3& vector, std::string uniformName);
+	void SetUniformFloat(float value, std::string uniformName);
 };
 

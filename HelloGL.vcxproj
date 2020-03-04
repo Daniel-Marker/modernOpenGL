@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\SceneLight.cpp" />
     <ClCompile Include="Src\Common.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\SceneObject.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\SceneLight.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\SceneObject.h" />
     <ClInclude Include="Src\Buffer.h" />
@@ -541,7 +543,9 @@
     <None Include="Include\extern\glm\gtx\vector_query.inl" />
     <None Include="Include\extern\glm\gtx\wrap.inl" />
     <None Include="Res\Shaders\FragBasic.frag" />
+    <None Include="Res\Shaders\FragLighting.frag" />
     <None Include="Res\Shaders\VertexBasic.vert" />
+    <None Include="Res\Shaders\VertLighting.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

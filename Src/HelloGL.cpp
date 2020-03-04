@@ -9,8 +9,9 @@
 
 //Todo For lighting:
 //Make material class
-//Make class for lights in the scene
-//Update shaders to handle lighting and taking in all lights as a uniform
+//Update shaders to handle materials
+//Add specular lighting
+//Figure out a way to have multiple light sources be inputs to the shader (maybe an array of the nearest lights?)
 
 //todo after up to date with tutorials:
 //Have code actually use the return value of texture load
@@ -66,9 +67,21 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	viewProjMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist) *
+	/*viewProjMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist) *
 		glm::lookAt(camera->eye,camera->center, camera->up);
-	shader->SetUniformMatrix(viewProjMatrix, "u_VP");
+	shader->SetUniformMatrix(viewProjMatrix, "u_VP");*/
+
+	glm::mat4 viewMatrix = glm::lookAt(camera->eye, camera->center, camera->up);
+	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
+	shader->SetUniformMatrix(viewMatrix, "u_View");
+	shader->SetUniformMatrix(projMatrix, "u_Proj");
+
+	shader->SetUniformFloat(light->GetIntensity(), "u_LightIntensity");
+	glm::vec3 lightColor = light->GetColor();
+	shader->SetUniformVec3(lightColor, "u_LightColor");
+	shader->SetUniformFloat(0.5f, "u_AmbientLightIntensity");
+	glm::vec3 lightPos = light->GetPosition();
+	shader->SetUniformVec3(lightPos, "u_LightPos");
 
 	for(int i = 0; i < 200; i++)
 		sceneObjects[i]->Render();
@@ -89,6 +102,60 @@ void HelloGL::Update(float deltaTime)
 	else if (inputManager->GetKeyDown('2'))
 	{
 		camera->eye.z -= 5.0f * deltaTime;
+	}
+
+	if (inputManager->GetKeyDown('d'))
+	{
+		camera->center.x -= 5.0f * deltaTime;
+		camera->eye.x -= 5.0f * deltaTime;
+	}
+
+	if (inputManager->GetKeyDown('a'))
+	{
+		camera->center.x += 5.0f * deltaTime;
+		camera->eye.x += 5.0f * deltaTime;
+	}
+
+	if (inputManager->GetKeyDown('w'))
+	{
+		camera->center.y += 5.0f * deltaTime;
+		camera->eye.y += 5.0f * deltaTime;
+	}
+
+	if (inputManager->GetKeyDown('s'))
+	{
+		camera->center.y -= 5.0f * deltaTime;
+		camera->eye.y -= 5.0f * deltaTime;
+	}
+
+
+	if (inputManager->GetKeyDown('i'))
+	{
+		light->SetPosition(light->GetPosition() + glm::vec3(0.0f, 5.0f, 0.0f) * deltaTime);
+	}
+	if (inputManager->GetKeyDown('j'))
+	{
+		light->SetPosition(light->GetPosition() + glm::vec3(5.0f, 0.0f, 0.0f) * deltaTime);
+	}
+	if (inputManager->GetKeyDown('k'))
+	{
+		light->SetPosition(light->GetPosition() + glm::vec3(0.0f, -5.0f, 0.0f) * deltaTime);
+	}
+	if (inputManager->GetKeyDown('l'))
+	{
+		light->SetPosition(light->GetPosition() + glm::vec3(-5.0f, 0.0f, 0.0f) * deltaTime);
+	}
+	if (inputManager->GetKeyDown('o'))
+	{
+		light->SetIntensity(light->GetIntensity() + 1.0f * deltaTime);
+	}
+	if (inputManager->GetKeyDown('p'))
+	{
+		float newIntensity = light->GetIntensity() - 1.0f * deltaTime;
+		if (newIntensity < 0.0f)
+			newIntensity = 0.0f;
+
+		light->SetIntensity(newIntensity);
 	}
 
 	glutPostRedisplay();
@@ -138,6 +205,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
+	light = new SceneLight(glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, glm::vec3(0.0f, 0.0f, -5.0f));
+
 	cubeMesh = new Mesh("Res/Models/Cube.obj");
 	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
 
@@ -210,5 +279,5 @@ void HelloGL::LoadTextures()
 
 void HelloGL::InitShaders()
 {
-	shader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
+	shader = new Shader("Res/Shaders/VertLighting.vert", "Res/Shaders/FragLighting.frag");
 }
