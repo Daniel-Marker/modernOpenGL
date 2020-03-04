@@ -46,7 +46,7 @@ HelloGL::~HelloGL()
 {
 	delete camera;
 	delete inputManager;
-	delete shader;
+	delete lightingShader;
 
 	delete penguinTexture;
 	delete parrotTexture;
@@ -73,15 +73,18 @@ void HelloGL::Display()
 
 	glm::mat4 viewMatrix = glm::lookAt(camera->eye, camera->center, camera->up);
 	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
-	shader->SetUniformMatrix(viewMatrix, "u_View");
-	shader->SetUniformMatrix(projMatrix, "u_Proj");
+	lightingShader->SetUniformMatrix(viewMatrix, "u_View");
+	lightingShader->SetUniformMatrix(projMatrix, "u_Proj");
 
-	shader->SetUniformFloat(light->GetIntensity(), "u_LightIntensity");
+	basicShader->SetUniformMatrix(viewMatrix, "u_View");
+	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
+
+	lightingShader->SetUniformFloat(light->GetIntensity(), "u_LightIntensity");
 	glm::vec3 lightColor = light->GetColor();
-	shader->SetUniformVec3(lightColor, "u_LightColor");
-	shader->SetUniformFloat(0.5f, "u_AmbientLightIntensity");
+	lightingShader->SetUniformVec3(lightColor, "u_LightColor");
+	lightingShader->SetUniformFloat(0.5f, "u_AmbientLightIntensity");
 	glm::vec3 lightPos = light->GetPosition();
-	shader->SetUniformVec3(lightPos, "u_LightPos");
+	lightingShader->SetUniformVec3(lightPos, "u_LightPos");
 
 	for(int i = 0; i < 200; i++)
 		sceneObjects[i]->Render();
@@ -212,7 +215,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 0; i < 50; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, betterCubeTexture, betterCubeMesh);
+		sceneObjects[i] = new Cube(lightingShader, inputManager, betterCubeTexture, betterCubeMesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -224,7 +227,7 @@ void HelloGL::InitObjects()
 	
 	for (int i = 50; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture, cubeMesh);
+		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture, cubeMesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -236,7 +239,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 100; i < 150; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, parrotTexture32, cubeMesh);
+		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture32, cubeMesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -248,7 +251,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(shader, inputManager, penguinTexture, cubeMesh);
+		sceneObjects[i] = new Cube(basicShader, inputManager, penguinTexture, cubeMesh);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -279,5 +282,6 @@ void HelloGL::LoadTextures()
 
 void HelloGL::InitShaders()
 {
-	shader = new Shader("Res/Shaders/VertLighting.vert", "Res/Shaders/FragLighting.frag");
+	lightingShader = new Shader("Res/Shaders/VertLighting.vert", "Res/Shaders/FragLighting.frag");
+	basicShader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
 }

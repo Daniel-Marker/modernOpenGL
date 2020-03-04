@@ -40,7 +40,8 @@ private:
 	Camera* camera;
 
 	SceneObject* sceneObjects[200];
-	Shader* shader;
+	Shader* lightingShader;
+	Shader* basicShader;
 	Mesh* cubeMesh;
 	Mesh* betterCubeMesh;
 	SceneLight* light;
