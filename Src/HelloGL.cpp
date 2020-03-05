@@ -10,7 +10,6 @@
 //Todo For lighting:
 //Make material class
 //Update shaders to handle materials
-//Add specular lighting
 //Figure out a way to have multiple light sources be inputs to the shader (maybe an array of the nearest lights?)
 
 //todo after up to date with tutorials:
@@ -85,6 +84,8 @@ void HelloGL::Display()
 	lightingShader->SetUniformFloat(0.5f, "u_AmbientLightIntensity");
 	glm::vec3 lightPos = light->GetPosition();
 	lightingShader->SetUniformVec3(lightPos, "u_LightPos");
+	lightingShader->SetUniformVec3(camera->center, "u_CameraPos");
+	lightingShader->SetUniformFloat(1.0f, "u_SpecularLightIntensity");
 
 	for(int i = 0; i < 200; i++)
 		sceneObjects[i]->Render();
