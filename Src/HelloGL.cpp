@@ -11,6 +11,8 @@
 //Make material class
 //Update shaders to handle materials
 //Figure out a way to have multiple light sources be inputs to the shader (maybe an array of the nearest lights?)
+//Set the light position to be a vec4 and have the w component specify if the light is a point light or directional (0 = direction, 1 = point)
+//trying setting diffuse, ambient and specular lighting input to fragment shader as varying
 
 //todo after up to date with tutorials:
 //Have code actually use the return value of texture load
@@ -78,14 +80,14 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
-	lightingShader->SetUniformFloat(light->GetIntensity(), "u_LightIntensity");
-	glm::vec3 lightColor = light->GetColor();
-	lightingShader->SetUniformVec3(lightColor, "u_LightColor");
-	lightingShader->SetUniformFloat(0.5f, "u_AmbientLightIntensity");
-	glm::vec3 lightPos = light->GetPosition();
-	lightingShader->SetUniformVec3(lightPos, "u_LightPos");
+	lightingShader->SetUniformVec3(light->GetPosition(), "u_LightPos");
 	lightingShader->SetUniformVec3(camera->center, "u_CameraPos");
-	lightingShader->SetUniformFloat(1.0f, "u_SpecularLightIntensity");
+	lightingShader->SetUniformVec3(light->GetDiffuseColor(), "u_DiffuseColor");
+	lightingShader->SetUniformFloat(light->GetDiffuseIntensity(), "u_DiffuseIntensity");
+	lightingShader->SetUniformVec3(light->GetAmbientColor(), "u_AmbientColor");
+	lightingShader->SetUniformFloat(light->GetAmbientIntensity(), "u_AmbientIntensity");
+	lightingShader->SetUniformVec3(light->GetSpecularColor(), "u_SpecularColor");
+	lightingShader->SetUniformFloat(light->GetSpecularIntensity(), "u_SpecularIntensity");
 
 	for(int i = 0; i < 200; i++)
 		sceneObjects[i]->Render();
@@ -151,15 +153,15 @@ void HelloGL::Update(float deltaTime)
 	}
 	if (inputManager->GetKeyDown('o'))
 	{
-		light->SetIntensity(light->GetIntensity() + 1.0f * deltaTime);
+		light->SetDiffuseIntensity(light->GetDiffuseIntensity() + 1.0f * deltaTime);
 	}
 	if (inputManager->GetKeyDown('p'))
 	{
-		float newIntensity = light->GetIntensity() - 1.0f * deltaTime;
+		float newIntensity = light->GetDiffuseIntensity() - 1.0f * deltaTime;
 		if (newIntensity < 0.0f)
 			newIntensity = 0.0f;
 
-		light->SetIntensity(newIntensity);
+		light->SetDiffuseIntensity(newIntensity);
 	}
 
 	glutPostRedisplay();
@@ -209,7 +211,15 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	light = new SceneLight(glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, glm::vec3(0.0f, 0.0f, -5.0f));
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, -5.0f);
+	glm::vec3 diffuseColor = glm::vec3(0.0f, 0.0f, 1.0f);
+	float diffuseIntensity = 0.6f;
+	glm::vec3 ambientColor = glm::vec3(1.0f, 0.0f, 0.0f);
+	float ambientIntensity = 0.1f;
+	glm::vec3 specularColor = glm::vec3(0.0f, 1.0f, 0.0f);
+	float specularIntensity = 1.0f;
+
+	light = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
 
 	cubeMesh = new Mesh("Res/Models/Cube.obj");
 	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");

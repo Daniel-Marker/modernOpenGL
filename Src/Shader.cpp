@@ -151,6 +151,15 @@ void Shader::SetUniformVec3(glm::vec3& vector, std::string uniformName)
 		glUniform3fv(location, 1, &vector.x);
 }
 
+void Shader::SetUniformVec4(glm::vec4& vector, std::string uniformName)
+{
+	BindShader();
+
+	int location = GetUniformLocation(uniformName);
+	if (location != -1)
+		glUniform4fv(location, 1, &vector.x);
+}
+
 void Shader::SetUniformFloat(float value, std::string uniformName)
 {
 	BindShader();

@@ -8,12 +8,15 @@ uniform mat4 u_View;
 uniform mat4 u_Proj;
 uniform mat4 u_Transform;
 
-uniform vec3 u_LightColor;
-uniform float u_LightIntensity;
 uniform vec3 u_LightPos;
-uniform float u_AmbientLightIntensity;
 uniform vec3 u_CameraPos;
-uniform float u_SpecularLightIntensity;
+
+uniform vec3 u_DiffuseColor;
+uniform float u_DiffuseIntensity;
+uniform vec3 u_AmbientColor;
+uniform float u_AmbientIntensity;
+uniform vec3 u_SpecularColor;
+uniform float u_SpecularIntensity;
 
 out vec2 vs_textureCoord;
 out vec3 vs_DiffuseLight;
@@ -29,10 +32,10 @@ void main()
     vec3 norm = normalize((transpose(inverse(u_Transform)) * vec4(normal, 0.0f)).xyz);
     vec3 lightDir = normalize(u_LightPos - vertexInModelSpace);
     
-	vs_DiffuseLight = max(dot(norm, lightDir), 0.0) * u_LightColor * u_LightIntensity;
-    vs_AmbientLight = u_AmbientLightIntensity * u_LightColor;
+	vs_DiffuseLight = max(dot(norm, lightDir), 0.0) * u_DiffuseColor * u_DiffuseIntensity;
+    vs_AmbientLight = u_AmbientIntensity * u_AmbientColor;
 	
 	vec3 viewDir = normalize(u_CameraPos - vertexInModelSpace);
 	vec3 reflectDir = reflect(-lightDir, norm);
-	vs_SpecularLight = u_SpecularLightIntensity * u_LightColor * pow(max(dot(viewDir, reflectDir), 0.0), 2);
+	vs_SpecularLight = u_SpecularIntensity * u_SpecularColor * pow(max(dot(viewDir, reflectDir), 0.0), 2);
 }
