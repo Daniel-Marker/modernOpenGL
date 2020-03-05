@@ -6,7 +6,7 @@
 class SceneLight
 {
 private:
-	glm::vec3 _position;
+	glm::vec4 _position;
 
 	glm::vec3 _DiffuseColor;
 	float _DiffuseIntensity;
@@ -18,11 +18,11 @@ private:
 	float _SpecularIntensity;
 
 public:
-	SceneLight(glm::vec3 position, glm::vec3 DiffuseColor, float DiffuseIntensity, glm::vec3 AmbientColor, float AmbientIntensity, glm::vec3 SpecularColor, float SpecularIntensity);
+	SceneLight(glm::vec4 position, glm::vec3 DiffuseColor, float DiffuseIntensity, glm::vec3 AmbientColor, float AmbientIntensity, glm::vec3 SpecularColor, float SpecularIntensity);
 	~SceneLight();
 
-	glm::vec3& GetPosition() { return _position; };
-	void SetPosition(glm::vec3 position) { _position = position; };
+	glm::vec4& GetPosition() { return _position; };
+	void SetPosition(glm::vec4 position) { _position = position; };
 
 	glm::vec3& GetDiffuseColor() { return _DiffuseColor; };
 	void SetDiffuseColor(glm::vec3 color) { _DiffuseColor = color; };

@@ -11,7 +11,6 @@
 //Make material class
 //Update shaders to handle materials
 //Figure out a way to have multiple light sources be inputs to the shader (maybe an array of the nearest lights?)
-//Set the light position to be a vec4 and have the w component specify if the light is a point light or directional (0 = direction, 1 = point)
 //trying setting diffuse, ambient and specular lighting input to fragment shader as varying
 
 //todo after up to date with tutorials:
@@ -80,7 +79,7 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
-	lightingShader->SetUniformVec3(light->GetPosition(), "u_LightPos");
+	lightingShader->SetUniformVec4(light->GetPosition(), "u_LightPos");
 	lightingShader->SetUniformVec3(camera->center, "u_CameraPos");
 	lightingShader->SetUniformVec3(light->GetDiffuseColor(), "u_DiffuseColor");
 	lightingShader->SetUniformFloat(light->GetDiffuseIntensity(), "u_DiffuseIntensity");
@@ -137,19 +136,19 @@ void HelloGL::Update(float deltaTime)
 
 	if (inputManager->GetKeyDown('i'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec3(0.0f, 5.0f, 0.0f) * deltaTime);
+		light->SetPosition(light->GetPosition() + glm::vec4(0.0f, 5.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('j'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec3(5.0f, 0.0f, 0.0f) * deltaTime);
+		light->SetPosition(light->GetPosition() + glm::vec4(5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('k'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec3(0.0f, -5.0f, 0.0f) * deltaTime);
+		light->SetPosition(light->GetPosition() + glm::vec4(0.0f, -5.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('l'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec3(-5.0f, 0.0f, 0.0f) * deltaTime);
+		light->SetPosition(light->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('o'))
 	{
@@ -211,12 +210,12 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	glm::vec3 position = glm::vec3(0.0f, 0.0f, -5.0f);
-	glm::vec3 diffuseColor = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec4 position = glm::vec4(0.0f, 0.0f, -5.0f, 0.0f);
+	glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float diffuseIntensity = 0.6f;
-	glm::vec3 ambientColor = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float ambientIntensity = 0.1f;
-	glm::vec3 specularColor = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float specularIntensity = 1.0f;
 
 	light = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
