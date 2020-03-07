@@ -17,8 +17,16 @@ struct LightData
     vec3 SpecularColor;
     float SpecularIntensity;
 };
-
 #define NUM_LIGHTS 2
+
+struct Material
+{
+    vec3 ambientColor;
+    vec3 diffuseColor;
+    vec3 specularColor;
+    float shininess;
+};
+uniform Material u_Material;
 
 uniform mat4 u_View;
 uniform mat4 u_Proj;
@@ -54,11 +62,11 @@ void main()
         float distanceFromLight = distance(LightPos, vertexInModelSpace);
         float distanceScale = (1 / distanceFromLight) * mix(distanceFromLight, 1.0f, u_Lights[i].LightPos.w);
         
-	    vs_DiffuseLight += max(dot(norm, lightDir), 0.0) * u_Lights[i].DiffuseColor * u_Lights[i].DiffuseIntensity * distanceScale;
-        vs_AmbientLight += u_Lights[i].AmbientIntensity * u_Lights[i].AmbientColor * distanceScale;
+	    vs_DiffuseLight += max(dot(norm, lightDir), 0.0) * u_Lights[i].DiffuseColor * u_Lights[i].DiffuseIntensity * distanceScale * u_Material.diffuseColor;
+        vs_AmbientLight += u_Lights[i].AmbientIntensity * u_Lights[i].AmbientColor * distanceScale * u_Material.ambientColor;
 	    
 	    vec3 viewDir = normalize(u_CameraPos - vertexInModelSpace);
 	    vec3 reflectDir = reflect(-lightDir, norm);
-	    vs_SpecularLight += u_Lights[i].SpecularIntensity * u_Lights[i].SpecularColor * pow(max(dot(viewDir, reflectDir), 0.0), 2) * distanceScale;
+	    vs_SpecularLight += u_Lights[i].SpecularIntensity * u_Lights[i].SpecularColor * pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess) * distanceScale * u_Material.specularColor;
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Structures.h"
+#include "Shader.h"
 #include "glm/common.hpp"
 
 class SceneLight
@@ -38,5 +39,7 @@ public:
 	void SetSpecularColor(glm::vec3 color) { _SpecularColor = color; };
 	float& GetSpecularIntensity() { return _SpecularIntensity; };
 	void SetSpecularIntensity(float intensity) { _SpecularIntensity = intensity; };
+
+	void SetLightUniforms(glm::vec3 cameraPos, std::string lightNo, Shader* shader);
 };
 

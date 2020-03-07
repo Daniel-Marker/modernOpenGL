@@ -69,6 +69,9 @@
     <ClCompile Include="Src\SceneLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\extern\glm\detail\_features.hpp">
@@ -846,6 +849,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\SceneLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

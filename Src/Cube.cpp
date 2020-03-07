@@ -1,6 +1,6 @@
 #include "Cube.h"
-Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh) :
-	SceneObject(shader, inputManager, texture, mesh)
+Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh, Material* material) :
+	SceneObject(shader, inputManager, texture, mesh, material)
 {
 	_vao = new Vao();
 	_vao->BindVao();
@@ -33,6 +33,8 @@ void Cube::Render()
 		glm::eulerAngleXYZ(_transform.rotation.x, _transform.rotation.y, _transform.rotation.z) *
 		glm::scale(glm::mat4(1.0f), _transform.scale);
 	_shader->SetUniformMatrix(transformMatrix, "u_Transform");
+
+	_material->SetMaterialUniforms(_shader);
 
 	Renderer renderer;
 	renderer.Render(_vao, _shader, _texture);

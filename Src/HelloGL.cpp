@@ -8,8 +8,6 @@
 //Update mesh to use a vector instead of dynamic array
 
 //Todo For lighting:
-//Make material class
-//Update shaders to handle materials
 //trying setting diffuse, ambient and specular lighting input to fragment shader as varying
 
 //todo after up to date with tutorials:
@@ -84,14 +82,7 @@ void HelloGL::Display()
 		std::string light = "u_Lights[]";
 		light.insert(9, std::to_string(i));
 
-		lightingShader->SetUniformVec4(sceneLights[i]->GetPosition(), light + ".LightPos");
-		lightingShader->SetUniformVec3(camera->center, light + ".CameraPos");
-		lightingShader->SetUniformVec3(sceneLights[i]->GetDiffuseColor(), light + ".DiffuseColor");
-		lightingShader->SetUniformFloat(sceneLights[i]->GetDiffuseIntensity(), light + ".DiffuseIntensity");
-		lightingShader->SetUniformVec3(sceneLights[i]->GetAmbientColor(), light + ".AmbientColor");
-		lightingShader->SetUniformFloat(sceneLights[i]->GetAmbientIntensity(), light + ".AmbientIntensity");
-		lightingShader->SetUniformVec3(sceneLights[i]->GetSpecularColor(), light + ".SpecularColor");
-		lightingShader->SetUniformFloat(sceneLights[i]->GetSpecularIntensity(), light + ".SpecularIntensity");
+		sceneLights[i]->SetLightUniforms(camera->center, light, lightingShader);
 	}
 
 	for(int i = 0; i < 200; i++)
@@ -208,10 +199,10 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	glm::vec3 diffuseColor = glm::vec3(1.0f, 0.0f, 0.0f);
-	float diffuseIntensity = 15.0f;
+	glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	float diffuseIntensity = 2.0f;
 	glm::vec3 ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	float ambientIntensity = 0.1f;
+	float ambientIntensity = 2.0f;
 	glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float specularIntensity = 1.0f;
 
@@ -219,15 +210,21 @@ void HelloGL::InitObjects()
 	sceneLights[0] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
 
 	position = glm::vec4(-10.0f, 20.0f, -5.0f, 1.0f);
-	diffuseColor = glm::vec3(0.0f, 1.0f, 0.0f);
+	diffuseIntensity = 15.0f;
+	diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	sceneLights[1] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
 
 	cubeMesh = new Mesh("Res/Models/Cube.obj");
 	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
 
+	glm::vec3 materialAmbient = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 materialDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 materialSpecular = glm::vec3(0.0f, 0.0f, 1.0f);
+	Material* basicMaterial = new Material(materialAmbient, materialDiffuse, materialSpecular, 2.0f);
+
 	for (int i = 0; i < 50; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, inputManager, betterCubeTexture, betterCubeMesh);
+		sceneObjects[i] = new Cube(lightingShader, inputManager, betterCubeTexture, betterCubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -239,7 +236,7 @@ void HelloGL::InitObjects()
 	
 	for (int i = 50; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture, cubeMesh);
+		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture, cubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -251,7 +248,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 100; i < 150; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture32, cubeMesh);
+		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture32, cubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -263,7 +260,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(basicShader, inputManager, penguinTexture, cubeMesh);
+		sceneObjects[i] = new Cube(basicShader, inputManager, penguinTexture, cubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);

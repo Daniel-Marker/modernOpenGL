@@ -7,23 +7,23 @@
 #include "Texture2D.h"
 #include "Vao.h"
 #include "Mesh.h"
+#include "Material.h"
 
 class SceneObject
 {
 protected:
-	Shader* _shader;
-	Vao* _vao;
-
-	Texture2D* _texture;
-
 	InputManager* _inputManager;
 
 	Transform _transform;
-
 	Mesh* _mesh;
+	
+	Vao* _vao;
+	Shader* _shader;
+	Texture2D* _texture;
+	Material* _material;
 
 public:
-	SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh);
+	SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh, Material* material);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);

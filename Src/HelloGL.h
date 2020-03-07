@@ -14,6 +14,7 @@
 #include "Texture2D.h"
 #include "Mesh.h"
 #include "SceneLight.h"
+#include "Material.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

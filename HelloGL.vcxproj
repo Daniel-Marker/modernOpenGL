@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\SceneLight.cpp" />
     <ClCompile Include="Src\Common.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\SceneLight.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\SceneObject.h" />
