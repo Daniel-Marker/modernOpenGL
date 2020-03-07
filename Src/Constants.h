@@ -7,3 +7,5 @@ const int cInitWindowPositionY = 0;
 const float cFOV = 45.0f;
 const float cNearClippingPlaneDist = 0.1f;
 const float cFarClippingPlaneDist = 1000.0f;
+
+#define NUM_LIGHTS 2

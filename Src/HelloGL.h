@@ -44,7 +44,7 @@ private:
 	Shader* basicShader;
 	Mesh* cubeMesh;
 	Mesh* betterCubeMesh;
-	SceneLight* light;
+	SceneLight* sceneLights[NUM_LIGHTS];
 
 	Texture2D* penguinTexture;
 	Texture2D* parrotTexture;

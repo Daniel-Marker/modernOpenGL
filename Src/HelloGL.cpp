@@ -10,7 +10,6 @@
 //Todo For lighting:
 //Make material class
 //Update shaders to handle materials
-//Figure out a way to have multiple light sources be inputs to the shader (maybe an array of the nearest lights?)
 //trying setting diffuse, ambient and specular lighting input to fragment shader as varying
 
 //todo after up to date with tutorials:
@@ -61,15 +60,16 @@ HelloGL::~HelloGL()
 
 	delete cubeMesh;
 	delete betterCubeMesh;
+
+	for (int i = 0; i < NUM_LIGHTS; i++)
+	{
+		delete sceneLights[i];
+	}
 }
 
 void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	/*viewProjMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist) *
-		glm::lookAt(camera->eye,camera->center, camera->up);
-	shader->SetUniformMatrix(viewProjMatrix, "u_VP");*/
 
 	glm::mat4 viewMatrix = glm::lookAt(camera->eye, camera->center, camera->up);
 	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
@@ -79,14 +79,20 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
-	lightingShader->SetUniformVec4(light->GetPosition(), "u_LightPos");
-	lightingShader->SetUniformVec3(camera->center, "u_CameraPos");
-	lightingShader->SetUniformVec3(light->GetDiffuseColor(), "u_DiffuseColor");
-	lightingShader->SetUniformFloat(light->GetDiffuseIntensity(), "u_DiffuseIntensity");
-	lightingShader->SetUniformVec3(light->GetAmbientColor(), "u_AmbientColor");
-	lightingShader->SetUniformFloat(light->GetAmbientIntensity(), "u_AmbientIntensity");
-	lightingShader->SetUniformVec3(light->GetSpecularColor(), "u_SpecularColor");
-	lightingShader->SetUniformFloat(light->GetSpecularIntensity(), "u_SpecularIntensity");
+	for (int i = 0; i < NUM_LIGHTS; i++) 
+	{
+		std::string light = "u_Lights[]";
+		light.insert(9, std::to_string(i));
+
+		lightingShader->SetUniformVec4(sceneLights[i]->GetPosition(), light + ".LightPos");
+		lightingShader->SetUniformVec3(camera->center, light + ".CameraPos");
+		lightingShader->SetUniformVec3(sceneLights[i]->GetDiffuseColor(), light + ".DiffuseColor");
+		lightingShader->SetUniformFloat(sceneLights[i]->GetDiffuseIntensity(), light + ".DiffuseIntensity");
+		lightingShader->SetUniformVec3(sceneLights[i]->GetAmbientColor(), light + ".AmbientColor");
+		lightingShader->SetUniformFloat(sceneLights[i]->GetAmbientIntensity(), light + ".AmbientIntensity");
+		lightingShader->SetUniformVec3(sceneLights[i]->GetSpecularColor(), light + ".SpecularColor");
+		lightingShader->SetUniformFloat(sceneLights[i]->GetSpecularIntensity(), light + ".SpecularIntensity");
+	}
 
 	for(int i = 0; i < 200; i++)
 		sceneObjects[i]->Render();
@@ -136,31 +142,23 @@ void HelloGL::Update(float deltaTime)
 
 	if (inputManager->GetKeyDown('i'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec4(0.0f, 5.0f, 0.0f, 0.0f) * deltaTime);
+		for(int i = 0; i < NUM_LIGHTS; i++)
+			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(0.0f, 5.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('j'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec4(5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
+		for (int i = 0; i < NUM_LIGHTS; i++)
+			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('k'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec4(0.0f, -5.0f, 0.0f, 0.0f) * deltaTime);
+		for (int i = 0; i < NUM_LIGHTS; i++)
+			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(0.0f, -5.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (inputManager->GetKeyDown('l'))
 	{
-		light->SetPosition(light->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
-	}
-	if (inputManager->GetKeyDown('o'))
-	{
-		light->SetDiffuseIntensity(light->GetDiffuseIntensity() + 1.0f * deltaTime);
-	}
-	if (inputManager->GetKeyDown('p'))
-	{
-		float newIntensity = light->GetDiffuseIntensity() - 1.0f * deltaTime;
-		if (newIntensity < 0.0f)
-			newIntensity = 0.0f;
-
-		light->SetDiffuseIntensity(newIntensity);
+		for (int i = 0; i < NUM_LIGHTS; i++)
+			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 
 	glutPostRedisplay();
@@ -210,15 +208,19 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	glm::vec4 position = glm::vec4(0.0f, 0.0f, -5.0f, 0.0f);
-	glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	float diffuseIntensity = 0.6f;
+	glm::vec3 diffuseColor = glm::vec3(1.0f, 0.0f, 0.0f);
+	float diffuseIntensity = 15.0f;
 	glm::vec3 ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float ambientIntensity = 0.1f;
 	glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float specularIntensity = 1.0f;
 
-	light = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
+	glm::vec4 position = glm::vec4(-20.0f, 0.0f, -5.0f, 1.0f);
+	sceneLights[0] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
+
+	position = glm::vec4(-10.0f, 20.0f, -5.0f, 1.0f);
+	diffuseColor = glm::vec3(0.0f, 1.0f, 0.0f);
+	sceneLights[1] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
 
 	cubeMesh = new Mesh("Res/Models/Cube.obj");
 	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
