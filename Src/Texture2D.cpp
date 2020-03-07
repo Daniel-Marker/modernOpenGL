@@ -2,7 +2,7 @@
 #include "Common.cpp"
 
 
-bool Texture2D::RawLoader(char* path, int width, int height)
+bool Texture2D::RawLoader(std::string path, int width, int height)
 {
 	char* tempTextureData;
 	int fileSize;
@@ -39,7 +39,7 @@ bool Texture2D::RawLoader(char* path, int width, int height)
 	return true;
 }
 
-bool Texture2D::BmpLoader(char* path)
+bool Texture2D::BmpLoader(std::string path)
 {
 	std::ifstream inFile;
 	unsigned int imageSize;
@@ -117,7 +117,7 @@ bool Texture2D::BmpLoader(char* path)
 	return true;
 }
 
-bool Texture2D::TgaLoader(char* path)
+bool Texture2D::TgaLoader(std::string path)
 {
 	std::ifstream inFile;
 	char fileHeader[18];
@@ -192,7 +192,7 @@ void Texture2D::Bind()
 	glBindTexture(GL_TEXTURE_2D, _TextureID);
 }
 
-bool Texture2D::Load(char* path, int width, int height)
+bool Texture2D::Load(std::string path, int width, int height)
 {
 	std::string fileExtension = GetFileExtension(path);
 	

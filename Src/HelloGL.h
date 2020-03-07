@@ -30,8 +30,11 @@ public:
 	void Update(float deltaTime);
 	void OnResize(int height, int width);
 	void InitGL(int argc, char* argv[]);
+	void InitLights();
 	void InitObjects();
 	void LoadTextures();
+	void LoadMeshes();
+	void InitMaterials();
 	void InitShaders();
 
 	InputManager* inputManager;
@@ -46,6 +49,7 @@ private:
 	Mesh* cubeMesh;
 	Mesh* betterCubeMesh;
 	SceneLight* sceneLights[NUM_LIGHTS];
+	Material* basicMaterial;
 
 	Texture2D* penguinTexture;
 	Texture2D* parrotTexture;

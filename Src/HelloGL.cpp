@@ -3,22 +3,19 @@
 #include <iostream>
 #include <string>
 
-//todo
-//Update texture code to take a string instead of char as an input
+//todo ASAP
 //Update mesh to use a vector instead of dynamic array
+//maybe make input manager a static object
+//Figure out if worth using a linked list for list/array of scene objects
+//Sort rendering order for transparent objects
 
-//Todo For lighting:
-//trying setting diffuse, ambient and specular lighting input to fragment shader as varying
 
-//todo after up to date with tutorials:
+//todo whenever
 //Have code actually use the return value of texture load
 //fix repeated vertices problem, so that _vertexCount = tempVertexCount * 3, instead of _vertexCount = tempFaceCount * 3;
 //auto triangulate faces in obj loader if they consist of more than 3 vertices
 //Have obj loader be able to handle files with multiple objects
 //add special keys callback
-//maybe make input manager a static object
-//Figure out if worth using a linked list for list/array of scene objects
-//Sort rendering order for transparent objects
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -28,13 +25,18 @@ HelloGL::HelloGL(int argc, char* argv[])
 	inputManager = new InputManager();
 
 	LoadTextures();
+	LoadMeshes();
+
+	InitLights();
+	InitMaterials();
+
+	InitObjects();
 
 	camera = new Camera;
 	camera->eye = glm::vec3(0.0f, 0.0f, -5.0f);
 	camera->center = glm::vec3(0.0f, 0.0f, 0.0f);
 	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	InitObjects();
 	glutMainLoop();
 }
 
@@ -197,7 +199,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void HelloGL::InitObjects()
+void HelloGL::InitLights()
 {
 	glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float diffuseIntensity = 2.0f;
@@ -213,15 +215,10 @@ void HelloGL::InitObjects()
 	diffuseIntensity = 15.0f;
 	diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	sceneLights[1] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
+}
 
-	cubeMesh = new Mesh("Res/Models/Cube.obj");
-	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
-
-	glm::vec3 materialAmbient = glm::vec3(1.0f, 0.0f, 0.0f);
-	glm::vec3 materialDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 materialSpecular = glm::vec3(0.0f, 0.0f, 1.0f);
-	Material* basicMaterial = new Material(materialAmbient, materialDiffuse, materialSpecular, 2.0f);
-
+void HelloGL::InitObjects()
+{
 	for (int i = 0; i < 50; i++)
 	{
 		sceneObjects[i] = new Cube(lightingShader, inputManager, betterCubeTexture, betterCubeMesh, basicMaterial);
@@ -274,19 +271,34 @@ void HelloGL::InitObjects()
 void HelloGL::LoadTextures()
 {
 	penguinTexture = new Texture2D();
-	penguinTexture->Load((char*)"Res/Textures/penguins.raw", 512, 512);
+	penguinTexture->Load("Res/Textures/penguins.raw", 512, 512);
 
 	parrotTexture = new Texture2D();
-	parrotTexture->Load((char*)"Res/Textures/parrot.bmp");
+	parrotTexture->Load("Res/Textures/parrot.bmp");
 
 	parrotTexture32 = new Texture2D();
-	parrotTexture32->Load((char*)"Res/Textures/parrot32.bmp");
+	parrotTexture32->Load("Res/Textures/parrot32.bmp");
 
 	parrotTextureTGA = new Texture2D();
-	parrotTextureTGA->Load((char*)"Res/Textures/parrot.tga");
+	parrotTextureTGA->Load("Res/Textures/parrot.tga");
 
 	betterCubeTexture = new Texture2D();
-	betterCubeTexture->Load((char*)"Res/Textures/BetterCube32.bmp");
+	betterCubeTexture->Load("Res/Textures/BetterCube32.bmp");
+}
+
+void HelloGL::LoadMeshes()
+{
+	cubeMesh = new Mesh("Res/Models/Cube.obj");
+	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
+}
+
+void HelloGL::InitMaterials()
+{
+	glm::vec3 materialAmbient = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 materialDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 materialSpecular = glm::vec3(0.0f, 0.0f, 1.0f);
+	
+	basicMaterial = new Material(materialAmbient, materialDiffuse, materialSpecular, 2.0f);
 }
 
 void HelloGL::InitShaders()

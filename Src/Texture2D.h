@@ -14,15 +14,15 @@ private:
 	int _width;
 	int _height;
 
-	bool RawLoader(char* path, int width = 0, int height = 0);
-	bool BmpLoader(char* path);
-	bool TgaLoader(char* path);
+	bool RawLoader(std::string path, int width = 0, int height = 0);
+	bool BmpLoader(std::string path);
+	bool TgaLoader(std::string path);
 
 public:
 	Texture2D();
 	~Texture2D();
 	void Bind();
-	bool Load(char* path, int width = 0, int height = 0);
+	bool Load(std::string path, int width = 0, int height = 0);
 
 	GLuint GetID() const { return _TextureID; }
 	int GetWidth() const { return _width; }
