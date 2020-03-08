@@ -110,6 +110,7 @@ bool Texture2D::BmpLoader(std::string path)
 		break;
 	case 32:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
+		_isTransparent = true;
 		break;
 	};
 
@@ -169,6 +170,7 @@ bool Texture2D::TgaLoader(std::string path)
 		break;
 	case 32:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
+		_isTransparent = true;
 		break;
 	};
 
@@ -177,7 +179,7 @@ bool Texture2D::TgaLoader(std::string path)
 }
 
 Texture2D::Texture2D() :
-	_width(0), _height(0), _TextureID(0)
+	_width(0), _height(0), _TextureID(0), _isTransparent(false)
 {
 }
 

@@ -25,7 +25,7 @@ private:
 	static unsigned int indices[];
 
 public:
-	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material);
+	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
 	~Cube();
 	void Render();
 	void Update(float deltaTime);

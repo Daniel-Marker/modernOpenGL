@@ -21,6 +21,9 @@
 //#include "glm/gtc/quaternion.hpp"
 #include "glm/gtx/euler_angles.hpp"
 
+#include <vector>
+#include <algorithm>
+
 class HelloGL
 {
 public:
@@ -53,6 +56,7 @@ private:
 	Texture2D* parrotTexture32;
 	Texture2D* parrotTextureTGA;
 	Texture2D* betterCubeTexture;
+	Texture2D* glassTexture;
 
 	glm::mat4 viewProjMatrix;
 

@@ -5,9 +5,7 @@
 
 //todo ASAP
 //Update mesh to use a vector instead of dynamic array
-//Figure out if worth using a linked list for list/array of scene objects
-//Sort rendering order for transparent objects
-
+//Update sceneLights and sceneObjects arrays to be vectors instead
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -83,8 +81,24 @@ void HelloGL::Display()
 		sceneLights[i]->SetLightUniforms(camera->center, light, lightingShader);
 	}
 
-	for(int i = 0; i < 200; i++)
-		sceneObjects[i]->Render();
+	std::vector<SceneObject*> transparentObjects;
+	for (int i = 0; i < 200; i++)
+	{
+		if(!sceneObjects[i]->GetTransparent())
+			sceneObjects[i]->Render();
+		else 
+			transparentObjects.push_back(sceneObjects[i]);
+		//create a separate list for transparent objects
+	}
+
+	//as < is defined for sceneObjects as whichever object has the smallest distance to the camera, this creates a list of transparent objects from nearest to farthest
+	std::sort(transparentObjects.begin(), transparentObjects.end());
+	//so we need to reverse it before rendering
+	std::reverse(transparentObjects.begin(), transparentObjects.end());
+	for (int i = 0; i < transparentObjects.size(); i++)
+	{
+		transparentObjects[i]->Render();
+	}
 
 	glFlush();
 	glutSwapBuffers();
@@ -215,9 +229,16 @@ void HelloGL::InitLights()
 
 void HelloGL::InitObjects()
 {
-	for (int i = 0; i < 50; i++)
+	sceneObjects[0] = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
+	Transform transform;
+	transform.position = glm::vec3(5.0f, 5.0f, -3.0f);
+	transform.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	transform.scale = glm::vec3(10.0f, 10.0f, 1.0f);
+	sceneObjects[0]->SetTransform(transform);
+
+	for (int i = 1; i < 50; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, betterCubeTexture, betterCubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(lightingShader, betterCubeTexture, betterCubeMesh, basicMaterial, camera);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -229,7 +250,7 @@ void HelloGL::InitObjects()
 	
 	for (int i = 50; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -241,7 +262,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 100; i < 150; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, parrotTexture32, cubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -253,7 +274,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(basicShader, penguinTexture, cubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(basicShader, penguinTexture, cubeMesh, basicMaterial, camera);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -280,6 +301,9 @@ void HelloGL::LoadTextures()
 
 	betterCubeTexture = new Texture2D();
 	betterCubeTexture->Load("Res/Textures/BetterCube32.bmp");
+
+	glassTexture = new Texture2D();
+	glassTexture->Load("Res/Textures/glass.bmp");
 }
 
 void HelloGL::LoadMeshes()
@@ -290,9 +314,9 @@ void HelloGL::LoadMeshes()
 
 void HelloGL::InitMaterials()
 {
-	glm::vec3 materialAmbient = glm::vec3(1.0f, 0.0f, 0.0f);
-	glm::vec3 materialDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 materialSpecular = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 materialAmbient = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 materialDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 materialSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
 	
 	basicMaterial = new Material(materialAmbient, materialDiffuse, materialSpecular, 2.0f);
 }

@@ -20,12 +20,18 @@ protected:
 	Texture2D* _texture;
 	Material* _material;
 
+	Camera* _camera;
+	bool _isTransparent;
+
 public:
-	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material);
+	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);
 	const Transform GetTransform();
 	void SetTransform(Transform transform);
+	bool GetTransparent() { return _isTransparent; };
+
+	bool operator< (const SceneObject& other) const;
 };
 

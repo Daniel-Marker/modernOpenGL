@@ -13,6 +13,7 @@ private:
 	GLuint _TextureID;
 	int _width;
 	int _height;
+	bool _isTransparent;
 
 	bool RawLoader(std::string path, int width = 0, int height = 0);
 	bool BmpLoader(std::string path);
@@ -27,5 +28,7 @@ public:
 	GLuint GetID() const { return _TextureID; }
 	int GetWidth() const { return _width; }
 	int GetHeight() const { return _height; }
+	bool GetTransparent() { return _isTransparent; };
+
 };
 
