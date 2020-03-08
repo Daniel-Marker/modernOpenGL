@@ -1,6 +1,6 @@
 #include "Cube.h"
-Cube::Cube(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh, Material* material) :
-	SceneObject(shader, inputManager, texture, mesh, material)
+Cube::Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material) :
+	SceneObject(shader, texture, mesh, material)
 {
 	_vao = new Vao();
 	_vao->BindVao();
@@ -42,11 +42,11 @@ void Cube::Render()
 
 void Cube::Update(float deltaTime)
 {
-	if (_inputManager->GetKeyDown('z'))
+	if (InputManager::GetKeyDown('z'))
 		_transform.rotation.x += 5.0f * deltaTime;
-	if (_inputManager->GetKeyDown('x'))
+	if (InputManager::GetKeyDown('x'))
 		_transform.rotation.y += 5.0f * deltaTime;
-	if (_inputManager->GetKeyDown('c'))
+	if (InputManager::GetKeyDown('c'))
 		_transform.rotation.z += 5.0f * deltaTime;
 
 

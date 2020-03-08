@@ -5,7 +5,6 @@
 
 //todo ASAP
 //Update mesh to use a vector instead of dynamic array
-//maybe make input manager a static object
 //Figure out if worth using a linked list for list/array of scene objects
 //Sort rendering order for transparent objects
 
@@ -21,9 +20,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 {
 	InitGL(argc, argv);
 	InitShaders();
-
-	inputManager = new InputManager();
-
+	
 	LoadTextures();
 	LoadMeshes();
 
@@ -44,7 +41,6 @@ HelloGL::HelloGL(int argc, char* argv[])
 HelloGL::~HelloGL()
 {
 	delete camera;
-	delete inputManager;
 	delete lightingShader;
 
 	delete penguinTexture;
@@ -99,56 +95,56 @@ void HelloGL::Update(float deltaTime)
 	for(int i = 0; i < 200; i++)
 		sceneObjects[i]->Update(deltaTime);
 
-	if (inputManager->GetKeyDown('8'))
+	if (InputManager::GetKeyDown('8'))
 	{
 		camera->eye.z += 5.0f * deltaTime;
 	}
-	else if (inputManager->GetKeyDown('2'))
+	else if (InputManager::GetKeyDown('2'))
 	{
 		camera->eye.z -= 5.0f * deltaTime;
 	}
 
-	if (inputManager->GetKeyDown('d'))
+	if (InputManager::GetKeyDown('d'))
 	{
 		camera->center.x -= 5.0f * deltaTime;
 		camera->eye.x -= 5.0f * deltaTime;
 	}
 
-	if (inputManager->GetKeyDown('a'))
+	if (InputManager::GetKeyDown('a'))
 	{
 		camera->center.x += 5.0f * deltaTime;
 		camera->eye.x += 5.0f * deltaTime;
 	}
 
-	if (inputManager->GetKeyDown('w'))
+	if (InputManager::GetKeyDown('w'))
 	{
 		camera->center.y += 5.0f * deltaTime;
 		camera->eye.y += 5.0f * deltaTime;
 	}
 
-	if (inputManager->GetKeyDown('s'))
+	if (InputManager::GetKeyDown('s'))
 	{
 		camera->center.y -= 5.0f * deltaTime;
 		camera->eye.y -= 5.0f * deltaTime;
 	}
 
 
-	if (inputManager->GetKeyDown('i'))
+	if (InputManager::GetKeyDown('i'))
 	{
 		for(int i = 0; i < NUM_LIGHTS; i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(0.0f, 5.0f, 0.0f, 0.0f) * deltaTime);
 	}
-	if (inputManager->GetKeyDown('j'))
+	if (InputManager::GetKeyDown('j'))
 	{
 		for (int i = 0; i < NUM_LIGHTS; i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
-	if (inputManager->GetKeyDown('k'))
+	if (InputManager::GetKeyDown('k'))
 	{
 		for (int i = 0; i < NUM_LIGHTS; i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(0.0f, -5.0f, 0.0f, 0.0f) * deltaTime);
 	}
-	if (inputManager->GetKeyDown('l'))
+	if (InputManager::GetKeyDown('l'))
 	{
 		for (int i = 0; i < NUM_LIGHTS; i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
@@ -221,7 +217,7 @@ void HelloGL::InitObjects()
 {
 	for (int i = 0; i < 50; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, inputManager, betterCubeTexture, betterCubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(lightingShader, betterCubeTexture, betterCubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -233,7 +229,7 @@ void HelloGL::InitObjects()
 	
 	for (int i = 50; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture, cubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -245,7 +241,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 100; i < 150; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, inputManager, parrotTexture32, cubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(lightingShader, parrotTexture32, cubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -257,7 +253,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(basicShader, inputManager, penguinTexture, cubeMesh, basicMaterial);
+		sceneObjects[i] = new Cube(basicShader, penguinTexture, cubeMesh, basicMaterial);
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);

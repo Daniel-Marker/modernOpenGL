@@ -12,8 +12,6 @@
 class SceneObject
 {
 protected:
-	InputManager* _inputManager;
-
 	Transform _transform;
 	Mesh* _mesh;
 	
@@ -23,7 +21,7 @@ protected:
 	Material* _material;
 
 public:
-	SceneObject(Shader* shader, InputManager* inputManager, Texture2D* texture, Mesh* mesh, Material* material);
+	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);

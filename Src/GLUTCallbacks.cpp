@@ -1,5 +1,6 @@
 #include "GLUTCallbacks.h"
 #include "HelloGL.h"
+#include "InputManager.h"
 
 #include <iostream>
 
@@ -37,12 +38,12 @@ namespace GLUTCallbacks
 
 	void Keyboard(unsigned char key, int x, int y)
 	{
-		helloGL->inputManager->Keyboard(key, x, y);
+		InputManager::Keyboard(key, x, y);
 	}
 
 	void KeyboardUp(unsigned char key, int x, int y)
 	{
-		helloGL->inputManager->KeyboardUp(key, x, y);
+		InputManager::KeyboardUp(key, x, y);
 	}
 
 	void WindowResize(int height, int width)

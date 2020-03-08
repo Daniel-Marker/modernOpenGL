@@ -37,9 +37,6 @@ public:
 	void InitMaterials();
 	void InitShaders();
 
-	InputManager* inputManager;
-
-
 private:
 	Camera* camera;
 
