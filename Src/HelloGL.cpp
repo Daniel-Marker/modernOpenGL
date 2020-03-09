@@ -5,7 +5,7 @@
 
 //todo ASAP
 //Update mesh to use a vector instead of dynamic array
-//Update sceneLights and sceneObjects arrays to be vectors instead
+//Update lighting code/shader to take in the number of lights as an input, with the max no of lights as the constant
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -47,15 +47,16 @@ HelloGL::~HelloGL()
 	delete parrotTextureTGA;
 	delete betterCubeTexture;
 
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < sceneObjects.size(); i++)
 	{
 		delete sceneObjects[i];
 	}
+	sceneObjects.clear();
 
 	delete cubeMesh;
 	delete betterCubeMesh;
 
-	for (int i = 0; i < NUM_LIGHTS; i++)
+	for (int i = 0; i < sceneLights.size(); i++)
 	{
 		delete sceneLights[i];
 	}
@@ -73,7 +74,7 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
-	for (int i = 0; i < NUM_LIGHTS; i++) 
+	for (int i = 0; i < sceneLights.size(); i++) 
 	{
 		std::string light = "u_Lights[]";
 		light.insert(9, std::to_string(i));
@@ -82,7 +83,7 @@ void HelloGL::Display()
 	}
 
 	std::vector<SceneObject*> transparentObjects;
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < sceneObjects.size(); i++)
 	{
 		if(!sceneObjects[i]->GetTransparent())
 			sceneObjects[i]->Render();
@@ -106,7 +107,7 @@ void HelloGL::Display()
 
 void HelloGL::Update(float deltaTime)
 {
-	for(int i = 0; i < 200; i++)
+	for(int i = 0; i < sceneObjects.size(); i++)
 		sceneObjects[i]->Update(deltaTime);
 
 	if (InputManager::GetKeyDown('8'))
@@ -145,22 +146,22 @@ void HelloGL::Update(float deltaTime)
 
 	if (InputManager::GetKeyDown('i'))
 	{
-		for(int i = 0; i < NUM_LIGHTS; i++)
+		for(int i = 0; i < sceneLights.size(); i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(0.0f, 5.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (InputManager::GetKeyDown('j'))
 	{
-		for (int i = 0; i < NUM_LIGHTS; i++)
+		for (int i = 0; i < sceneLights.size(); i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (InputManager::GetKeyDown('k'))
 	{
-		for (int i = 0; i < NUM_LIGHTS; i++)
+		for (int i = 0; i < sceneLights.size(); i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(0.0f, -5.0f, 0.0f, 0.0f) * deltaTime);
 	}
 	if (InputManager::GetKeyDown('l'))
 	{
-		for (int i = 0; i < NUM_LIGHTS; i++)
+		for (int i = 0; i < sceneLights.size(); i++)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 
@@ -211,6 +212,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitLights()
 {
+	sceneLights.reserve(NUM_LIGHTS);
+
 	glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float diffuseIntensity = 2.0f;
 	glm::vec3 ambientColor = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -219,17 +222,17 @@ void HelloGL::InitLights()
 	float specularIntensity = 1.0f;
 
 	glm::vec4 position = glm::vec4(-20.0f, 0.0f, -5.0f, 1.0f);
-	sceneLights[0] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
+	sceneLights.push_back(new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity));
 
 	position = glm::vec4(-10.0f, 20.0f, -5.0f, 1.0f);
 	diffuseIntensity = 15.0f;
 	diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	sceneLights[1] = new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity);
+	sceneLights.push_back(new SceneLight(position, diffuseColor, diffuseIntensity, ambientColor, ambientIntensity, specularColor, specularIntensity));
 }
 
 void HelloGL::InitObjects()
 {
-	sceneObjects[0] = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
+	sceneObjects.push_back(new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera));
 	Transform transform;
 	transform.position = glm::vec3(5.0f, 5.0f, -3.0f);
 	transform.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -238,7 +241,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 1; i < 50; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, betterCubeTexture, betterCubeMesh, basicMaterial, camera);
+		sceneObjects.push_back(new Cube(lightingShader, betterCubeTexture, betterCubeMesh, basicMaterial, camera));
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -250,7 +253,7 @@ void HelloGL::InitObjects()
 	
 	for (int i = 50; i < 100; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
+		sceneObjects.push_back(new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera));
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -262,7 +265,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 100; i < 150; i++)
 	{
-		sceneObjects[i] = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
+		sceneObjects.push_back(new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera));
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
@@ -274,7 +277,7 @@ void HelloGL::InitObjects()
 
 	for (int i = 150; i < 200; i++)
 	{
-		sceneObjects[i] = new Cube(basicShader, penguinTexture, cubeMesh, basicMaterial, camera);
+		sceneObjects.push_back(new Cube(basicShader, penguinTexture, cubeMesh, basicMaterial, camera));
 
 		Transform transform;
 		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);

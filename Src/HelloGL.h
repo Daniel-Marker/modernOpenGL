@@ -42,13 +42,12 @@ public:
 
 private:
 	Camera* camera;
-
-	SceneObject* sceneObjects[200];
+	std::vector<SceneObject*> sceneObjects;
 	Shader* lightingShader;
 	Shader* basicShader;
 	Mesh* cubeMesh;
 	Mesh* betterCubeMesh;
-	SceneLight* sceneLights[NUM_LIGHTS];
+	std::vector<SceneLight*> sceneLights;
 	Material* basicMaterial;
 
 	Texture2D* penguinTexture;
