@@ -17,7 +17,7 @@ struct LightData
     vec3 SpecularColor;
     float SpecularIntensity;
 };
-#define NUM_LIGHTS 2
+#define MAX_LIGHTS 2
 
 struct Material
 {
@@ -33,7 +33,8 @@ uniform mat4 u_Proj;
 uniform mat4 u_Transform;
 
 uniform vec3 u_CameraPos;
-uniform LightData[NUM_LIGHTS] u_Lights;
+uniform LightData[MAX_LIGHTS] u_Lights;
+uniform int u_NumLights;
 
 out vec2 vs_textureCoord;
 out vec3 vs_DiffuseLight;
@@ -49,7 +50,7 @@ void main()
     vs_AmbientLight  = vec3(0.0f, 0.0f, 0.0f);
     vs_SpecularLight = vec3(0.0f, 0.0f, 0.0f);
     
-    for(int i = 0; i < NUM_LIGHTS; i++)
+    for(int i = 0; i < u_NumLights; i++)
     {
         vec3 LightPos = u_Lights[i].LightPos.xyz;
 

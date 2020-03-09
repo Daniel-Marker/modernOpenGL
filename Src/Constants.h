@@ -8,4 +8,4 @@ const float cFOV = 45.0f;
 const float cNearClippingPlaneDist = 0.1f;
 const float cFarClippingPlaneDist = 1000.0f;
 
-#define NUM_LIGHTS 2
+#define MAX_LIGHTS 2

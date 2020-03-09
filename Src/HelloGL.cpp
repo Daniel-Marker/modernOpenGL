@@ -5,7 +5,6 @@
 
 //todo ASAP
 //Update mesh to use a vector instead of dynamic array
-//Update lighting code/shader to take in the number of lights as an input, with the max no of lights as the constant
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -81,6 +80,9 @@ void HelloGL::Display()
 
 		sceneLights[i]->SetLightUniforms(camera->center, light, lightingShader);
 	}
+	lightingShader->SetUniformInt(sceneLights.size(), "u_NumLights");
+	if (sceneLights.size() > MAX_LIGHTS)
+		std::cerr << "Warning: there are more lights that the maximum number allowed" << std::endl;
 
 	std::vector<SceneObject*> transparentObjects;
 	for (int i = 0; i < sceneObjects.size(); i++)
@@ -212,7 +214,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitLights()
 {
-	sceneLights.reserve(NUM_LIGHTS);
+	sceneLights.reserve(MAX_LIGHTS);
 
 	glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float diffuseIntensity = 2.0f;
