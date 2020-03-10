@@ -11,6 +11,10 @@
 #include "Mesh.h"
 #include "Material.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/euler_angles.hpp"
+
 class SceneObject
 {
 protected:
@@ -26,11 +30,12 @@ protected:
 	bool _isTransparent;
 
 	std::vector<SceneObject*> _children;
+	glm::mat4 _worldTransform;
 
 public:
 	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
 	virtual ~SceneObject();
-	virtual void Render(glm::mat4& worldTransform);
+	virtual void Render();
 	virtual void Update(float deltaTime);
 	const Transform GetTransform();
 	void SetTransform(Transform transform);
@@ -38,6 +43,8 @@ public:
 	void AddChild(SceneObject* child);
 	void DeleteChild(int index);
 	std::vector<SceneObject*> const GetChildren();
+	void GetAllObjects(std::vector<SceneObject*>& transparentObjects, std::vector<SceneObject*>& opaqueObjects);
+	void SetChildrenWorldTransform(glm::mat4& worldTransform);
 
 	bool operator< (const SceneObject& other) const;
 };

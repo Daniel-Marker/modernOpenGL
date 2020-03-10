@@ -4,7 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Get transparent object rendering working with scene graphs
+
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -84,27 +84,25 @@ void HelloGL::Display()
 	if (sceneLights.size() > MAX_LIGHTS)
 		std::cerr << "Warning: there are more lights that the maximum number allowed" << std::endl;
 
-	//std::vector<SceneObject*> transparentObjects;
-	//for (int i = 0; i < sceneObjects.size(); i++)
-	//{
-	//	if(!sceneObjects[i]->GetTransparent())
-	//		sceneObjects[i]->Render();
-	//	else 
-	//		transparentObjects.push_back(sceneObjects[i]);
-	//	//create a separate list for transparent objects
-	//}
 
-	////as < is defined for sceneObjects as whichever object has the smallest distance to the camera, this creates a list of transparent objects from nearest to farthest
-	//std::sort(transparentObjects.begin(), transparentObjects.end());
-	////so we need to reverse it before rendering
-	//std::reverse(transparentObjects.begin(), transparentObjects.end());
-	//for (int i = 0; i < transparentObjects.size(); i++)
-	//{
-	//	transparentObjects[i]->Render();
-	//}
+	std::vector<SceneObject*> transparentObjects;
+	std::vector<SceneObject*> opaqueObjects;
 	glm::mat4 worldTransform(1.0f);
 	for (int i = 0; i < sceneObjects.size(); i++)
-		sceneObjects[i]->Render(worldTransform);
+	{
+		sceneObjects[i]->GetAllObjects(transparentObjects, opaqueObjects);
+		sceneObjects[i]->SetChildrenWorldTransform(worldTransform);
+	}
+
+	for (int i = 0; i < opaqueObjects.size(); i++)
+		opaqueObjects[i]->Render();
+
+	//as < is defined for sceneObjects as whichever object has the smallest distance to the camera, this creates a list of transparent objects from nearest to farthest
+	std::sort(transparentObjects.begin(), transparentObjects.end());
+	//so we need to reverse it before rendering
+	std::reverse(transparentObjects.begin(), transparentObjects.end());
+	for (int i = 0; i < transparentObjects.size(); i++)
+		transparentObjects[i]->Render();
 
 	glFlush();
 	glutSwapBuffers();
@@ -302,9 +300,9 @@ void HelloGL::InitObjects()
 	Transform transform;
 
 	cube1 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube2 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube3 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube4 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube2 = new Cube(basicShader, glassTexture, cubeMesh, basicMaterial, camera);
+	cube3 = new Cube(basicShader, glassTexture, cubeMesh, basicMaterial, camera);
+	cube4 = new Cube(basicShader, glassTexture, cubeMesh, basicMaterial, camera);
 	cube5 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
 	cube6 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
 	cube7 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
