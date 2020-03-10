@@ -4,7 +4,8 @@
 #include <string>
 
 //todo ASAP
-//Update mesh to use a vector instead of dynamic array
+//Add a delete child method to sceneobject (Need a unique way of identifying children)
+//Get transparent object rendering working with scene graphs
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -84,24 +85,27 @@ void HelloGL::Display()
 	if (sceneLights.size() > MAX_LIGHTS)
 		std::cerr << "Warning: there are more lights that the maximum number allowed" << std::endl;
 
-	std::vector<SceneObject*> transparentObjects;
-	for (int i = 0; i < sceneObjects.size(); i++)
-	{
-		if(!sceneObjects[i]->GetTransparent())
-			sceneObjects[i]->Render();
-		else 
-			transparentObjects.push_back(sceneObjects[i]);
-		//create a separate list for transparent objects
-	}
+	//std::vector<SceneObject*> transparentObjects;
+	//for (int i = 0; i < sceneObjects.size(); i++)
+	//{
+	//	if(!sceneObjects[i]->GetTransparent())
+	//		sceneObjects[i]->Render();
+	//	else 
+	//		transparentObjects.push_back(sceneObjects[i]);
+	//	//create a separate list for transparent objects
+	//}
 
-	//as < is defined for sceneObjects as whichever object has the smallest distance to the camera, this creates a list of transparent objects from nearest to farthest
-	std::sort(transparentObjects.begin(), transparentObjects.end());
-	//so we need to reverse it before rendering
-	std::reverse(transparentObjects.begin(), transparentObjects.end());
-	for (int i = 0; i < transparentObjects.size(); i++)
-	{
-		transparentObjects[i]->Render();
-	}
+	////as < is defined for sceneObjects as whichever object has the smallest distance to the camera, this creates a list of transparent objects from nearest to farthest
+	//std::sort(transparentObjects.begin(), transparentObjects.end());
+	////so we need to reverse it before rendering
+	//std::reverse(transparentObjects.begin(), transparentObjects.end());
+	//for (int i = 0; i < transparentObjects.size(); i++)
+	//{
+	//	transparentObjects[i]->Render();
+	//}
+	glm::mat4 worldTransform(1.0f);
+	for (int i = 0; i < sceneObjects.size(); i++)
+		sceneObjects[i]->Render(worldTransform);
 
 	glFlush();
 	glutSwapBuffers();
@@ -234,7 +238,7 @@ void HelloGL::InitLights()
 
 void HelloGL::InitObjects()
 {
-	sceneObjects.push_back(new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera));
+	/*sceneObjects.push_back(new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera));
 	Transform transform;
 	transform.position = glm::vec3(5.0f, 5.0f, -3.0f);
 	transform.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -287,7 +291,57 @@ void HelloGL::InitObjects()
 		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		sceneObjects[i]->SetTransform(transform);
-	}
+	}*/
+
+	Cube* cube1;
+	Cube* cube2;
+	Cube* cube3;
+	Cube* cube4;
+	Cube* cube5;
+	Cube* cube6;
+	Cube* cube7;
+	Transform transform;
+
+	cube1 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube2 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube3 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube4 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube5 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube6 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube7 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	
+	sceneObjects.push_back(cube1);
+	cube1->AddChild(cube2);
+	cube1->AddChild(cube3);
+	cube3->AddChild(cube4);
+
+	sceneObjects.push_back(cube5);
+	sceneObjects.push_back(cube6);
+	cube6->AddChild(cube7);
+
+	transform.position = glm::vec3(5.0f, 0.0f, 0.0f);
+	transform.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	cube1->SetTransform(transform);
+	
+	transform.position = glm::vec3(0.0f, 5.0f, 0.0f);
+	cube2->SetTransform(transform);
+	
+	transform.position = glm::vec3(0.0f, -5.0f, 0.0f);
+	cube3->SetTransform(transform);
+	
+	transform.position = glm::vec3(2.0f, 0.0f, 0.0f);
+	cube4->SetTransform(transform);
+	
+	transform.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+	cube5->SetTransform(transform);
+	
+	transform.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+	cube6->SetTransform(transform);
+	
+	transform.position = glm::vec3(-3.0f, -3.0f, 0.0f);
+	cube7->SetTransform(transform);
 }
 
 void HelloGL::LoadTextures()

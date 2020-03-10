@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Structures.h"
 #include "InputManager.h"
 
@@ -23,14 +25,18 @@ protected:
 	Camera* _camera;
 	bool _isTransparent;
 
+	std::vector<SceneObject*> _children;
+
 public:
 	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
 	virtual ~SceneObject();
-	virtual void Render();
+	virtual void Render(glm::mat4& worldTransform);
 	virtual void Update(float deltaTime);
 	const Transform GetTransform();
 	void SetTransform(Transform transform);
 	bool GetTransparent() { return _isTransparent; };
+	void AddChild(SceneObject* child);
+	std::vector<SceneObject*> const GetChildren();
 
 	bool operator< (const SceneObject& other) const;
 };

@@ -27,7 +27,7 @@ private:
 public:
 	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
 	~Cube();
-	void Render();
+	void Render(glm::mat4& worldTransform);
 	void Update(float deltaTime);
 };
 

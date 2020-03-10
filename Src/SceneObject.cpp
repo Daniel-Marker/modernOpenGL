@@ -12,14 +12,26 @@ SceneObject::SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Materia
 
 SceneObject::~SceneObject()
 {
+	for (int i = 0; i < _children.size(); i++)
+		delete _children[i];
+
+	_children.clear();
 }
 
-void SceneObject::Render()
+void SceneObject::Render(glm::mat4& worldTransform)
 {
+	for (int i = 0; i < _children.size(); i++)
+	{
+		_children[i]->Render(worldTransform);
+	}
 }
 
 void SceneObject::Update(float deltaTime)
 {
+	for (int i = 0; i < _children.size(); i++)
+	{
+		_children[i]->Update(deltaTime);
+	}
 }
 
 const Transform SceneObject::GetTransform()
@@ -30,6 +42,16 @@ const Transform SceneObject::GetTransform()
 void SceneObject::SetTransform(Transform transform)
 {
 	_transform = transform;
+}
+
+void SceneObject::AddChild(SceneObject* child)
+{
+	_children.push_back(child);
+}
+
+std::vector<SceneObject*> const SceneObject::GetChildren()
+{
+	return _children;
 }
 
 bool SceneObject::operator<(const SceneObject& other) const

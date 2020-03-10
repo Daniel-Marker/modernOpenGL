@@ -25,19 +25,22 @@ Cube::~Cube()
 	delete _vao;
 }
 
-void Cube::Render()
+void Cube::Render(glm::mat4& worldTransform)
 {
 	//set uniforms
 	glm::mat4 transformMatrix =
 		glm::translate(glm::mat4(1.0f), _transform.position) *
 		glm::eulerAngleXYZ(_transform.rotation.x, _transform.rotation.y, _transform.rotation.z) *
 		glm::scale(glm::mat4(1.0f), _transform.scale);
+	transformMatrix = worldTransform * transformMatrix;
 	_shader->SetUniformMatrix(transformMatrix, "u_Transform");
 
 	_material->SetMaterialUniforms(_shader);
 
 	Renderer renderer;
 	renderer.Render(_vao, _shader, _texture);
+
+	SceneObject::Render(transformMatrix);
 }
 
 void Cube::Update(float deltaTime)
@@ -50,8 +53,5 @@ void Cube::Update(float deltaTime)
 		_transform.rotation.z += 5.0f * deltaTime;
 
 
-	//if (_inputManager->GetKeyDown('j'))
-	//	_transform.scale.x -= 0.5f * deltaTime;
-	//if (_inputManager->GetKeyDown('k'))
-	//	_transform.scale.x += 0.5f * deltaTime;
+	SceneObject::Update(deltaTime);
 }
