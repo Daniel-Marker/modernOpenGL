@@ -49,6 +49,12 @@ void SceneObject::AddChild(SceneObject* child)
 	_children.push_back(child);
 }
 
+void SceneObject::DeleteChild(int index)
+{
+	if(_children.size() > index)
+		_children.erase(_children.begin() + index);
+}
+
 std::vector<SceneObject*> const SceneObject::GetChildren()
 {
 	return _children;

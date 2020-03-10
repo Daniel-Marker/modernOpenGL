@@ -4,7 +4,6 @@
 #include <string>
 
 //todo ASAP
-//Add a delete child method to sceneobject (Need a unique way of identifying children)
 //Get transparent object rendering working with scene graphs
 
 //todo whenever

@@ -36,6 +36,7 @@ public:
 	void SetTransform(Transform transform);
 	bool GetTransparent() { return _isTransparent; };
 	void AddChild(SceneObject* child);
+	void DeleteChild(int index);
 	std::vector<SceneObject*> const GetChildren();
 
 	bool operator< (const SceneObject& other) const;
