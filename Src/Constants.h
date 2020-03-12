@@ -7,5 +7,9 @@ const int cInitWindowPositionY = 0;
 const float cFOV = 45.0f;
 const float cNearClippingPlaneDist = 0.1f;
 const float cFarClippingPlaneDist = 1000.0f;
+const float cCameraMoveSpeed = 5.0f;
+const float cCameraMax = 45.0f;
+const float cCameraMin = -45.0f;
+const float cMouseSensitivity = 1.0f;
 
 #define MAX_LIGHTS 2

@@ -83,8 +83,8 @@ void SceneObject::SetChildrenWorldTransform(glm::mat4& worldTransform)
 
 bool SceneObject::operator<(const SceneObject& other) const
 {
-	float distToCamera = glm::distance(_transform.position, _camera->center);
-	float distFromOtherToCamera = glm::distance(other._transform.position, _camera->center);
+	float distToCamera = glm::distance(_transform.position, _camera->direction);
+	float distFromOtherToCamera = glm::distance(other._transform.position, _camera->direction);
 
 	return distToCamera < distFromOtherToCamera;
 }

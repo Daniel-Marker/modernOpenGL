@@ -4,9 +4,11 @@
 #include <string>
 
 //todo ASAP
-//Check with Luke if method used for scenegraph would be worth full marks
-//Mouse controls
+//Clean up mouse movement function
+//Fix bug where initial camera rotation is overwritten at the start of the program
+
 //Text rendering
+//Use https://learnopengl.com/In-Practice/Text-Rendering to convert font into bitmap and then figure out from there
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -29,9 +31,10 @@ HelloGL::HelloGL(int argc, char* argv[])
 	InitObjects();
 
 	camera = new Camera;
-	camera->eye = glm::vec3(0.0f, 0.0f, -5.0f);
-	camera->center = glm::vec3(0.0f, 0.0f, 0.0f);
+	camera->position = glm::vec3(0.0f, 0.0f, 5.0f);
+	camera->direction = glm::vec3(0.0f, 0.0f, -1.0f);
 	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
+	camera->rotation = glm::vec2(0.0f, 0.0f);
 
 	glutMainLoop();
 }
@@ -67,7 +70,7 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 viewMatrix = glm::lookAt(camera->eye, camera->center, camera->up);
+	glm::mat4 viewMatrix = glm::lookAt(camera->position, camera->position + camera->direction, camera->up);
 	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
 	lightingShader->SetUniformMatrix(viewMatrix, "u_View");
 	lightingShader->SetUniformMatrix(projMatrix, "u_Proj");
@@ -80,7 +83,7 @@ void HelloGL::Display()
 		std::string light = "u_Lights[]";
 		light.insert(9, std::to_string(i));
 
-		sceneLights[i]->SetLightUniforms(camera->center, light, lightingShader);
+		sceneLights[i]->SetLightUniforms(camera->position, light, lightingShader);
 	}
 	lightingShader->SetUniformInt(sceneLights.size(), "u_NumLights");
 	if (sceneLights.size() > MAX_LIGHTS)
@@ -115,39 +118,27 @@ void HelloGL::Update(float deltaTime)
 	for(int i = 0; i < sceneObjects.size(); i++)
 		sceneObjects[i]->Update(deltaTime);
 
-	if (InputManager::GetKeyDown('8'))
-	{
-		camera->eye.z += 5.0f * deltaTime;
-	}
-	else if (InputManager::GetKeyDown('2'))
-	{
-		camera->eye.z -= 5.0f * deltaTime;
-	}
+	glm::vec3 cameraRight = glm::normalize(glm::cross(camera->direction, camera->up));
 
 	if (InputManager::GetKeyDown('d'))
 	{
-		camera->center.x -= 5.0f * deltaTime;
-		camera->eye.x -= 5.0f * deltaTime;
+		camera->position += cCameraMoveSpeed * deltaTime * cameraRight;
 	}
 
 	if (InputManager::GetKeyDown('a'))
 	{
-		camera->center.x += 5.0f * deltaTime;
-		camera->eye.x += 5.0f * deltaTime;
+		camera->position -= cCameraMoveSpeed * deltaTime * cameraRight;
 	}
 
 	if (InputManager::GetKeyDown('w'))
 	{
-		camera->center.y += 5.0f * deltaTime;
-		camera->eye.y += 5.0f * deltaTime;
+		camera->position += cCameraMoveSpeed * deltaTime * camera->direction;
 	}
 
 	if (InputManager::GetKeyDown('s'))
 	{
-		camera->center.y -= 5.0f * deltaTime;
-		camera->eye.y -= 5.0f * deltaTime;
+		camera->position -= cCameraMoveSpeed * deltaTime * camera->direction;
 	}
-
 
 	if (InputManager::GetKeyDown('i'))
 	{
@@ -173,11 +164,18 @@ void HelloGL::Update(float deltaTime)
 
 	int deltaX, deltaY;
 	InputManager::GetMouseMovement(deltaX, deltaY);
-	//std::cout << "Delta x: " << deltaX << std::endl;
-	//std::cout << "Delta y: " << deltaY << std::endl;
-	//camera->eye.x += 0.005f * deltaX;
-	camera->center.x -= 0.0025f * deltaX;
-	camera->center.y -= 0.0025f * deltaY;
+	camera->rotation.x += cMouseSensitivity * deltaX * deltaTime;
+	camera->rotation.y -= cMouseSensitivity * deltaY * deltaTime;
+
+	if (camera->rotation.y > cCameraMax)
+		camera->rotation.y = cCameraMax;
+	if (camera->rotation.y < cCameraMin)
+		camera->rotation.y = cCameraMin;
+
+	camera->direction.x = cos(glm::radians(camera->rotation.x)) * cos(glm::radians(camera->rotation.y));
+	camera->direction.y = sin(glm::radians(camera->rotation.y));
+	camera->direction.z = sin(glm::radians(camera->rotation.x)) * cos(glm::radians(camera->rotation.y));
+	camera->direction = glm::normalize(camera->direction);
 
 	glutPostRedisplay();
 }
