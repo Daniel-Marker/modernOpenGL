@@ -4,7 +4,9 @@
 #include <string>
 
 //todo ASAP
-
+//Check with Luke if method used for scenegraph would be worth full marks
+//Mouse controls
+//Text rendering
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -168,6 +170,15 @@ void HelloGL::Update(float deltaTime)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 
+
+	int deltaX, deltaY;
+	InputManager::GetMouseMovement(deltaX, deltaY);
+	//std::cout << "Delta x: " << deltaX << std::endl;
+	//std::cout << "Delta y: " << deltaY << std::endl;
+	//camera->eye.x += 0.005f * deltaX;
+	camera->center.x -= 0.0025f * deltaX;
+	camera->center.y -= 0.0025f * deltaY;
+
 	glutPostRedisplay();
 }
 
@@ -203,6 +214,9 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 	glutReshapeFunc(GLUTCallbacks::WindowResize);
+	glutMotionFunc(GLUTCallbacks::MotionFunc);
+	glutPassiveMotionFunc(GLUTCallbacks::PassiveMotionFunc);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -299,13 +313,13 @@ void HelloGL::InitObjects()
 	Cube* cube7;
 	Transform transform;
 
-	cube1 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube2 = new Cube(basicShader, glassTexture, cubeMesh, basicMaterial, camera);
-	cube3 = new Cube(basicShader, glassTexture, cubeMesh, basicMaterial, camera);
-	cube4 = new Cube(basicShader, glassTexture, cubeMesh, basicMaterial, camera);
-	cube5 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube6 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube7 = new Cube(basicShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube1 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube2 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
+	cube3 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
+	cube4 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
+	cube5 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube6 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube7 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
 	
 	sceneObjects.push_back(cube1);
 	cube1->AddChild(cube2);

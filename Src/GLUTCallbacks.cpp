@@ -50,4 +50,14 @@ namespace GLUTCallbacks
 	{
 		helloGL->OnResize(width, height);
 	}
+
+	void MotionFunc(int x, int y)
+	{
+		InputManager::MouseMovement(x, y);
+	}
+
+	void PassiveMotionFunc(int x, int y)
+	{
+		InputManager::MouseMovement(x, y);
+	}
 }
