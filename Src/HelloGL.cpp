@@ -5,7 +5,7 @@
 
 //todo ASAP
 //Text rendering
-//Use https://learnopengl.com/In-Practice/Text-Rendering to convert font into bitmap and then figure out from there
+//Get text position to be in coordinate space (0->screenWidth) instead of (-1->1)
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -32,6 +32,8 @@ HelloGL::HelloGL(int argc, char* argv[])
 	camera->direction = glm::vec3(0.0f, 0.0f, -1.0f);
 	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
 	camera->rotation = glm::vec2(0.0f, 0.0f);
+
+	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
 
 	glutMainLoop();
 }
@@ -105,6 +107,8 @@ void HelloGL::Display()
 	std::reverse(transparentObjects.begin(), transparentObjects.end());
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
+
+	font->OutputString("", glm::vec2(1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec2(0.5f, 0.5f));
 
 	glFlush();
 	glutSwapBuffers();
@@ -392,4 +396,5 @@ void HelloGL::InitShaders()
 {
 	lightingShader = new Shader("Res/Shaders/VertLighting.vert", "Res/Shaders/FragLighting.frag");
 	basicShader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
+	textShader = new Shader("Res/Shaders/UI vertex.vert", "Res/Shaders/UI frag.frag");
 }

@@ -72,6 +72,9 @@
     <ClCompile Include="Src\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\extern\glm\detail\_features.hpp">
@@ -854,6 +857,9 @@
     <ClInclude Include="Src\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\Shaders\FragBasic.frag">
@@ -1266,5 +1272,7 @@
     </None>
     <None Include="Res\Shaders\FragLighting.frag" />
     <None Include="Res\Shaders\VertLighting.vert" />
+    <None Include="Res\Shaders\UI frag.frag" />
+    <None Include="Res\Shaders\UI vertex.vert" />
   </ItemGroup>
 </Project>

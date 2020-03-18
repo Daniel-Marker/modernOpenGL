@@ -20,7 +20,9 @@ public:
 	~Vao();
 
 	void CreateIndexBuffer(Mesh* mesh);
+	void CreateIndexBuffer(void* indexData, int size);
 	void CreateVertexBuffer(Mesh* mesh, BufferLayout layout);
+	void CreateVertexBuffer(void* vertexData, int size, BufferLayout layout);
 
 	Buffer* const GetIndexBuffer(){ return _indexBuffer; };
 

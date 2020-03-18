@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Font.cpp" />
     <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\SceneLight.cpp" />
     <ClCompile Include="Src\Common.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Font.h" />
     <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\SceneLight.h" />
     <ClInclude Include="Src\Mesh.h" />
@@ -546,6 +548,8 @@
     <None Include="Include\extern\glm\gtx\wrap.inl" />
     <None Include="Res\Shaders\FragBasic.frag" />
     <None Include="Res\Shaders\FragLighting.frag" />
+    <None Include="Res\Shaders\UI frag.frag" />
+    <None Include="Res\Shaders\UI vertex.vert" />
     <None Include="Res\Shaders\VertexBasic.vert" />
     <None Include="Res\Shaders\VertLighting.vert" />
   </ItemGroup>

@@ -15,6 +15,7 @@
 #include "Mesh.h"
 #include "SceneLight.h"
 #include "Material.h"
+#include "Font.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -46,8 +47,11 @@ public:
 private:
 	Camera* camera;
 	std::vector<SceneObject*> sceneObjects;
+
 	Shader* lightingShader;
 	Shader* basicShader;
+	Shader* textShader;
+
 	Mesh* cubeMesh;
 	Mesh* betterCubeMesh;
 	std::vector<SceneLight*> sceneLights;
@@ -59,6 +63,8 @@ private:
 	Texture2D* parrotTextureTGA;
 	Texture2D* betterCubeTexture;
 	Texture2D* glassTexture;
+
+	Font* font;
 
 	glm::mat4 viewProjMatrix;
 
