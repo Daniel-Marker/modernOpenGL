@@ -4,8 +4,6 @@
 #include <string>
 
 //todo ASAP
-//Fix bug where initial camera rotation is overwritten at the start of the program
-
 //Text rendering
 //Use https://learnopengl.com/In-Practice/Text-Rendering to convert font into bitmap and then figure out from there
 
@@ -211,6 +209,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutKeyboardUpFunc(GLUTCallbacks::KeyboardUp);
 	glutReshapeFunc(GLUTCallbacks::WindowResize);
+
+	glutWarpPointer(windowWidth / 2, windowHeight / 2);
 	glutMotionFunc(GLUTCallbacks::MotionFunc);
 	glutPassiveMotionFunc(GLUTCallbacks::PassiveMotionFunc);
 	glutSetCursor(GLUT_CURSOR_NONE);
