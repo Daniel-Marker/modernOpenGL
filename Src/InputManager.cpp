@@ -6,8 +6,6 @@ namespace InputManager
 	namespace 
 	{
 		key_state keyarr[128] = { NOT_PUSHED };
-		int oldX = 0;
-		int oldY = 0;
 
 		int _deltaX = 0;
 		int _deltaY = 0;
@@ -33,15 +31,12 @@ namespace InputManager
 			keyarr[(int)key] = NOT_PUSHED;
 	}
 
-	void MouseMovement(int x, int y)
+	void MouseMovement(int x, int y, int width, int height)
 	{
-		_deltaX = x - oldX;
-		_deltaY = y - oldY;
+		_deltaX = x - width/2;
+		_deltaY = y - height/2;
 
-		oldX = 1920/2;
-		oldY = 1080/2;
-
-		glutWarpPointer(1920 / 2, 1080 / 2);
+		glutWarpPointer(width / 2, height / 2);
 	}
 
 	bool GetKeyDown(unsigned char key)

@@ -40,6 +40,9 @@ public:
 	void InitMaterials();
 	void InitShaders();
 
+	int GetWidth() { return windowWidth; };
+	int GetHeight() { return windowHeight; };
+
 private:
 	Camera* camera;
 	std::vector<SceneObject*> sceneObjects;

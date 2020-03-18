@@ -4,7 +4,6 @@
 #include <string>
 
 //todo ASAP
-//Clean up mouse movement function
 //Fix bug where initial camera rotation is overwritten at the start of the program
 
 //Text rendering

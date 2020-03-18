@@ -53,11 +53,11 @@ namespace GLUTCallbacks
 
 	void MotionFunc(int x, int y)
 	{
-		InputManager::MouseMovement(x, y);
+		InputManager::MouseMovement(x, y, helloGL->GetWidth(), helloGL->GetHeight());
 	}
 
 	void PassiveMotionFunc(int x, int y)
 	{
-		InputManager::MouseMovement(x, y);
+		InputManager::MouseMovement(x, y, helloGL->GetWidth(), helloGL->GetHeight());
 	}
 }
