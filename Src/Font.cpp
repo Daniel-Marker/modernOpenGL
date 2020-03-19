@@ -42,37 +42,30 @@ Font::Font(std::string fontPath, int characterHeight, int characterWidth, char f
 	_vao->CreateIndexBuffer(indices, sizeof(indices));
 }
 
-void Font::OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, glm::vec2 windowSize)
+void Font::OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, float rightCoord, float topCoord)
 {
 	//set uniforms
-	glm::mat4 transformMatrix =
+	glm::mat4 scaleRotateMatrix =
 		glm::eulerAngleXYZ(0.0f, 0.0f, rotation) *
-		glm::scale(glm::mat4(1.0f), glm::vec3(scale.x * 0.5f, scale.y * 0.5f, 1.0f));
+		glm::scale(glm::mat4(1.0f), glm::vec3(scale.x * 0.5f * rightCoord, scale.y * 0.5f * topCoord, 1.0f));
 
-	_shader->SetUniformMatrix(transformMatrix, "u_Transform");
+	_shader->SetUniformMatrix(scaleRotateMatrix, "u_Transform");
 
 	int charactersPerLine = _sourceFont->GetWidth() / _characterWidth;
+	float uvCharacterWidth = (float)_characterWidth / (float)_sourceFont->GetWidth();
+	float uvCharacterHeight = (float)_characterHeight / (float)_sourceFont->GetHeight();
+	float spacing = (cTextSpacingMultiplier * scale.x) * uvCharacterWidth;
 	Renderer renderer;
 
 	for (int i = 0; i < output.size(); i++)
 	{
+		float bottomCoord, topCoord, leftCoord, rightCoord;
 		char currentChar = output[i];
 
-		float bottomCoord;
-		float topCoord;
-		float leftCoord;
-		float rightCoord;
-
-		float spacing = (500.0f * scale.x) *(float)_characterWidth / (float)_sourceFont->GetWidth();
-
-		bottomCoord = (currentChar - _firstCharacter) / charactersPerLine;
-		bottomCoord = (bottomCoord * (float)_characterHeight) / (float)_sourceFont->GetHeight();
-		topCoord = bottomCoord + (float)_characterHeight / (float)_sourceFont->GetHeight() - 1/50.0f;
-
-
-		leftCoord = (currentChar - _firstCharacter) % charactersPerLine;
-		leftCoord = (leftCoord * (float)_characterWidth) / (float)_sourceFont->GetWidth();
-		rightCoord = leftCoord + (float)_characterHeight / (float)_sourceFont->GetWidth() - 1/50.0f;
+		bottomCoord = (currentChar - _firstCharacter) / charactersPerLine * uvCharacterHeight;
+		topCoord = bottomCoord + uvCharacterHeight - cTextUVOffset;
+		leftCoord = (currentChar - _firstCharacter) % charactersPerLine * uvCharacterWidth;
+		rightCoord = leftCoord + uvCharacterWidth - cTextUVOffset;
 
 		float newUVCoords[8] =
 		{	
@@ -85,7 +78,7 @@ void Font::OutputString(std::string output, glm::vec2 position, float rotation, 
 		_vao->UpdateVertexBuffer(4 * 2 * sizeof(float), 4 * 2 * sizeof(float), &newUVCoords);
 
 		glm::mat4 newTransformMatrix =
-			glm::translate(glm::mat4(1.0f), glm::vec3(position.x + (rightCoord - leftCoord) * i * spacing, position.y, 0.0f)) * transformMatrix;
+			glm::translate(glm::mat4(1.0f), glm::vec3(position.x + (rightCoord - leftCoord) * i * spacing, position.y, 0.0f)) * scaleRotateMatrix;
 
 		_shader->SetUniformMatrix(newTransformMatrix, "u_Transform");
 

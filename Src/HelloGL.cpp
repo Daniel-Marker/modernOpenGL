@@ -4,7 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Remove constants in font code and clean up font code
+
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -12,6 +12,7 @@
 //auto triangulate faces in obj loader if they consist of more than 3 vertices
 //Have obj loader be able to handle files with multiple objects
 //add special keys callback
+//Fix angle bug with text
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -76,7 +77,7 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
-	glm::mat4 uiProjMatrix = glm::ortho(0.0f, 1.0f, 0.0f, 1.0f, -1.0f, 1.0f);
+	glm::mat4 uiProjMatrix = glm::ortho(0.0f, cUISpaceRight, 0.0f, cUISpaceTop, -1.0f, 1.0f);
 	textShader->SetUniformMatrix(uiProjMatrix, "u_Proj");
 
 	for (int i = 0; i < sceneLights.size(); i++) 
@@ -110,7 +111,7 @@ void HelloGL::Display()
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
-	font->OutputString("Hello World!", glm::vec2(0.2f, 0.5f), 0.0f, glm::vec2(0.05f, 0.05f), glm::vec2(windowWidth, windowHeight));
+	font->OutputString("Hello World!", glm::vec2(0.2f, 0.5f), 0.0f, glm::vec2(0.05f, 0.05f), cUISpaceRight, cUISpaceTop);
 
 	glFlush();
 	glutSwapBuffers();
