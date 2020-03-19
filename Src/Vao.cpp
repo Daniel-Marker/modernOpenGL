@@ -84,6 +84,11 @@ void Vao::CreateVertexBuffer(void* vertexData, int size, BufferLayout layout)
 	}
 }
 
+void Vao::UpdateVertexBuffer(int offset, int size, void* data)
+{
+	_vertexBuffer->UpdateBuffer(offset, size, data);
+}
+
 void Vao::BindVao()
 {
 	glBindVertexArray(_vaoID);

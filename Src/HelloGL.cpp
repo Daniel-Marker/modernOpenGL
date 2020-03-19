@@ -4,8 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Text rendering
-//Get text position to be in coordinate space (0->screenWidth) instead of (-1->1)
+//Remove constants in font code and clean up font code
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -77,6 +76,9 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
+	glm::mat4 uiProjMatrix = glm::ortho(0.0f, 1.0f, 0.0f, 1.0f, -1.0f, 1.0f);
+	textShader->SetUniformMatrix(uiProjMatrix, "u_Proj");
+
 	for (int i = 0; i < sceneLights.size(); i++) 
 	{
 		std::string light = "u_Lights[]";
@@ -108,7 +110,7 @@ void HelloGL::Display()
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
-	font->OutputString("", glm::vec2(1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec2(0.5f, 0.5f));
+	font->OutputString("Hello World!", glm::vec2(0.2f, 0.5f), 0.0f, glm::vec2(0.05f, 0.05f), glm::vec2(windowWidth, windowHeight));
 
 	glFlush();
 	glutSwapBuffers();

@@ -21,8 +21,11 @@ public:
 
 	void CreateIndexBuffer(Mesh* mesh);
 	void CreateIndexBuffer(void* indexData, int size);
+	
 	void CreateVertexBuffer(Mesh* mesh, BufferLayout layout);
 	void CreateVertexBuffer(void* vertexData, int size, BufferLayout layout);
+	
+	void UpdateVertexBuffer(int offset, int size, void* data);
 
 	Buffer* const GetIndexBuffer(){ return _indexBuffer; };
 
