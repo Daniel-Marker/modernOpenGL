@@ -70,5 +70,7 @@ private:
 
 	int windowWidth, windowHeight;
 	float aspectRatio;
+
+	float textRotation;
 };
 

@@ -24,6 +24,6 @@ private:
 
 public:
 	Font(std::string fontPath, int characterHeight, int characterWidth, char firstCharacter, Shader* shader);
-	void OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, float rightCoord, float topCoord);
+	void OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, float rightScreenCoord, float topScreenCoord);
 };
 

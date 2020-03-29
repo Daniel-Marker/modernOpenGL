@@ -42,20 +42,26 @@ Font::Font(std::string fontPath, int characterHeight, int characterWidth, char f
 	_vao->CreateIndexBuffer(indices, sizeof(indices));
 }
 
-void Font::OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, float rightCoord, float topCoord)
+void Font::OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, float rightScreenCoord, float topScreenCoord)
 {
-	//set uniforms
-	glm::mat4 scaleRotateMatrix =
-		glm::eulerAngleXYZ(0.0f, 0.0f, rotation) *
-		glm::scale(glm::mat4(1.0f), glm::vec3(scale.x * 0.5f * rightCoord, scale.y * 0.5f * topCoord, 1.0f));
-
-	_shader->SetUniformMatrix(scaleRotateMatrix, "u_Transform");
-
 	int charactersPerLine = _sourceFont->GetWidth() / _characterWidth;
 	float uvCharacterWidth = (float)_characterWidth / (float)_sourceFont->GetWidth();
 	float uvCharacterHeight = (float)_characterHeight / (float)_sourceFont->GetHeight();
 	float spacing = (cTextSpacingMultiplier * scale.x) * uvCharacterWidth;
+
+	float rotationCentreX = position.x + output.length() * uvCharacterWidth * 0.5f;
+	float rotationCentreY = position.y + uvCharacterHeight * 0.5f;
 	Renderer renderer;
+
+	glm::mat4 scaleMatrix =
+		glm::scale(glm::mat4(1.0f), glm::vec3(scale.x * 0.5f * rightScreenCoord, scale.y * 0.5f * topScreenCoord, 1.0f));
+
+
+	glm::mat4 rotateMatrix =
+		glm::translate(glm::mat4(1.0f), glm::vec3(rotationCentreX, rotationCentreY, 0.0f)) *
+		glm::eulerAngleXYZ(0.0f, 0.0f, rotation) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(-rotationCentreX, -rotationCentreY, 0.0f));
+
 
 	for (int i = 0; i < output.size(); i++)
 	{
@@ -77,10 +83,12 @@ void Font::OutputString(std::string output, glm::vec2 position, float rotation, 
 
 		_vao->UpdateVertexBuffer(4 * 2 * sizeof(float), 4 * 2 * sizeof(float), &newUVCoords);
 
-		glm::mat4 newTransformMatrix =
-			glm::translate(glm::mat4(1.0f), glm::vec3(position.x + (rightCoord - leftCoord) * i * spacing, position.y, 0.0f)) * scaleRotateMatrix;
+		glm::mat4 transformMatrix =
+			rotateMatrix *
+			glm::translate(glm::mat4(1.0f), glm::vec3(position.x + (rightCoord - leftCoord) * i * spacing, position.y, 0.0f)) *
+			scaleMatrix;
 
-		_shader->SetUniformMatrix(newTransformMatrix, "u_Transform");
+		_shader->SetUniformMatrix(transformMatrix, "u_Transform");
 
 		renderer.Render(_vao, _shader, _sourceFont);
 	}

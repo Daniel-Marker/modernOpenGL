@@ -4,7 +4,8 @@
 #include <string>
 
 //todo ASAP
-
+//Clean up code
+//Cube colliders
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -12,7 +13,7 @@
 //auto triangulate faces in obj loader if they consist of more than 3 vertices
 //Have obj loader be able to handle files with multiple objects
 //add special keys callback
-//Fix angle bug with text
+//Fix bug where rotating text scales wrt rotation
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -34,6 +35,8 @@ HelloGL::HelloGL(int argc, char* argv[])
 	camera->rotation = glm::vec2(0.0f, 0.0f);
 
 	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
+
+	textRotation = 0.0f;
 
 	glutMainLoop();
 }
@@ -111,7 +114,7 @@ void HelloGL::Display()
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
-	font->OutputString("Hello World!", glm::vec2(0.2f, 0.5f), 0.0f, glm::vec2(0.05f, 0.05f), cUISpaceRight, cUISpaceTop);
+	font->OutputString("Hello World!", glm::vec2(0.2f, 0.5f), glm::radians(textRotation), glm::vec2(0.05f, 0.05f), cUISpaceRight, cUISpaceTop);
 
 	glFlush();
 	glutSwapBuffers();
@@ -165,6 +168,10 @@ void HelloGL::Update(float deltaTime)
 			sceneLights[i]->SetPosition(sceneLights[i]->GetPosition() + glm::vec4(-5.0f, 0.0f, 0.0f, 0.0f) * deltaTime);
 	}
 
+	if (InputManager::GetKeyDown('o'))
+		textRotation += 45.0f * deltaTime;
+	if (InputManager::GetKeyDown('p'))
+		textRotation -= 45.0f * deltaTime;
 
 	int deltaX, deltaY;
 	InputManager::GetMouseMovement(deltaX, deltaY);
