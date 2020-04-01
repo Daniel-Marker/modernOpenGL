@@ -4,7 +4,6 @@
 #include <string>
 
 //todo ASAP
-//Clean up code
 //Cube colliders
 
 //todo whenever
@@ -260,61 +259,6 @@ void HelloGL::InitLights()
 
 void HelloGL::InitObjects()
 {
-	/*sceneObjects.push_back(new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera));
-	Transform transform;
-	transform.position = glm::vec3(5.0f, 5.0f, -3.0f);
-	transform.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
-	transform.scale = glm::vec3(10.0f, 10.0f, 1.0f);
-	sceneObjects[0]->SetTransform(transform);
-
-	for (int i = 1; i < 50; i++)
-	{
-		sceneObjects.push_back(new Cube(lightingShader, betterCubeTexture, betterCubeMesh, basicMaterial, camera));
-
-		Transform transform;
-		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
-		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
-		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
-		sceneObjects[i]->SetTransform(transform);
-	}
-	
-	for (int i = 50; i < 100; i++)
-	{
-		sceneObjects.push_back(new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera));
-
-		Transform transform;
-		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
-		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
-		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
-		sceneObjects[i]->SetTransform(transform);
-	}
-
-	for (int i = 100; i < 150; i++)
-	{
-		sceneObjects.push_back(new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera));
-
-		Transform transform;
-		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
-		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
-		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
-		sceneObjects[i]->SetTransform(transform);
-	}
-
-	for (int i = 150; i < 200; i++)
-	{
-		sceneObjects.push_back(new Cube(basicShader, penguinTexture, cubeMesh, basicMaterial, camera));
-
-		Transform transform;
-		transform.position = glm::vec3((rand() % 200) / 10.0f, (rand() % 200) / 10.0f, (rand() % 200) / 10.0f);
-		transform.rotation = glm::vec3(rand() % 360, rand() % 360, rand() % 360);
-		transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
-		sceneObjects[i]->SetTransform(transform);
-	}*/
-
 	Cube* cube1;
 	Cube* cube2;
 	Cube* cube3;
@@ -322,15 +266,14 @@ void HelloGL::InitObjects()
 	Cube* cube5;
 	Cube* cube6;
 	Cube* cube7;
-	Transform transform;
 
-	cube1 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube2 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
-	cube3 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
-	cube4 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera);
-	cube5 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube6 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
-	cube7 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera);
+	cube1 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+	cube2 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+	cube3 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+	cube4 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+	cube5 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+	cube6 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+	cube7 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(-3.0f, -3.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
 	
 	sceneObjects.push_back(cube1);
 	cube1->AddChild(cube2);
@@ -340,30 +283,6 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(cube5);
 	sceneObjects.push_back(cube6);
 	cube6->AddChild(cube7);
-
-	transform.position = glm::vec3(5.0f, 0.0f, 0.0f);
-	transform.rotation = glm::vec3(0.0f, 0.0f, 0.0f);
-	transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
-	cube1->SetTransform(transform);
-	
-	transform.position = glm::vec3(0.0f, 5.0f, 0.0f);
-	cube2->SetTransform(transform);
-	
-	transform.position = glm::vec3(0.0f, -5.0f, 0.0f);
-	cube3->SetTransform(transform);
-	
-	transform.position = glm::vec3(2.0f, 0.0f, 0.0f);
-	cube4->SetTransform(transform);
-	
-	transform.position = glm::vec3(-1.0f, 1.0f, 1.0f);
-	cube5->SetTransform(transform);
-	
-	transform.position = glm::vec3(-1.0f, -1.0f, 1.0f);
-	cube6->SetTransform(transform);
-	
-	transform.position = glm::vec3(-3.0f, -3.0f, 0.0f);
-	cube7->SetTransform(transform);
 }
 
 void HelloGL::LoadTextures()

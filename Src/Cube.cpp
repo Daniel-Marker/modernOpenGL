@@ -1,6 +1,6 @@
 #include "Cube.h"
-Cube::Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera) :
-	SceneObject(shader, texture, mesh, material, camera)
+Cube::Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform) :
+	SceneObject(shader, texture, mesh, material, camera, transform)
 {
 	_vao = new Vao();
 	_vao->BindVao();
@@ -29,10 +29,10 @@ void Cube::Render()
 {
 	//set uniforms
 	glm::mat4 transformMatrix =
+		_worldTransform *
 		glm::translate(glm::mat4(1.0f), _transform.position) *
 		glm::eulerAngleXYZ(_transform.rotation.x, _transform.rotation.y, _transform.rotation.z) *
 		glm::scale(glm::mat4(1.0f), _transform.scale);
-	transformMatrix = _worldTransform * transformMatrix;
 	_shader->SetUniformMatrix(transformMatrix, "u_Transform");
 
 	_material->SetMaterialUniforms(_shader);

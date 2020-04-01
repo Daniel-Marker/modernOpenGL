@@ -24,6 +24,7 @@ public:
 	
 	void CreateVertexBuffer(Mesh* mesh, BufferLayout layout);
 	void CreateVertexBuffer(void* vertexData, int size, BufferLayout layout);
+	void SetUpAttributes(BufferLayout& layout);
 	
 	void UpdateVertexBuffer(int offset, int size, void* data);
 

@@ -52,16 +52,7 @@ void Vao::CreateVertexBuffer(Mesh* mesh, BufferLayout layout)
 	_vertexBuffer->UpdateBuffer(sizeOfVertexData, sizeOfUVData, mesh->GetUVCoords());
 	_vertexBuffer->UpdateBuffer(sizeOfVertexData + sizeOfUVData, sizeOfNormalData, mesh->GetVertexNormals());
 
-	std::vector<layoutElement> bufferLayout = layout.GetLayout();
-	int offset = 0;
-
-	for (int i = 0; i < bufferLayout.size(); i++)
-	{
-		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i, bufferLayout[i]._size, bufferLayout[i]._type, bufferLayout[i]._normalized, 0,(void*)offset);
-
-		offset += bufferLayout[i]._size * bufferLayout[i].GetSizeOfType() * bufferLayout[i]._count;
-	}
+	SetUpAttributes(layout);
 }
 
 void Vao::CreateVertexBuffer(void* vertexData, int size, BufferLayout layout)
@@ -70,11 +61,16 @@ void Vao::CreateVertexBuffer(void* vertexData, int size, BufferLayout layout)
 		delete _vertexBuffer;
 
 	BindVao();
-
 	_vertexBuffer = new Buffer(GL_ARRAY_BUFFER, vertexData, size);
+	
+	SetUpAttributes(layout);
+}
+
+void Vao::SetUpAttributes(BufferLayout& layout)
+{
+	std::vector<layoutElement> bufferLayout = layout.GetLayout();
 	int offset = 0;
 
-	std::vector<layoutElement> bufferLayout = layout.GetLayout();
 	for (int i = 0; i < bufferLayout.size(); i++)
 	{
 		glEnableVertexAttribArray(i);

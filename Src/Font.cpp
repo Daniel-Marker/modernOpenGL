@@ -56,7 +56,6 @@ void Font::OutputString(std::string output, glm::vec2 position, float rotation, 
 	glm::mat4 scaleMatrix =
 		glm::scale(glm::mat4(1.0f), glm::vec3(scale.x * 0.5f * rightScreenCoord, scale.y * 0.5f * topScreenCoord, 1.0f));
 
-
 	glm::mat4 rotateMatrix =
 		glm::translate(glm::mat4(1.0f), glm::vec3(rotationCentreX, rotationCentreY, 0.0f)) *
 		glm::eulerAngleXYZ(0.0f, 0.0f, rotation) *
@@ -81,7 +80,7 @@ void Font::OutputString(std::string output, glm::vec2 position, float rotation, 
 			rightCoord, 1.0f - bottomCoord
 		};
 
-		_vao->UpdateVertexBuffer(4 * 2 * sizeof(float), 4 * 2 * sizeof(float), &newUVCoords);
+		_vao->UpdateVertexBuffer(4 * 2 * sizeof(float), sizeof(newUVCoords), &newUVCoords);
 
 		glm::mat4 transformMatrix =
 			rotateMatrix *

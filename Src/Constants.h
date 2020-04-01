@@ -17,6 +17,6 @@ const float cMouseSensitivity = 1.0f;
 const float cUISpaceRight = 1.0f;
 const float cUISpaceTop = 1.0f;
 const float cTextSpacingMultiplier = 500.0f;
-const float cTextUVOffset = 1 / 50.0f;
+const float cTextUVOffset = 1.0f / 50.0f;
 
 #define MAX_LIGHTS 2

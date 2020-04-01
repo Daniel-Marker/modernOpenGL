@@ -20,12 +20,8 @@
 
 class Cube: public SceneObject
 {
-private:
-	static float vertexData[];
-	static unsigned int indices[];
-
 public:
-	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
+	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform);
 	~Cube();
 	void Render();
 	void Update(float deltaTime);

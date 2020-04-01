@@ -1,12 +1,8 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera):
-	_shader(shader), _texture(texture), _mesh(mesh), _material(material), _camera(camera), _worldTransform(1.0f)
+SceneObject::SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform):
+	_shader(shader), _texture(texture), _mesh(mesh), _material(material), _camera(camera), _worldTransform(1.0f), _transform(transform)
 {
-	_transform.position = glm::vec3(0.0f);
-	_transform.rotation = glm::vec3(0.0f);
-	_transform.scale = glm::vec3(0.0f);
-
 	_isTransparent = texture->GetTransparent();
 }
 

@@ -1,7 +1,4 @@
 #pragma once
-#include <Windows.h>	//Required for OpenGL on windows
-//#include <gl/GL.h>		//OpenGL
-//#include <gl/GLU.h>		//OpenGL Utilities
 #include "GL/glew.h"
 #include "GL\freeglut.h"	//freeglut library
 
@@ -19,7 +16,6 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-//#include "glm/gtc/quaternion.hpp"
 #include "glm/gtx/euler_angles.hpp"
 
 #include <vector>

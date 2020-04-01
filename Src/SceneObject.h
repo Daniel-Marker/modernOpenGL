@@ -33,7 +33,7 @@ protected:
 	glm::mat4 _worldTransform;
 
 public:
-	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera);
+	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);
