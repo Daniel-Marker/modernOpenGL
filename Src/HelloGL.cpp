@@ -4,7 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Cube colliders
+//Use cube colliders to stop camera from colliding with geometry
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -125,6 +125,25 @@ void HelloGL::Update(float deltaTime)
 		sceneObjects[i]->Update(deltaTime);
 
 	glm::vec3 cameraRight = glm::normalize(glm::cross(camera->direction, camera->up));
+
+	if (sceneObjects[0]->GetRectCollider().CollisionCheck(sceneObjects[0]->GetTransformMatrix(), sceneObjects[1]->GetRectCollider(), sceneObjects[1]->GetTransformMatrix()))
+	{
+		sceneObjects[0]->UpdateTexture(parrotTexture);
+		sceneObjects[1]->UpdateTexture(parrotTexture);
+	}
+	else 
+	{
+		sceneObjects[0]->UpdateTexture(glassTexture);
+		sceneObjects[1]->UpdateTexture(glassTexture);
+	}
+
+	if (InputManager::GetKeyDown('b'))
+	{
+		Transform oldTransform = sceneObjects[0]->GetTransform();
+
+		oldTransform.position += deltaTime * glm::vec3(-5.0f, 0.0f, 0.0f);
+		sceneObjects[0]->SetTransform(oldTransform);
+	}
 
 	if (InputManager::GetKeyDown('d'))
 	{
@@ -259,30 +278,19 @@ void HelloGL::InitLights()
 
 void HelloGL::InitObjects()
 {
-	Cube* cube1;
-	Cube* cube2;
-	Cube* cube3;
-	Cube* cube4;
-	Cube* cube5;
-	Cube* cube6;
-	Cube* cube7;
+	Cube* rect1;
+	Cube* rect2;
 
-	cube1 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	cube2 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	cube3 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	cube4 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	cube5 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	cube6 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	cube7 = new Cube(lightingShader, parrotTexture, cubeMesh, basicMaterial, camera, Transform(glm::vec3(-3.0f, -3.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	
-	sceneObjects.push_back(cube1);
-	cube1->AddChild(cube2);
-	cube1->AddChild(cube3);
-	cube3->AddChild(cube4);
+	rect1 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
+		Transform(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
-	sceneObjects.push_back(cube5);
-	sceneObjects.push_back(cube6);
-	cube6->AddChild(cube7);
+	rect2 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
+		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
+
+	sceneObjects.push_back(rect1);
+	sceneObjects.push_back(rect2);
 }
 
 void HelloGL::LoadTextures()
@@ -308,7 +316,7 @@ void HelloGL::LoadTextures()
 
 void HelloGL::LoadMeshes()
 {
-	cubeMesh = new Mesh("Res/Models/Cube.obj");
+	cubeMesh = new Mesh("Res/Models/Rect.obj");
 	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
 }
 

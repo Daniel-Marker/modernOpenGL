@@ -10,6 +10,7 @@
 #include "Vao.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "RectCollider.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -32,8 +33,10 @@ protected:
 	std::vector<SceneObject*> _children;
 	glm::mat4 _worldTransform;
 
+	RectCollider _collisionRect;
+
 public:
-	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform);
+	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform, RectCollider collisionRect);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);
@@ -45,6 +48,16 @@ public:
 	std::vector<SceneObject*> const GetChildren();
 	void GetAllObjects(std::vector<SceneObject*>& transparentObjects, std::vector<SceneObject*>& opaqueObjects);
 	void SetChildrenWorldTransform(glm::mat4& worldTransform);
+
+	void UpdateTexture(Texture2D* newTexture) { _texture = newTexture; };
+
+	RectCollider GetRectCollider() { return _collisionRect; };
+	glm::mat4 GetTransformMatrix(){
+		return _worldTransform *
+		glm::translate(glm::mat4(1.0f), _transform.position) *
+		glm::eulerAngleXYZ(_transform.rotation.x, _transform.rotation.y, _transform.rotation.z) *
+		glm::scale(glm::mat4(1.0f), _transform.scale);
+	}
 
 	bool operator< (const SceneObject& other) const;
 };

@@ -21,7 +21,7 @@
 class Cube: public SceneObject
 {
 public:
-	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform);
+	Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform, RectCollider collisionRect);
 	~Cube();
 	void Render();
 	void Update(float deltaTime);

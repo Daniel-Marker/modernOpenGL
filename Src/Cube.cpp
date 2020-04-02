@@ -1,6 +1,6 @@
 #include "Cube.h"
-Cube::Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform) :
-	SceneObject(shader, texture, mesh, material, camera, transform)
+Cube::Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform, RectCollider collisionRect) :
+	SceneObject(shader, texture, mesh, material, camera, transform, collisionRect)
 {
 	_vao = new Vao();
 	_vao->BindVao();

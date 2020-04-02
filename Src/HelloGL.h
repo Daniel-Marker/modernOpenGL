@@ -13,6 +13,7 @@
 #include "SceneLight.h"
 #include "Material.h"
 #include "Font.h"
+#include "RectCollider.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
