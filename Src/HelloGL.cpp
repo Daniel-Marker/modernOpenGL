@@ -4,7 +4,11 @@
 #include <string>
 
 //todo ASAP
-//Use cube colliders to stop camera from colliding with geometry
+//Fix transparency bug
+//Make rectCollider part of camera constructor
+//Clean up camera class
+//Skybox
+
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -27,11 +31,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	InitObjects();
 
-	camera = new Camera;
-	camera->position = glm::vec3(0.0f, 0.0f, 5.0f);
-	camera->direction = glm::vec3(0.0f, 0.0f, -1.0f);
-	camera->up = glm::vec3(0.0f, 1.0f, 0.0f);
-	camera->rotation = glm::vec2(0.0f, 0.0f);
+	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
 
@@ -71,7 +71,7 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 viewMatrix = glm::lookAt(camera->position, camera->position + camera->direction, camera->up);
+	glm::mat4 viewMatrix = camera->GetViewMatrix();
 	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
 	lightingShader->SetUniformMatrix(viewMatrix, "u_View");
 	lightingShader->SetUniformMatrix(projMatrix, "u_Proj");
@@ -87,7 +87,7 @@ void HelloGL::Display()
 		std::string light = "u_Lights[]";
 		light.insert(9, std::to_string(i));
 
-		sceneLights[i]->SetLightUniforms(camera->position, light, lightingShader);
+		sceneLights[i]->SetLightUniforms(camera->GetPosition(), light, lightingShader);
 	}
 	lightingShader->SetUniformInt(sceneLights.size(), "u_NumLights");
 	if (sceneLights.size() > MAX_LIGHTS)
@@ -124,7 +124,6 @@ void HelloGL::Update(float deltaTime)
 	for(int i = 0; i < sceneObjects.size(); i++)
 		sceneObjects[i]->Update(deltaTime);
 
-	glm::vec3 cameraRight = glm::normalize(glm::cross(camera->direction, camera->up));
 
 	if (sceneObjects[0]->GetRectCollider().CollisionCheck(sceneObjects[0]->GetTransformMatrix(), sceneObjects[1]->GetRectCollider(), sceneObjects[1]->GetTransformMatrix()))
 	{
@@ -137,6 +136,7 @@ void HelloGL::Update(float deltaTime)
 		sceneObjects[1]->UpdateTexture(glassTexture);
 	}
 
+
 	if (InputManager::GetKeyDown('b'))
 	{
 		Transform oldTransform = sceneObjects[0]->GetTransform();
@@ -145,26 +145,7 @@ void HelloGL::Update(float deltaTime)
 		sceneObjects[0]->SetTransform(oldTransform);
 	}
 
-	if (InputManager::GetKeyDown('d'))
-	{
-		camera->position += cCameraMoveSpeed * deltaTime * cameraRight;
-	}
-
-	if (InputManager::GetKeyDown('a'))
-	{
-		camera->position -= cCameraMoveSpeed * deltaTime * cameraRight;
-	}
-
-	if (InputManager::GetKeyDown('w'))
-	{
-		camera->position += cCameraMoveSpeed * deltaTime * camera->direction;
-	}
-
-	if (InputManager::GetKeyDown('s'))
-	{
-		camera->position -= cCameraMoveSpeed * deltaTime * camera->direction;
-	}
-
+	
 	if (InputManager::GetKeyDown('i'))
 	{
 		for(int i = 0; i < sceneLights.size(); i++)
@@ -191,20 +172,11 @@ void HelloGL::Update(float deltaTime)
 	if (InputManager::GetKeyDown('p'))
 		textRotation -= 45.0f * deltaTime;
 
-	int deltaX, deltaY;
-	InputManager::GetMouseMovement(deltaX, deltaY);
-	camera->rotation.x += cMouseSensitivity * deltaX * deltaTime;
-	camera->rotation.y -= cMouseSensitivity * deltaY * deltaTime;
+	std::vector<SceneObject*> objects;
+	for (int i = 0; i < sceneObjects.size(); i++)
+		sceneObjects[i]->GetAllObjects(objects);
 
-	if (camera->rotation.y > cCameraMax)
-		camera->rotation.y = cCameraMax;
-	if (camera->rotation.y < cCameraMin)
-		camera->rotation.y = cCameraMin;
-
-	camera->direction.x = cos(glm::radians(camera->rotation.x)) * cos(glm::radians(camera->rotation.y));
-	camera->direction.y = sin(glm::radians(camera->rotation.y));
-	camera->direction.z = sin(glm::radians(camera->rotation.x)) * cos(glm::radians(camera->rotation.y));
-	camera->direction = glm::normalize(camera->direction);
+	camera->Update(deltaTime, objects);
 
 	glutPostRedisplay();
 }
@@ -280,6 +252,7 @@ void HelloGL::InitObjects()
 {
 	Cube* rect1;
 	Cube* rect2;
+	Cube* rect3;
 
 	rect1 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
 		Transform(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -289,8 +262,15 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
+	rect3 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
+		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
+
+	rect1->AddChild(rect3);
+
 	sceneObjects.push_back(rect1);
 	sceneObjects.push_back(rect2);
+
 }
 
 void HelloGL::LoadTextures()

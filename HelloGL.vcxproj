@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\RectCollider.cpp" />
     <ClCompile Include="Src\Font.cpp" />
     <ClCompile Include="Src\Material.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\RectCollider.h" />
     <ClInclude Include="Src\Font.h" />
     <ClInclude Include="Src\Material.h" />

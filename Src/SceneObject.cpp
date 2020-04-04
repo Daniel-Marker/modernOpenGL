@@ -1,4 +1,5 @@
 #include "SceneObject.h"
+#include "Camera.h"
 
 SceneObject::SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform, RectCollider collisionRect):
 	_shader(shader), _texture(texture), _mesh(mesh), _material(material), _camera(camera), _worldTransform(1.0f), _transform(transform), _collisionRect(collisionRect)
@@ -63,6 +64,14 @@ void SceneObject::GetAllObjects(std::vector<SceneObject*>& transparentObjects, s
 		_children[i]->GetAllObjects(transparentObjects, opaqueObjects);
 }
 
+void SceneObject::GetAllObjects(std::vector<SceneObject*>& objects)
+{
+	objects.push_back(this);
+
+	for (int i = 0; i < _children.size(); i++)
+		_children[i]->GetAllObjects(objects);
+}
+
 void SceneObject::SetChildrenWorldTransform(glm::mat4& worldTransform)
 {
 	_worldTransform = worldTransform;
@@ -79,8 +88,8 @@ void SceneObject::SetChildrenWorldTransform(glm::mat4& worldTransform)
 
 bool SceneObject::operator<(const SceneObject& other) const
 {
-	float distToCamera = glm::distance(_transform.position, _camera->direction);
-	float distFromOtherToCamera = glm::distance(other._transform.position, _camera->direction);
+	float distToCamera = glm::distance(_transform.position, _camera->GetPosition());
+	float distFromOtherToCamera = glm::distance(other._transform.position, _camera->GetPosition());
 
 	return distToCamera < distFromOtherToCamera;
 }

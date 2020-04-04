@@ -16,6 +16,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/euler_angles.hpp"
 
+class Camera;
+
 class SceneObject
 {
 protected:
@@ -47,6 +49,7 @@ public:
 	void DeleteChild(int index);
 	std::vector<SceneObject*> const GetChildren();
 	void GetAllObjects(std::vector<SceneObject*>& transparentObjects, std::vector<SceneObject*>& opaqueObjects);
+	void GetAllObjects(std::vector<SceneObject*>& objects);
 	void SetChildrenWorldTransform(glm::mat4& worldTransform);
 
 	void UpdateTexture(Texture2D* newTexture) { _texture = newTexture; };
