@@ -12,16 +12,14 @@ glm::vec3 Camera::LookRotation(glm::vec2 rotation)
 	return LookDirection;
 }
 
-Camera::Camera(glm::vec3 position, glm::vec2 rotation, glm::vec3 up):
-	_position(position), _rotation(rotation), _up(up), _direction(LookRotation(rotation))
+Camera::Camera(glm::vec3 position, glm::vec2 rotation, glm::vec3 up, RectCollider rectCollider):
+	_position(position), _rotation(rotation), _up(up), _direction(LookRotation(rotation)), _rectCollider(rectCollider)
 {
 	
 }
 
-void Camera::Move(glm::vec3 movement, std::vector<SceneObject*> sceneObjects)
+void Camera::Move(glm::vec3 movement, std::vector<SceneObject*>& sceneObjects)
 {
-	RectCollider cameraCollider = RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-
 	glm::mat4 cameraMatrix =
 		glm::translate(glm::mat4(1.0f), _position + movement) *
 		glm::eulerAngleXYZ(_rotation.y, _rotation.x, 0.0f);
@@ -29,7 +27,7 @@ void Camera::Move(glm::vec3 movement, std::vector<SceneObject*> sceneObjects)
 	bool colliding = false;
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
-		if (cameraCollider.CollisionCheck(cameraMatrix, sceneObjects[i]->GetRectCollider(), sceneObjects[i]->GetTransformMatrix()))
+		if (_rectCollider.CollisionCheck(cameraMatrix, sceneObjects[i]->GetRectCollider(), sceneObjects[i]->GetTransformMatrix()))
 		{
 			colliding = true;
 			break;
@@ -39,20 +37,14 @@ void Camera::Move(glm::vec3 movement, std::vector<SceneObject*> sceneObjects)
 		_position += movement;
 }
 
-void Camera::Update(float deltaTime, std::vector<SceneObject*> sceneObjects)
+void Camera::Update(float deltaTime, std::vector<SceneObject*>& sceneObjects)
 {
-	int deltaX, deltaY;
-	InputManager::GetMouseMovement(deltaX, deltaY);
-	_rotation.x += cMouseSensitivity * deltaX * deltaTime;
-	_rotation.y -= cMouseSensitivity * deltaY * deltaTime;
+	HandleMouseInput(deltaTime);
+	HandleMovement(deltaTime, sceneObjects);
+}
 
-	if (_rotation.y > cCameraMax)
-		_rotation.y = cCameraMax;
-	if (_rotation.y < cCameraMin)
-		_rotation.y = cCameraMin;
-
-	_direction = LookRotation(_rotation);
-
+void Camera::HandleMovement(float deltaTime, std::vector<SceneObject*>& sceneObjects)
+{
 	glm::vec3 cameraRight = glm::normalize(glm::cross(_direction, _up));
 	if (InputManager::GetKeyDown('d'))
 	{
@@ -73,6 +65,21 @@ void Camera::Update(float deltaTime, std::vector<SceneObject*> sceneObjects)
 	{
 		Move(-cCameraMoveSpeed * deltaTime * _direction, sceneObjects);
 	}
+}
+
+void Camera::HandleMouseInput(float deltaTime)
+{
+	int deltaX, deltaY;
+	InputManager::GetMouseMovement(deltaX, deltaY);
+	_rotation.x += cMouseSensitivity * deltaX * deltaTime;
+	_rotation.y -= cMouseSensitivity * deltaY * deltaTime;
+
+	if (_rotation.y > cCameraMax)
+		_rotation.y = cCameraMax;
+	if (_rotation.y < cCameraMin)
+		_rotation.y = cCameraMin;
+
+	_direction = LookRotation(_rotation);
 }
 
 glm::mat4 Camera::GetViewMatrix()

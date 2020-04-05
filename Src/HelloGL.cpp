@@ -4,9 +4,6 @@
 #include <string>
 
 //todo ASAP
-//Make rectCollider part of camera constructor
-//Clean up camera class
-//Models .obj not included in git stuff
 //Skybox
 
 
@@ -236,7 +233,7 @@ void HelloGL::InitObjects()
 	Cube* rect2;
 	Cube* rect3;
 
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f)));
 
 	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
 

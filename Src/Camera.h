@@ -15,13 +15,18 @@ class Camera
 private:
 	glm::vec3 _position, _direction, _up;
 	glm::vec2 _rotation;
+	RectCollider _rectCollider;
 
 	glm::vec3 LookRotation(glm::vec2 rotation);
 
 public:
-	Camera(glm::vec3 position, glm::vec2 rotation, glm::vec3 up);
-	void Move(glm::vec3 movement, std::vector<SceneObject*> sceneObjects);
-	void Update(float deltaTime, std::vector<SceneObject*> sceneObjects);
+	Camera(glm::vec3 position, glm::vec2 rotation, glm::vec3 up, RectCollider rectCollider);
+	void Move(glm::vec3 movement, std::vector<SceneObject*>& sceneObjects);
+	void Update(float deltaTime, std::vector<SceneObject*>& sceneObjects);
+
+	void HandleMovement(float deltaTime, std::vector<SceneObject*>& sceneObjects);
+
+	void HandleMouseInput(float deltaTime);
 
 	glm::mat4 GetViewMatrix();
 	glm::vec3 GetPosition() { return _position; };
