@@ -62,6 +62,8 @@ public:
 		glm::scale(glm::mat4(1.0f), _transform.scale);
 	}
 
-	bool operator< (const SceneObject& other) const;
+	Camera* GetCamera() { return _camera; };
+
 };
 
+bool distanceComparison(SceneObject* object, SceneObject* other);

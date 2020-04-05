@@ -61,6 +61,8 @@ private:
 	Texture2D* parrotTextureTGA;
 	Texture2D* betterCubeTexture;
 	Texture2D* glassTexture;
+	Texture2D* glassTexture2;
+	Texture2D* glassTexture3;
 
 	Font* font;
 

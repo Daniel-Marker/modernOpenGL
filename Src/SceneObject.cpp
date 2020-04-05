@@ -86,10 +86,13 @@ void SceneObject::SetChildrenWorldTransform(glm::mat4& worldTransform)
 		_children[i]->SetChildrenWorldTransform(transformMatrix);
 }
 
-bool SceneObject::operator<(const SceneObject& other) const
+bool distanceComparison(SceneObject* object, SceneObject* other)
 {
-	float distToCamera = glm::distance(_transform.position, _camera->GetPosition());
-	float distFromOtherToCamera = glm::distance(other._transform.position, _camera->GetPosition());
+	glm::vec3 position = object->GetTransformMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	glm::vec3 otherPosition = other->GetTransformMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	return distToCamera < distFromOtherToCamera;
+	float distToCamera = glm::distance(position, object->GetCamera()->GetPosition());
+	float distFromOtherToCamera = glm::distance(otherPosition, other->GetCamera()->GetPosition());
+
+	return distToCamera > distFromOtherToCamera;
 }

@@ -4,9 +4,9 @@
 #include <string>
 
 //todo ASAP
-//Fix transparency bug
 //Make rectCollider part of camera constructor
 //Clean up camera class
+//Models .obj not included in git stuff
 //Skybox
 
 
@@ -17,6 +17,7 @@
 //Have obj loader be able to handle files with multiple objects
 //add special keys callback
 //Fix bug where rotating text scales wrt rotation
+//Implement order-independent transparency
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -30,10 +31,6 @@ HelloGL::HelloGL(int argc, char* argv[])
 	InitMaterials();
 
 	InitObjects();
-
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
 
 	textRotation = 0.0f;
 
@@ -106,10 +103,8 @@ void HelloGL::Display()
 	for (int i = 0; i < opaqueObjects.size(); i++)
 		opaqueObjects[i]->Render();
 
-	//as < is defined for sceneObjects as whichever object has the smallest distance to the camera, this creates a list of transparent objects from nearest to farthest
-	std::sort(transparentObjects.begin(), transparentObjects.end());
-	//so we need to reverse it before rendering
-	std::reverse(transparentObjects.begin(), transparentObjects.end());
+	//sorts the objects based on their distance (furthest to nearest)
+	std::sort(transparentObjects.begin(), transparentObjects.end(), distanceComparison);
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
@@ -123,19 +118,6 @@ void HelloGL::Update(float deltaTime)
 {
 	for(int i = 0; i < sceneObjects.size(); i++)
 		sceneObjects[i]->Update(deltaTime);
-
-
-	if (sceneObjects[0]->GetRectCollider().CollisionCheck(sceneObjects[0]->GetTransformMatrix(), sceneObjects[1]->GetRectCollider(), sceneObjects[1]->GetTransformMatrix()))
-	{
-		sceneObjects[0]->UpdateTexture(parrotTexture);
-		sceneObjects[1]->UpdateTexture(parrotTexture);
-	}
-	else 
-	{
-		sceneObjects[0]->UpdateTexture(glassTexture);
-		sceneObjects[1]->UpdateTexture(glassTexture);
-	}
-
 
 	if (InputManager::GetKeyDown('b'))
 	{
@@ -254,15 +236,19 @@ void HelloGL::InitObjects()
 	Cube* rect2;
 	Cube* rect3;
 
+	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
+
 	rect1 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
 		Transform(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
-	rect2 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
+	rect2 = new Cube(lightingShader, glassTexture2, cubeMesh, basicMaterial, camera,
 		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
-	rect3 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
+	rect3 = new Cube(lightingShader, glassTexture3, cubeMesh, basicMaterial, camera,
 		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
@@ -292,6 +278,12 @@ void HelloGL::LoadTextures()
 
 	glassTexture = new Texture2D();
 	glassTexture->Load("Res/Textures/glass.bmp");
+
+	glassTexture2 = new Texture2D();
+	glassTexture2->Load("Res/Textures/glass2.bmp");
+
+	glassTexture3 = new Texture2D();
+	glassTexture3->Load("Res/Textures/glass3.bmp");
 }
 
 void HelloGL::LoadMeshes()
