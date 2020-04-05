@@ -21,7 +21,7 @@ public:
 
 	void BindShader();
 	int GetUniformLocation(const std::string& uniformName);
-	void SetUniformMatrix(glm::mat4& matrix, std::string uniformName);
+	void SetUniformMatrix(const glm::mat4& matrix, std::string uniformName);
 	void SetUniformInt(int value, std::string uniformName);
 	void SetUniformVec3(glm::vec3& vector, std::string uniformName);
 	void SetUniformVec4(glm::vec4& vector, std::string uniformName);

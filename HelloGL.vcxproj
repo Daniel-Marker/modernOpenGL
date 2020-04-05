@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Cubemap.cpp" />
+    <ClCompile Include="Src\Skybox.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\RectCollider.cpp" />
     <ClCompile Include="Src\Font.cpp" />
@@ -151,6 +153,8 @@
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Cubemap.h" />
+    <ClInclude Include="Src\Skybox.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\RectCollider.h" />
     <ClInclude Include="Src\Font.h" />
@@ -552,6 +556,8 @@
     <None Include="Include\extern\glm\gtx\wrap.inl" />
     <None Include="Res\Shaders\FragBasic.frag" />
     <None Include="Res\Shaders\FragLighting.frag" />
+    <None Include="Res\Shaders\Skybox.frag" />
+    <None Include="Res\Shaders\Skybox.vert" />
     <None Include="Res\Shaders\UI frag.frag" />
     <None Include="Res\Shaders\UI vertex.vert" />
     <None Include="Res\Shaders\VertexBasic.vert" />

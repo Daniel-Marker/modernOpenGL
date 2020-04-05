@@ -4,8 +4,8 @@
 #include <string>
 
 //todo ASAP
-//Skybox
-
+//Clean up reused texture code
+//Check if deleting all created objects
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -52,7 +52,7 @@ HelloGL::~HelloGL()
 	}
 	sceneObjects.clear();
 
-	delete cubeMesh;
+	delete rectMesh;
 	delete betterCubeMesh;
 
 	for (int i = 0; i < sceneLights.size(); i++)
@@ -73,6 +73,9 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
+	skyboxShader->SetUniformMatrix(glm::mat4(glm::mat3(viewMatrix)), "u_View");
+	skyboxShader->SetUniformMatrix(projMatrix, "u_Proj");
+
 	glm::mat4 uiProjMatrix = glm::ortho(0.0f, cUISpaceRight, 0.0f, cUISpaceTop, -1.0f, 1.0f);
 	textShader->SetUniformMatrix(uiProjMatrix, "u_Proj");
 
@@ -87,6 +90,7 @@ void HelloGL::Display()
 	if (sceneLights.size() > MAX_LIGHTS)
 		std::cerr << "Warning: there are more lights that the maximum number allowed" << std::endl;
 
+	skybox->Render();
 
 	std::vector<SceneObject*> transparentObjects;
 	std::vector<SceneObject*> opaqueObjects;
@@ -201,6 +205,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA);
@@ -237,15 +242,15 @@ void HelloGL::InitObjects()
 
 	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
 
-	rect1 = new Cube(lightingShader, glassTexture, cubeMesh, basicMaterial, camera,
+	rect1 = new Cube(lightingShader, glassTexture, rectMesh, basicMaterial, camera,
 		Transform(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
-	rect2 = new Cube(lightingShader, glassTexture2, cubeMesh, basicMaterial, camera,
+	rect2 = new Cube(lightingShader, glassTexture2, rectMesh, basicMaterial, camera,
 		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
-	rect3 = new Cube(lightingShader, glassTexture3, cubeMesh, basicMaterial, camera,
+	rect3 = new Cube(lightingShader, glassTexture3, rectMesh, basicMaterial, camera,
 		Transform(glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 2.0f)));
 
@@ -254,6 +259,9 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(rect1);
 	sceneObjects.push_back(rect2);
 
+
+	Cubemap* skyboxCubemap = new Cubemap("Res/Textures/top.bmp", "Res/Textures/bottom.bmp", "Res/Textures/left.bmp", "Res/Textures/right.bmp", "Res/Textures/front.bmp", "Res/Textures/back.bmp");
+	skybox = new Skybox(cubeMesh, skyboxCubemap, skyboxShader);
 }
 
 void HelloGL::LoadTextures()
@@ -285,7 +293,8 @@ void HelloGL::LoadTextures()
 
 void HelloGL::LoadMeshes()
 {
-	cubeMesh = new Mesh("Res/Models/Rect.obj");
+	cubeMesh = new Mesh("Res/Models/Cube.obj");
+	rectMesh = new Mesh("Res/Models/Rect.obj");
 	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
 }
 
@@ -303,4 +312,5 @@ void HelloGL::InitShaders()
 	lightingShader = new Shader("Res/Shaders/VertLighting.vert", "Res/Shaders/FragLighting.frag");
 	basicShader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
 	textShader = new Shader("Res/Shaders/UI vertex.vert", "Res/Shaders/UI frag.frag");
+	skyboxShader = new Shader("Res/Shaders/Skybox.vert", "Res/Shaders/Skybox.frag");
 }

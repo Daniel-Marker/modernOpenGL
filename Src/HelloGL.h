@@ -15,6 +15,7 @@
 #include "Font.h"
 #include "RectCollider.h"
 #include "Camera.h"
+#include "Skybox.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -49,8 +50,10 @@ private:
 	Shader* lightingShader;
 	Shader* basicShader;
 	Shader* textShader;
+	Shader* skyboxShader;
 
 	Mesh* cubeMesh;
+	Mesh* rectMesh;
 	Mesh* betterCubeMesh;
 	std::vector<SceneLight*> sceneLights;
 	Material* basicMaterial;
@@ -65,6 +68,8 @@ private:
 	Texture2D* glassTexture3;
 
 	Font* font;
+
+	Skybox* skybox;
 
 	glm::mat4 viewProjMatrix;
 

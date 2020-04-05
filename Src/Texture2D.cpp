@@ -2,6 +2,17 @@
 #include "Common.cpp"
 
 
+void Texture2D::GenerateTexture()
+{
+	glGenTextures(1, &_TextureID);
+	glBindTexture(_textureType, _TextureID);
+	glTexParameteri(_textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(_textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(_textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(_textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(_textureType, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+}
+
 bool Texture2D::RawLoader(std::string path, int width, int height)
 {
 	char* tempTextureData;
@@ -27,13 +38,7 @@ bool Texture2D::RawLoader(std::string path, int width, int height)
 
 	std::cout << path << " loaded." << std::endl;
 
-	glGenTextures(1, &_TextureID);
-	glBindTexture(GL_TEXTURE_2D, _TextureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTextureData);
+	glTexImage2D(_textureType, 0, 3, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTextureData);
 
 	delete[] tempTextureData;
 	return true;
@@ -96,20 +101,13 @@ bool Texture2D::BmpLoader(std::string path)
 
 	std::cout << path << " loaded." << std::endl;
 
-	glGenTextures(1, &_TextureID);
-	glBindTexture(GL_TEXTURE_2D, _TextureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
 	switch (bpp) 
 	{
 	case 24:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
+		glTexImage2D(_textureType, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
 		break;
 	case 32:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
+		glTexImage2D(_textureType, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
 		_isTransparent = true;
 		break;
 	};
@@ -156,20 +154,13 @@ bool Texture2D::TgaLoader(std::string path)
 
 	std::cout << path << " loaded." << std::endl;
 
-	glGenTextures(1, &_TextureID);
-	glBindTexture(GL_TEXTURE_2D, _TextureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
 	switch (bpp)
 	{
 	case 24:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
+		glTexImage2D(_textureType, 0, GL_RGB, _width, _height, 0, GL_BGR, GL_UNSIGNED_BYTE, tempTextureData);
 		break;
 	case 32:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
+		glTexImage2D(_textureType, 0, GL_RGBA, _width, _height, 0, GL_BGRA, GL_UNSIGNED_BYTE, tempTextureData);
 		_isTransparent = true;
 		break;
 	};
@@ -178,8 +169,8 @@ bool Texture2D::TgaLoader(std::string path)
 	return true;
 }
 
-Texture2D::Texture2D() :
-	_width(0), _height(0), _TextureID(0), _isTransparent(false)
+Texture2D::Texture2D(GLenum textureType) :
+	_width(0), _height(0), _TextureID(0), _isTransparent(false), _textureType(textureType)
 {
 }
 
@@ -191,13 +182,15 @@ Texture2D::~Texture2D()
 void Texture2D::Bind()
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _TextureID);
+	glBindTexture(_textureType, _TextureID);
 }
 
 bool Texture2D::Load(std::string path, int width, int height)
 {
 	std::string fileExtension = GetFileExtension(path);
 	
+	GenerateTexture();
+
 	if (fileExtension != "") {
 		if (fileExtension == "raw") {
 			if (width != 0 && height != 0)

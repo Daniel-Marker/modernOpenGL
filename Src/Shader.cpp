@@ -124,7 +124,7 @@ int Shader::GetUniformLocation(const std::string& uniformName)
 	return glGetUniformLocation(_shaderID, uniformName.c_str());
 }
 
-void Shader::SetUniformMatrix(glm::mat4& matrix, std::string uniformName)
+void Shader::SetUniformMatrix(const glm::mat4& matrix, std::string uniformName)
 {
 	BindShader();
 
