@@ -16,20 +16,8 @@ Cubemap::Cubemap(std::string top, std::string bottom, std::string left, std::str
 
 	for (int i = 0; i < texturePaths.size(); i++)
 	{
-		std::string fileExtension = GetFileExtension(texturePaths[i]);
 		_textureType = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
-
-
-		if (fileExtension != "") {
-			if (fileExtension == "bmp")
-				BmpLoader(texturePaths[i]);
-			else if (fileExtension == "tga")
-				TgaLoader(texturePaths[i]);
-			else
-				std::cout << "File type " << fileExtension << " is not supported" << std::endl;
-		}
-		else
-			std::cout << texturePaths[i] << " does not have a file extension " << std::endl;
+		LoadImage(texturePaths[i]);
 	}
 
 	_textureType = GL_TEXTURE_CUBE_MAP;

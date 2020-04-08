@@ -4,8 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Clean up reused texture code
-//Check if deleting all created objects
+
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -39,12 +38,18 @@ HelloGL::~HelloGL()
 {
 	delete camera;
 	delete lightingShader;
+	delete basicShader;
+	delete textShader;
+	delete skyboxShader;
 
 	delete penguinTexture;
 	delete parrotTexture;
 	delete parrotTexture32;
 	delete parrotTextureTGA;
 	delete betterCubeTexture;
+	delete glassTexture;
+	delete glassTexture2;
+	delete glassTexture3;
 
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
@@ -52,6 +57,7 @@ HelloGL::~HelloGL()
 	}
 	sceneObjects.clear();
 
+	delete cubeMesh;
 	delete rectMesh;
 	delete betterCubeMesh;
 
@@ -59,6 +65,10 @@ HelloGL::~HelloGL()
 	{
 		delete sceneLights[i];
 	}
+
+	delete basicMaterial;
+	delete font;
+	delete skybox;
 }
 
 void HelloGL::Display()
@@ -109,7 +119,7 @@ void HelloGL::Display()
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
-	font->OutputString("Hello World!", glm::vec2(0.2f, 0.5f), glm::radians(textRotation), glm::vec2(0.05f, 0.05f), cUISpaceRight, cUISpaceTop);
+	font->OutputString("Skybox Test", glm::vec2(0.3f, 0.975f), glm::radians(textRotation), glm::vec2(0.025f, 0.025f), cUISpaceRight, cUISpaceTop);
 
 	glFlush();
 	glutSwapBuffers();

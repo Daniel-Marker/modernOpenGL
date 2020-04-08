@@ -21,6 +21,8 @@ protected:
 	bool BmpLoader(std::string path);
 	bool TgaLoader(std::string path);
 
+	bool LoadImage(std::string path, int width = 0, int height = 0);
+
 public:
 	Texture2D(GLenum textureType = GL_TEXTURE_2D);
 	~Texture2D();

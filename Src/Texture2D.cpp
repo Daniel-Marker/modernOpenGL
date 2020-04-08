@@ -169,28 +169,9 @@ bool Texture2D::TgaLoader(std::string path)
 	return true;
 }
 
-Texture2D::Texture2D(GLenum textureType) :
-	_width(0), _height(0), _TextureID(0), _isTransparent(false), _textureType(textureType)
-{
-}
-
-Texture2D::~Texture2D()
-{
-	glDeleteTextures(1, &_TextureID);
-}
-
-void Texture2D::Bind()
-{
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(_textureType, _TextureID);
-}
-
-bool Texture2D::Load(std::string path, int width, int height)
+bool Texture2D::LoadImage(std::string path, int width, int height)
 {
 	std::string fileExtension = GetFileExtension(path);
-	
-	GenerateTexture();
-
 	if (fileExtension != "") {
 		if (fileExtension == "raw") {
 			if (width != 0 && height != 0)
@@ -209,7 +190,29 @@ bool Texture2D::Load(std::string path, int width, int height)
 		std::cout << "File type " << fileExtension << " is not supported" << std::endl;
 		return false;
 	}
-	
+
 	std::cout << path << " does not have a file extension " << std::endl;
 	return false;
+}
+
+Texture2D::Texture2D(GLenum textureType) :
+	_width(0), _height(0), _TextureID(0), _isTransparent(false), _textureType(textureType)
+{
+}
+
+Texture2D::~Texture2D()
+{
+	glDeleteTextures(1, &_TextureID);
+}
+
+void Texture2D::Bind()
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(_textureType, _TextureID);
+}
+
+bool Texture2D::Load(std::string path, int width, int height)
+{
+	GenerateTexture();
+	return LoadImage(path, width, height);
 }
