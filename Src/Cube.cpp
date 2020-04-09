@@ -20,6 +20,27 @@ Cube::Cube(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, C
 	_shader->SetUniformInt(0, "u_Texture");
 }
 
+Cube::Cube(Shader* shader, Texture2D* texture, std::string meshPath, Material* material, Camera* camera, Transform transform, RectCollider collisionRect):
+	SceneObject(shader, texture, meshPath, material, camera, transform, collisionRect)
+{
+	_vao = new Vao();
+	_vao->BindVao();
+
+	BufferLayout layout;
+
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, _mesh->GetVertexCount());
+	layout.AddElement(positionsLayout);
+	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, _mesh->GetUVCount());
+	layout.AddElement(textureLayout);
+	layoutElement normalLayout = layoutElement(3, GL_FLOAT, false, _mesh->GetVertexNormalCount());
+	layout.AddElement(normalLayout);
+
+	_vao->CreateVertexBuffer(_mesh, layout);
+	_vao->CreateIndexBuffer(_mesh);
+
+	_shader->SetUniformInt(0, "u_Texture");
+}
+
 Cube::~Cube()
 {
 	delete _vao;

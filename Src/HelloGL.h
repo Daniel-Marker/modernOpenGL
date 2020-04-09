@@ -55,6 +55,8 @@ private:
 	Mesh* cubeMesh;
 	Mesh* rectMesh;
 	Mesh* betterCubeMesh;
+	Mesh* emptyMesh;
+
 	std::vector<SceneLight*> sceneLights;
 	Material* basicMaterial;
 
@@ -66,6 +68,8 @@ private:
 	Texture2D* glassTexture;
 	Texture2D* glassTexture2;
 	Texture2D* glassTexture3;
+
+	Texture2D* mapTexture;
 
 	Font* font;
 

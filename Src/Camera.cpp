@@ -65,6 +65,8 @@ void Camera::HandleMovement(float deltaTime, std::vector<SceneObject*>& sceneObj
 	{
 		Move(-cCameraMoveSpeed * deltaTime * _direction, sceneObjects);
 	}
+
+	_position.y = 0.0f;
 }
 
 void Camera::HandleMouseInput(float deltaTime)

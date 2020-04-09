@@ -23,7 +23,8 @@ class SceneObject
 protected:
 	Transform _transform;
 	Mesh* _mesh;
-	
+	bool uniqueMesh;
+
 	Vao* _vao;
 	Shader* _shader;
 	Texture2D* _texture;
@@ -39,6 +40,7 @@ protected:
 
 public:
 	SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform, RectCollider collisionRect);
+	SceneObject(Shader* shader, Texture2D* texture, std::string meshPath, Material* material, Camera* camera, Transform transform, RectCollider collisionRect);
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);
