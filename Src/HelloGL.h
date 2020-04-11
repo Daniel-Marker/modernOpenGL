@@ -69,7 +69,9 @@ private:
 	Texture2D* glassTexture2;
 	Texture2D* glassTexture3;
 
-	Texture2D* mapTexture;
+	Texture2D* room1Texture;
+	Texture2D* grassTexture;
+	Texture2D* fenceTexture;
 
 	Font* font;
 
