@@ -280,7 +280,7 @@ void HelloGL::InitObjects()
 
 	SceneObject* entrance_Backwall = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Backwall.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 3.0f, -9.019724f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(21.401081f, 3.0f, FLT_EPSILON)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(21.401081f, 3.0f, 0.5f)));
 	SceneObject* entrance_Door = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Door.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 3.0f, 8.259536f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(2.088745f, 3.0f, 0.336964f)));
@@ -290,30 +290,30 @@ void HelloGL::InitObjects()
 
 	SceneObject* entrance_LeftWall1 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall1.obj", basicMaterial, camera,
 		Transform(glm::vec3(-21.4011f, 3.0f, -2.640854f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(FLT_EPSILON, 3.0f, 6.378870f)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 6.378870f)));
 	SceneObject* entrance_LeftWall2 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall2.obj", basicMaterial, camera,
-		Transform(glm::vec3(-18.7374f, 3.0f, 5.132866f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(-0.63f, -0.675344f, 0.0f), glm::vec3(2.05372f, 3.0f, 2.10486f)));
+		Transform(glm::vec3(-19.3874f, 3.0f, 5.132866f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(-0.63f, -0.675344f, 0.0f), glm::vec3(1.997790f, 3.0f, 2.092283f)));
 	SceneObject* entrance_LeftWall3 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall3.obj", basicMaterial, camera,
 		Transform(glm::vec3(-9.74712f, 3.0f, 7.922576f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, FLT_EPSILON)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, 1.0f)));
 
 	SceneObject* entrance_RightWall1 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall1.obj", basicMaterial, camera,
 		Transform(glm::vec3(21.4011f, 3.0f, -2.640854f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(FLT_EPSILON, 3.0f, 6.378870f)));
-	SceneObject* entrance_RightWall2 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall_Right2.obj", basicMaterial, camera,
-		Transform(glm::vec3(18.7374f, 3.0f, 5.132866f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.63f, -0.675344f, 0.0f), glm::vec3(1.94372f, 3.0f, 2.02486f)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 6.378870f)));
+	SceneObject* entrance_RightWall2 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall2.obj", basicMaterial, camera,
+		Transform(glm::vec3(19.3874f, 3.0f, 5.132866f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(-0.63f, -0.675344f, 0.0f), glm::vec3(1.997790f, 3.0f, 2.092283f)));
 	SceneObject* entrance_RightWall3 = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Wall3.obj", basicMaterial, camera,
 		Transform(glm::vec3(9.74712f, 3.0f, 7.922576f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, FLT_EPSILON)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, 1.0f)));
 
 	SceneObject* entrance_Roof = new Cube(basicShader, mapTexture, "Res/Models/Entrance_Roof.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 6.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(21.401081f, FLT_EPSILON, 9.019729f)));
 
 	entrance->AddChild(entrance_Backwall);
-	entrance->AddChild(entrance_Door);
+	//entrance->AddChild(entrance_Door);
 	entrance->AddChild(entrance_Floor);
 	entrance->AddChild(entrance_LeftWall1);
 	entrance->AddChild(entrance_LeftWall2);
