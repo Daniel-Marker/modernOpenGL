@@ -2,15 +2,15 @@
 #include "Common.cpp"
 
 
-void Texture2D::GenerateTexture()
+void Texture2D::GenerateTexture(GLenum wrapType)
 {
 	glGenTextures(1, &_TextureID);
 	glBindTexture(_textureType, _TextureID);
 	glTexParameteri(_textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(_textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(_textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(_textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(_textureType, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(_textureType, GL_TEXTURE_WRAP_S, wrapType);
+	glTexParameteri(_textureType, GL_TEXTURE_WRAP_T, wrapType);
+	glTexParameteri(_textureType, GL_TEXTURE_WRAP_R, wrapType);
 }
 
 bool Texture2D::RawLoader(std::string path, int width, int height)

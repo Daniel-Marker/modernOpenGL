@@ -4,7 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Fix texture for first room
+
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -119,7 +119,7 @@ void HelloGL::Display()
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
-	font->OutputString("Skybox Test", glm::vec2(0.3f, 0.975f), glm::radians(textRotation), glm::vec2(0.025f, 0.025f), cUISpaceRight, cUISpaceTop);
+	font->OutputString("Room test", glm::vec2(0.3f, 0.975f), glm::radians(textRotation), glm::vec2(0.025f, 0.025f), cUISpaceRight, cUISpaceTop);
 
 	glFlush();
 	glutSwapBuffers();
@@ -351,7 +351,8 @@ void HelloGL::LoadTextures()
 	glassTexture3 = new Texture2D();
 	glassTexture3->Load("Res/Textures/glass3.bmp");
 
-	mapTexture = parrotTexture;
+	mapTexture = new Texture2D();
+	mapTexture->Load("Res/Textures/mapTexture.bmp");
 }
 
 void HelloGL::LoadMeshes()

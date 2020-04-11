@@ -16,7 +16,7 @@ protected:
 	bool _isTransparent;
 	GLenum _textureType;
 
-	void GenerateTexture();
+	void GenerateTexture(GLenum wrapType = GL_REPEAT);
 	bool RawLoader(std::string path, int width = 0, int height = 0);
 	bool BmpLoader(std::string path);
 	bool TgaLoader(std::string path);

@@ -4,7 +4,7 @@
 Cubemap::Cubemap(std::string top, std::string bottom, std::string left, std::string right, std::string front, std::string back)
 {
 	_textureType = GL_TEXTURE_CUBE_MAP;
-	GenerateTexture();
+	GenerateTexture(GL_CLAMP_TO_EDGE);
 
 	std::vector<std::string> texturePaths;
 	texturePaths.push_back(right);
