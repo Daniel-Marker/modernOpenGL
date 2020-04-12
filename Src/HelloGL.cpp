@@ -392,6 +392,45 @@ void HelloGL::InitObjects()
 	mainRoom->AddChild(main_RightWall2);
 	mainRoom->AddChild(main_Backwall);
 	sceneObjects.push_back(mainRoom);
+
+	SceneObject* sideRoom = new Cube(basicShader, room1Texture, emptyMesh, basicMaterial, camera,
+		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+
+	SceneObject* side_Floor = new Cube(basicShader, room1Texture, "Res/Models/Side_Floor.obj", basicMaterial, camera,
+		Transform(glm::vec3(37.9655f, 0.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(22.146629f, FLT_EPSILON, 14.277927f)));
+	SceneObject* side_Roof = new Cube(basicShader, room1Texture, "Res/Models/Side_Roof.obj", basicMaterial, camera,
+		Transform(glm::vec3(37.9228f, 6.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(20.401100f, 2.0f, 33.010269f)));
+
+	SceneObject* side_LeftWall = new Cube(basicShader, room1Texture, "Res/Models/Side_Wall.obj", basicMaterial, camera,
+		Transform(glm::vec3(37.7019f, 3.0f, -76.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(15.300825f, 3.0f, 1.0f)));
+	SceneObject* side_RightWall = new Cube(basicShader, room1Texture, "Res/Models/Side_Wall.obj", basicMaterial, camera,
+		Transform(glm::vec3(37.7019f, 3.0f, -10.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(15.300825f, 3.0f, 1.0f)));
+	SceneObject* side_BackWall = new Cube(basicShader, room1Texture, "Res/Models/Side_Backwall.obj", basicMaterial, camera,
+		Transform(glm::vec3(54.1661f, 2.51003f, -42.9568f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.163331f, 3.489993f, 33.937218f)));
+
+	sideRoom->AddChild(side_Floor);
+	sideRoom->AddChild(side_Roof);
+	sideRoom->AddChild(side_LeftWall);
+	sideRoom->AddChild(side_RightWall);
+	sideRoom->AddChild(side_BackWall);
+	sceneObjects.push_back(sideRoom);
+
+	SceneObject* sideRoom2 = new Cube(basicShader, room1Texture, emptyMesh, basicMaterial, camera,
+		Transform(glm::vec3(0.0f, -2.0f, -86.0394f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	sideRoom2->AddChild(new Cube(*((Cube*)side_Floor)));
+	sideRoom2->AddChild(new Cube(*((Cube*)side_Roof)));
+	sideRoom2->AddChild(new Cube(*((Cube*)side_LeftWall)));
+	sideRoom2->AddChild(new Cube(*((Cube*)side_RightWall)));
+	sideRoom2->AddChild(new Cube(*((Cube*)side_BackWall)));
+	sceneObjects.push_back(sideRoom2);
+
 }
 
 void HelloGL::LoadTextures()
