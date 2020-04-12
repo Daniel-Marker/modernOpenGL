@@ -6,6 +6,23 @@ SceneObject::SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Materia
 {
 	_isTransparent = texture->GetTransparent();
 	uniqueMesh = false;
+
+	_vao = new Vao();
+	_vao->BindVao();
+
+	BufferLayout layout;
+
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, mesh->GetVertexCount());
+	layout.AddElement(positionsLayout);
+	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, mesh->GetUVCount());
+	layout.AddElement(textureLayout);
+	layoutElement normalLayout = layoutElement(3, GL_FLOAT, false, mesh->GetVertexNormalCount());
+	layout.AddElement(normalLayout);
+
+	_vao->CreateVertexBuffer(_mesh, layout);
+	_vao->CreateIndexBuffer(_mesh);
+
+	_shader->SetUniformInt(0, "u_Texture");
 }
 
 SceneObject::SceneObject(Shader* shader, Texture2D* texture, std::string meshPath, Material* material, Camera* camera, Transform transform, RectCollider collisionRect):
@@ -15,10 +32,29 @@ SceneObject::SceneObject(Shader* shader, Texture2D* texture, std::string meshPat
 
 	_mesh = new Mesh(meshPath);
 	uniqueMesh = true;
+
+	_vao = new Vao();
+	_vao->BindVao();
+
+	BufferLayout layout;
+
+	layoutElement positionsLayout = layoutElement(3, GL_FLOAT, false, _mesh->GetVertexCount());
+	layout.AddElement(positionsLayout);
+	layoutElement textureLayout = layoutElement(2, GL_FLOAT, false, _mesh->GetUVCount());
+	layout.AddElement(textureLayout);
+	layoutElement normalLayout = layoutElement(3, GL_FLOAT, false, _mesh->GetVertexNormalCount());
+	layout.AddElement(normalLayout);
+
+	_vao->CreateVertexBuffer(_mesh, layout);
+	_vao->CreateIndexBuffer(_mesh);
+
+	_shader->SetUniformInt(0, "u_Texture");
 }
 
 SceneObject::~SceneObject()
 {
+	delete _vao;
+
 	for (int i = 0; i < _children.size(); i++)
 		delete _children[i];
 
@@ -30,6 +66,18 @@ SceneObject::~SceneObject()
 
 void SceneObject::Render()
 {
+	//set uniforms
+	glm::mat4 transformMatrix =
+		_worldTransform *
+		glm::translate(glm::mat4(1.0f), _transform.position) *
+		glm::eulerAngleXYZ(_transform.rotation.x, _transform.rotation.y, _transform.rotation.z) *
+		glm::scale(glm::mat4(1.0f), _transform.scale);
+	_shader->SetUniformMatrix(transformMatrix, "u_Transform");
+
+	_material->SetMaterialUniforms(_shader);
+
+	Renderer renderer;
+	renderer.Render(_vao, _shader, _texture);
 }
 
 void SceneObject::Update(float deltaTime)

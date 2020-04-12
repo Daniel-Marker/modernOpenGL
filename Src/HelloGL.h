@@ -5,7 +5,6 @@
 #include "GLUTCallbacks.h"
 #include "InputManager.h"
 #include "Structures.h"
-#include "Cube.h"
 #include "Shader.h"
 #include "Constants.h"
 #include "Texture2D.h"
@@ -16,6 +15,7 @@
 #include "RectCollider.h"
 #include "Camera.h"
 #include "Skybox.h"
+#include "Fish.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -72,6 +72,8 @@ private:
 	Texture2D* room1Texture;
 	Texture2D* grassTexture;
 	Texture2D* fenceTexture;
+	Texture2D* fishTankTexture;
+	Texture2D* fishTexture;
 
 	Font* font;
 

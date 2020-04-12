@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Fish.cpp" />
     <ClCompile Include="Src\Cubemap.cpp" />
     <ClCompile Include="Src\Skybox.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
@@ -147,12 +148,12 @@
     <ClCompile Include="Src\InputManager.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
-    <ClCompile Include="Src\Cube.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
     <ClCompile Include="Src\Texture2D.cpp" />
     <ClCompile Include="Src\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Fish.h" />
     <ClInclude Include="Src\Cubemap.h" />
     <ClInclude Include="Src\Skybox.h" />
     <ClInclude Include="Src\Camera.h" />
@@ -413,7 +414,6 @@
     <ClInclude Include="Include\extern\glm\vector_relational.hpp" />
     <ClInclude Include="Src\InputManager.h" />
     <ClInclude Include="Src\Renderer.h" />
-    <ClInclude Include="Src\Cube.h" />
     <ClInclude Include="Src\Shader.h" />
     <ClInclude Include="Src\Structures.h" />
     <ClInclude Include="Src\Texture2D.h" />

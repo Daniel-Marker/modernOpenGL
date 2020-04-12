@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Texture2D.h"
 #include "Vao.h"
+#include "Renderer.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "RectCollider.h"
