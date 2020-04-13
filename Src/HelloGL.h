@@ -51,6 +51,7 @@ private:
 	Shader* basicShader;
 	Shader* textShader;
 	Shader* skyboxShader;
+	Shader* fishShader;
 
 	Mesh* cubeMesh;
 	Mesh* rectMesh;

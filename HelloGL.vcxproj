@@ -554,6 +554,7 @@
     <None Include="Include\extern\glm\gtx\vector_angle.inl" />
     <None Include="Include\extern\glm\gtx\vector_query.inl" />
     <None Include="Include\extern\glm\gtx\wrap.inl" />
+    <None Include="Res\Shaders\FishShader.vert" />
     <None Include="Res\Shaders\FragBasic.frag" />
     <None Include="Res\Shaders\FragLighting.frag" />
     <None Include="Res\Shaders\Skybox.frag" />

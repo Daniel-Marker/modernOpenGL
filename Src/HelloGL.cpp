@@ -83,6 +83,9 @@ void HelloGL::Display()
 	basicShader->SetUniformMatrix(viewMatrix, "u_View");
 	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
 
+	fishShader->SetUniformMatrix(viewMatrix, "u_View");
+	fishShader->SetUniformMatrix(projMatrix, "u_Proj");
+
 	skyboxShader->SetUniformMatrix(glm::mat4(glm::mat3(viewMatrix)), "u_View");
 	skyboxShader->SetUniformMatrix(projMatrix, "u_Proj");
 
@@ -408,7 +411,7 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(52.0028f, 2.0f, -46.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 2.0f, 5.0f)));
 
-	SceneObject* side_Fish = new Fish(basicShader, fishTexture, "Res/Models/fish.obj", basicMaterial, camera,
+	SceneObject* side_Fish = new Fish(fishShader, fishTexture, "Res/Models/fish.obj", basicMaterial, camera,
 		Transform(glm::vec3(52.0028f, 2.0f, -46.0197f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 2.0f, 5.0f)));
 
@@ -488,4 +491,5 @@ void HelloGL::InitShaders()
 	basicShader = new Shader("Res/Shaders/VertexBasic.vert", "Res/Shaders/FragBasic.frag");
 	textShader = new Shader("Res/Shaders/UI vertex.vert", "Res/Shaders/UI frag.frag");
 	skyboxShader = new Shader("Res/Shaders/Skybox.vert", "Res/Shaders/Skybox.frag");
+	fishShader = new Shader("Res/Shaders/FishShader.vert", "Res/Shaders/FragBasic.frag");
 }

@@ -1300,5 +1300,6 @@
     <None Include="Res\Shaders\UI vertex.vert" />
     <None Include="Res\Shaders\Skybox.vert" />
     <None Include="Res\Shaders\Skybox.frag" />
+    <None Include="Res\Shaders\FishShader.vert" />
   </ItemGroup>
 </Project>
