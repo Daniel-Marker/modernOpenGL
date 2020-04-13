@@ -77,6 +77,7 @@ private:
 	Texture2D* fishTankTexture;
 	Texture2D* fishTexture;
 	Texture2D* penguinTexture;
+	Texture2D* fossilTexture;
 
 	Font* font;
 

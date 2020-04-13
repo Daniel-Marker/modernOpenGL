@@ -14,6 +14,7 @@
 //add special keys callback
 //Fix bug where rotating text scales wrt rotation
 //Implement order-independent transparency
+//Loading screen for the specific scene
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -440,6 +441,10 @@ void HelloGL::InitObjects()
 	penguinController->AddChild(side_Penguin3);
 	penguinController->AddChild(side_Penguin4);
 
+	SceneObject* side_Fossil = new SceneObject(basicShader, fossilTexture, "Res/Models/fossil.obj", basicMaterial, camera,
+		Transform(glm::vec3(37.7019f, 1.0f, -74.9977f), glm::vec3(0.0f, glm::radians(90.0f), 0.0f), glm::vec3(1.0f, 10.0f, 10.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_Floor)));
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_Roof)));
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_LeftWall)));
@@ -449,6 +454,7 @@ void HelloGL::InitObjects()
 	sideRoom2->AddChild(side_Fish);
 	sideRoom2->AddChild(penguinController);
 	sideRoom2->AddChild(side_Fence);
+	sideRoom2->AddChild(side_Fossil);
 	sceneObjects.push_back(sideRoom2);
 
 }
@@ -493,6 +499,9 @@ void HelloGL::LoadTextures()
 
 	penguinTexture = new Texture2D();
 	penguinTexture->Load("Res/Textures/Penguin.bmp");
+
+	fossilTexture = new Texture2D();
+	fossilTexture->Load("Res/Textures/fossil.bmp");
 }
 
 void HelloGL::LoadMeshes()
