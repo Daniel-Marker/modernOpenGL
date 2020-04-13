@@ -24,73 +24,73 @@
     <ClCompile Include="Include\extern\glm\detail\glm.cpp">
       <Filter>Header Files\glm</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Buffer.cpp">
+    <ClCompile Include="Src\SceneObjects\Fish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\BufferLayout.cpp">
+    <ClCompile Include="Src\SceneObjects\Penguin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\GLUTCallbacks.cpp">
+    <ClCompile Include="Src\SceneObjects\PenguinController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\HelloGL.cpp">
+    <ClCompile Include="Src\SceneObjects\SceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\InputManager.cpp">
+    <ClCompile Include="Src\Lighting + Materials\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\main.cpp">
+    <ClCompile Include="Src\Lighting + Materials\SceneLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Renderer.cpp">
+    <ClCompile Include="Src\Texture and Text\Cubemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Shader.cpp">
+    <ClCompile Include="Src\Texture and Text\Texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Texture2D.cpp">
+    <ClCompile Include="Src\Texture and Text\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Vao.cpp">
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\SceneObject.cpp">
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\BufferLayout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Mesh.cpp">
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Common.cpp">
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Vao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\SceneLight.cpp">
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Material.cpp">
+    <ClCompile Include="Src\Camera, Mesh and Collisions\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Font.cpp">
+    <ClCompile Include="Src\Camera, Mesh and Collisions\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\RectCollider.cpp">
+    <ClCompile Include="Src\Camera, Mesh and Collisions\RectCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera.cpp">
+    <ClCompile Include="Src\Other\Common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Skybox.cpp">
+    <ClCompile Include="Src\Other\GLUTCallbacks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Cubemap.cpp">
+    <ClCompile Include="Src\Other\HelloGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Fish.cpp">
+    <ClCompile Include="Src\Other\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\PenguinController.cpp">
+    <ClCompile Include="Src\Other\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Penguin.cpp">
+    <ClCompile Include="Src\Other\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -827,73 +827,73 @@
     <ClInclude Include="Include\extern\glm\gtx\wrap.hpp">
       <Filter>Header Files\glm</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Buffer.h">
+    <ClInclude Include="Src\SceneObjects\Fish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\BufferLayout.h">
+    <ClInclude Include="Src\SceneObjects\Penguin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Constants.h">
+    <ClInclude Include="Src\SceneObjects\PenguinController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\GLUTCallbacks.h">
+    <ClInclude Include="Src\SceneObjects\SceneObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\HelloGL.h">
+    <ClInclude Include="Src\Lighting + Materials\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\InputManager.h">
+    <ClInclude Include="Src\Lighting + Materials\SceneLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Renderer.h">
+    <ClInclude Include="Src\Texture and Text\Cubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Shader.h">
+    <ClInclude Include="Src\Texture and Text\Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Structures.h">
+    <ClInclude Include="Src\Texture and Text\Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Texture2D.h">
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Vao.h">
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\BufferLayout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\SceneObject.h">
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Mesh.h">
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Vao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\SceneLight.h">
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Material.h">
+    <ClInclude Include="Src\Camera, Mesh and Collisions\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Font.h">
+    <ClInclude Include="Src\Camera, Mesh and Collisions\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\RectCollider.h">
+    <ClInclude Include="Src\Camera, Mesh and Collisions\RectCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Camera.h">
+    <ClInclude Include="Src\Other\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Skybox.h">
+    <ClInclude Include="Src\Other\GLUTCallbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Cubemap.h">
+    <ClInclude Include="Src\Other\HelloGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Fish.h">
+    <ClInclude Include="Src\Other\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\PenguinController.h">
+    <ClInclude Include="Src\Other\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Penguin.h">
+    <ClInclude Include="Src\Other\Structures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

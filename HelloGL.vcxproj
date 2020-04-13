@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\extern;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\extern;$(ProjectDir)Src\Camera, Mesh and Collisions;$(ProjectDir)Src\Lighting + Materials;$(ProjectDir)Src\Other;$(ProjectDir)Src\SceneObjects;$(ProjectDir)Src\Texture and Text;$(ProjectDir)Src\VAO, Buffer, Shader and Renderer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,49 +129,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Penguin.cpp" />
-    <ClCompile Include="Src\PenguinController.cpp" />
-    <ClCompile Include="Src\Fish.cpp" />
-    <ClCompile Include="Src\Cubemap.cpp" />
-    <ClCompile Include="Src\Skybox.cpp" />
-    <ClCompile Include="Src\Camera.cpp" />
-    <ClCompile Include="Src\RectCollider.cpp" />
-    <ClCompile Include="Src\Font.cpp" />
-    <ClCompile Include="Src\Material.cpp" />
-    <ClCompile Include="Src\SceneLight.cpp" />
-    <ClCompile Include="Src\Common.cpp" />
-    <ClCompile Include="Src\Mesh.cpp" />
-    <ClCompile Include="Src\SceneObject.cpp" />
-    <ClCompile Include="Src\Buffer.cpp" />
-    <ClCompile Include="Src\BufferLayout.cpp" />
-    <ClCompile Include="Src\GLUTCallbacks.cpp" />
-    <ClCompile Include="Src\HelloGL.cpp" />
+    <ClCompile Include="Src\SceneObjects\Penguin.cpp" />
+    <ClCompile Include="Src\SceneObjects\PenguinController.cpp" />
+    <ClCompile Include="Src\SceneObjects\Fish.cpp" />
+    <ClCompile Include="Src\Texture and Text\Cubemap.cpp" />
+    <ClCompile Include="Src\Other\Skybox.cpp" />
+    <ClCompile Include="Src\Camera, Mesh and Collisions\Camera.cpp" />
+    <ClCompile Include="Src\Camera, Mesh and Collisions\RectCollider.cpp" />
+    <ClCompile Include="Src\Texture and Text\Font.cpp" />
+    <ClCompile Include="Src\Lighting + Materials\Material.cpp" />
+    <ClCompile Include="Src\Lighting + Materials\SceneLight.cpp" />
+    <ClCompile Include="Src\Other\Common.cpp" />
+    <ClCompile Include="Src\Camera, Mesh and Collisions\Mesh.cpp" />
+    <ClCompile Include="Src\SceneObjects\SceneObject.cpp" />
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Buffer.cpp" />
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\BufferLayout.cpp" />
+    <ClCompile Include="Src\Other\GLUTCallbacks.cpp" />
+    <ClCompile Include="Src\Other\HelloGL.cpp" />
     <ClCompile Include="Include\extern\glm\detail\glm.cpp" />
-    <ClCompile Include="Src\InputManager.cpp" />
-    <ClCompile Include="Src\main.cpp" />
-    <ClCompile Include="Src\Renderer.cpp" />
-    <ClCompile Include="Src\Shader.cpp" />
-    <ClCompile Include="Src\Texture2D.cpp" />
-    <ClCompile Include="Src\Vao.cpp" />
+    <ClCompile Include="Src\Other\InputManager.cpp" />
+    <ClCompile Include="Src\Other\main.cpp" />
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Renderer.cpp" />
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Shader.cpp" />
+    <ClCompile Include="Src\Texture and Text\Texture2D.cpp" />
+    <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\Penguin.h" />
-    <ClInclude Include="Src\PenguinController.h" />
-    <ClInclude Include="Src\Fish.h" />
-    <ClInclude Include="Src\Cubemap.h" />
-    <ClInclude Include="Src\Skybox.h" />
-    <ClInclude Include="Src\Camera.h" />
-    <ClInclude Include="Src\RectCollider.h" />
-    <ClInclude Include="Src\Font.h" />
-    <ClInclude Include="Src\Material.h" />
-    <ClInclude Include="Src\SceneLight.h" />
-    <ClInclude Include="Src\Mesh.h" />
-    <ClInclude Include="Src\SceneObject.h" />
-    <ClInclude Include="Src\Buffer.h" />
-    <ClInclude Include="Src\BufferLayout.h" />
-    <ClInclude Include="Src\Constants.h" />
-    <ClInclude Include="Src\GLUTCallbacks.h" />
-    <ClInclude Include="Src\HelloGL.h" />
+    <ClInclude Include="Src\SceneObjects\Penguin.h" />
+    <ClInclude Include="Src\SceneObjects\PenguinController.h" />
+    <ClInclude Include="Src\SceneObjects\Fish.h" />
+    <ClInclude Include="Src\Texture and Text\Cubemap.h" />
+    <ClInclude Include="Src\Other\Skybox.h" />
+    <ClInclude Include="Src\Camera, Mesh and Collisions\Camera.h" />
+    <ClInclude Include="Src\Camera, Mesh and Collisions\RectCollider.h" />
+    <ClInclude Include="Src\Texture and Text\Font.h" />
+    <ClInclude Include="Src\Lighting + Materials\Material.h" />
+    <ClInclude Include="Src\Lighting + Materials\SceneLight.h" />
+    <ClInclude Include="Src\Camera, Mesh and Collisions\Mesh.h" />
+    <ClInclude Include="Src\SceneObjects\SceneObject.h" />
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Buffer.h" />
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\BufferLayout.h" />
+    <ClInclude Include="Src\Other\Constants.h" />
+    <ClInclude Include="Src\Other\GLUTCallbacks.h" />
+    <ClInclude Include="Src\Other\HelloGL.h" />
     <ClInclude Include="Include\extern\glm\common.hpp" />
     <ClInclude Include="Include\extern\glm\detail\compute_common.hpp" />
     <ClInclude Include="Include\extern\glm\detail\compute_vector_relational.hpp" />
@@ -416,12 +416,12 @@
     <ClInclude Include="Include\extern\glm\vec3.hpp" />
     <ClInclude Include="Include\extern\glm\vec4.hpp" />
     <ClInclude Include="Include\extern\glm\vector_relational.hpp" />
-    <ClInclude Include="Src\InputManager.h" />
-    <ClInclude Include="Src\Renderer.h" />
-    <ClInclude Include="Src\Shader.h" />
-    <ClInclude Include="Src\Structures.h" />
-    <ClInclude Include="Src\Texture2D.h" />
-    <ClInclude Include="Src\Vao.h" />
+    <ClInclude Include="Src\Other\InputManager.h" />
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Renderer.h" />
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Shader.h" />
+    <ClInclude Include="Src\Other\Structures.h" />
+    <ClInclude Include="Src\Texture and Text\Texture2D.h" />
+    <ClInclude Include="Src\VAO, Buffer, Shader and Renderer\Vao.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Include\extern\glm\detail\func_common.inl" />
