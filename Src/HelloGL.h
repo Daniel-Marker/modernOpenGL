@@ -16,6 +16,8 @@
 #include "Camera.h"
 #include "Skybox.h"
 #include "Fish.h"
+#include "PenguinController.h"
+#include "Penguin.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -61,7 +63,6 @@ private:
 	std::vector<SceneLight*> sceneLights;
 	Material* basicMaterial;
 
-	Texture2D* penguinTexture;
 	Texture2D* parrotTexture;
 	Texture2D* parrotTexture32;
 	Texture2D* parrotTextureTGA;
@@ -75,6 +76,7 @@ private:
 	Texture2D* fenceTexture;
 	Texture2D* fishTankTexture;
 	Texture2D* fishTexture;
+	Texture2D* penguinTexture;
 
 	Font* font;
 

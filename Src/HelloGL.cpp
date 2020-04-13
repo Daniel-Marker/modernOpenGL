@@ -415,6 +415,31 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(52.0028f, 2.0f, -46.0197f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 2.0f, 5.0f)));
 
+
+	SceneObject* side_Fence = new SceneObject(basicShader, fenceTexture, "Res/Models/Outside_Fence.obj", basicMaterial, camera,
+		Transform(glm::vec3(37.7019f, 0.5f, -28.0188f), glm::vec3(0.0f, glm::radians(90.0f), 0.0f), glm::vec3(1.0f, 0.5f, 1.05481f)),
+		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.098687f, 2.0f, 14.505868f)));
+
+	SceneObject* penguinController = new PenguinController(basicShader, room1Texture, emptyMesh, basicMaterial, camera,
+		Transform(glm::vec3(37.7019f, 0.0f, -19.01925f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	SceneObject* side_Penguin = new Penguin(basicShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+		Transform(glm::vec3(2.0f, 0.0f, 2.0f), glm::vec3(0.0f, glm::radians(45.0), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 0.0f);
+	SceneObject* side_Penguin2 = new Penguin(basicShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+		Transform(glm::vec3(-2.0f, 0.0f, 2.0f), glm::vec3(0.0f, glm::radians(90.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 1.0f);
+	SceneObject* side_Penguin3 = new Penguin(basicShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+		Transform(glm::vec3(-2.0f, 0.0f, -2.0f), glm::vec3(0.0f, glm::radians(135.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 2.0f);
+	SceneObject* side_Penguin4 = new Penguin(basicShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+		Transform(glm::vec3(2.0f, 0.0f, -2.0f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 3.0f);
+	penguinController->AddChild(side_Penguin);
+	penguinController->AddChild(side_Penguin2);
+	penguinController->AddChild(side_Penguin3);
+	penguinController->AddChild(side_Penguin4);
+
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_Floor)));
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_Roof)));
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_LeftWall)));
@@ -422,15 +447,14 @@ void HelloGL::InitObjects()
 	sideRoom2->AddChild(new SceneObject(*((SceneObject*)side_BackWall)));
 	sideRoom2->AddChild(side_FishTank);
 	sideRoom2->AddChild(side_Fish);
+	sideRoom2->AddChild(penguinController);
+	sideRoom2->AddChild(side_Fence);
 	sceneObjects.push_back(sideRoom2);
 
 }
 
 void HelloGL::LoadTextures()
 {
-	penguinTexture = new Texture2D();
-	penguinTexture->Load("Res/Textures/penguins.raw", 512, 512);
-
 	parrotTexture = new Texture2D();
 	parrotTexture->Load("Res/Textures/parrot.bmp");
 
@@ -466,6 +490,9 @@ void HelloGL::LoadTextures()
 
 	fishTexture = new Texture2D();
 	fishTexture->Load("Res/Textures/fish.bmp");
+
+	penguinTexture = new Texture2D();
+	penguinTexture->Load("Res/Textures/Penguin.bmp");
 }
 
 void HelloGL::LoadMeshes()
