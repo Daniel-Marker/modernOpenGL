@@ -17,7 +17,7 @@ struct LightData
     vec3 SpecularColor;
     float SpecularIntensity;
 };
-#define MAX_LIGHTS 2
+#define MAX_LIGHTS 10
 
 struct Material
 {

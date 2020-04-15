@@ -61,7 +61,10 @@ private:
 	Mesh* emptyMesh;
 
 	std::vector<SceneLight*> sceneLights;
+	bool lightsDim;
+
 	Material* basicMaterial;
+	Material* woodMaterial;
 
 	Texture2D* parrotTexture;
 	Texture2D* parrotTexture32;
@@ -78,6 +81,7 @@ private:
 	Texture2D* fishTexture;
 	Texture2D* penguinTexture;
 	Texture2D* fossilTexture;
+	Texture2D* blankTexture;
 
 	Font* font;
 
@@ -87,7 +91,5 @@ private:
 
 	int windowWidth, windowHeight;
 	float aspectRatio;
-
-	float textRotation;
 };
 

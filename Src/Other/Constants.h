@@ -19,4 +19,6 @@ const float cUISpaceTop = 1.0f;
 const float cTextSpacingMultiplier = 500.0f;
 const float cTextUVOffset = 1.0f / 50.0f;
 
-#define MAX_LIGHTS 2
+const float cDimMultiplier = 1 / 10.0f;
+
+#define MAX_LIGHTS 10
