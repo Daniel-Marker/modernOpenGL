@@ -4,7 +4,8 @@
 #include <string>
 
 //todo ASAP
-
+//Get images for main room
+//Display cases for main room
 
 //todo whenever
 //Have code actually use the return value of texture load
