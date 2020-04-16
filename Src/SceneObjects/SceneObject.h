@@ -66,7 +66,10 @@ public:
 	}
 
 	Camera* GetCamera() { return _camera; };
-
+	Shader* GetShader() { return _shader; };
+	Texture2D* GetTexture() { return _texture; };
+	Mesh* GetMesh() { return _mesh; };
+	Material* GetMaterial() { return _material; };
 };
 
 bool distanceComparison(SceneObject* object, SceneObject* other);

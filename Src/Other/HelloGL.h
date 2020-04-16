@@ -18,6 +18,7 @@
 #include "Fish.h"
 #include "PenguinController.h"
 #include "Penguin.h"
+#include "Artwork.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

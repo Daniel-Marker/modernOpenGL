@@ -263,6 +263,13 @@ void HelloGL::InitObjects()
 	Cubemap* skyboxCubemap = new Cubemap("Res/Textures/top.bmp", "Res/Textures/bottom.bmp", "Res/Textures/left.bmp", "Res/Textures/right.bmp", "Res/Textures/front.bmp", "Res/Textures/back.bmp");
 	skybox = new Skybox(cubeMesh, skyboxCubemap, skyboxShader);
 
+	SceneObject painting = SceneObject(lightingShader, blankTexture, "Res/Models/Frame.obj", woodMaterial, camera,
+		Transform(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(4.0f, 4.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	SceneObject picture = SceneObject(lightingShader, blankTexture, "Res/Models/Plane.obj", basicMaterial, camera,
+		Transform(glm::vec3(0.0f, 0.0f, -0.027925), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.313236f, 0.347159f, 0.268114f)),
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+
 
 	SceneObject* entrance = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -404,13 +411,16 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(54.1661f, 2.51003f, -42.9568f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.163331f, 3.489993f, 33.937218f)));
 
-	SceneObject* side_Painting = new SceneObject(lightingShader, blankTexture, "Res/Models/Frame.obj", woodMaterial, camera,
+	Artwork* side_Painting = new Artwork(&painting,
 		Transform(glm::vec3(52.9548f, 3.0f, -42.9568f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-	SceneObject* picture = new SceneObject(lightingShader, blankTexture, "Res/Models/Plane.obj", basicMaterial, camera,
-		Transform(glm::vec3(0.0f, 0.0f, -0.027925), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.313236f, 0.347159f, 0.268114f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-	side_Painting->AddChild(picture);
+		&picture, grassTexture);
+
+	Artwork* side_Painting2 = new Artwork(&painting,
+		Transform(glm::vec3(52.9548f, 3.0f, -25.0f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, "Res/Textures/robbin.bmp");
+	Artwork* side_Painting3 = new Artwork(&painting,
+		Transform(glm::vec3(52.9548f, 3.0f, -60.9136f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, "Res/Textures/deer.bmp");
 
 	sideRoom->AddChild(side_Floor);
 	sideRoom->AddChild(side_Roof);
@@ -418,6 +428,8 @@ void HelloGL::InitObjects()
 	sideRoom->AddChild(side_RightWall);
 	sideRoom->AddChild(side_BackWall);
 	sideRoom->AddChild(side_Painting);
+	sideRoom->AddChild(side_Painting2);
+	sideRoom->AddChild(side_Painting3);
 	sceneObjects.push_back(sideRoom);
 
 

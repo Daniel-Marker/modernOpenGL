@@ -93,6 +93,9 @@
     <ClCompile Include="Src\Other\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\SceneObjects\Artwork.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\extern\glm\detail\_features.hpp">
@@ -894,6 +897,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Other\Structures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\SceneObjects\Artwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

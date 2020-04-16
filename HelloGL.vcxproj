@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\SceneObjects\Artwork.cpp" />
     <ClCompile Include="Src\SceneObjects\Penguin.cpp" />
     <ClCompile Include="Src\SceneObjects\PenguinController.cpp" />
     <ClCompile Include="Src\SceneObjects\Fish.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Src\VAO, Buffer, Shader and Renderer\Vao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\SceneObjects\Artwork.h" />
     <ClInclude Include="Src\SceneObjects\Penguin.h" />
     <ClInclude Include="Src\SceneObjects\PenguinController.h" />
     <ClInclude Include="Src\SceneObjects\Fish.h" />
