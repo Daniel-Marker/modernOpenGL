@@ -22,8 +22,6 @@ HelloGL::HelloGL(int argc, char* argv[])
 	InitGL(argc, argv);
 	InitShaders();
 	
-	lightsDim = false;
-
 	LoadTextures();
 	LoadMeshes();
 
@@ -39,19 +37,6 @@ HelloGL::HelloGL(int argc, char* argv[])
 HelloGL::~HelloGL()
 {
 	delete camera;
-	delete lightingShader;
-	delete basicShader;
-	delete textShader;
-	delete skyboxShader;
-
-	delete penguinTexture;
-	delete parrotTexture;
-	delete parrotTexture32;
-	delete parrotTextureTGA;
-	delete betterCubeTexture;
-	delete glassTexture;
-	delete glassTexture2;
-	delete glassTexture3;
 
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
@@ -59,9 +44,21 @@ HelloGL::~HelloGL()
 	}
 	sceneObjects.clear();
 
+	delete lightingShader;
+	delete basicShader;
+	delete textShader;
+	delete skyboxShader;
+	delete fishShader;
+
 	delete cubeMesh;
-	delete rectMesh;
-	delete betterCubeMesh;
+	delete emptyMesh;
+	delete entranceWall1;
+	delete entranceWall2;
+	delete entranceWall3;
+	delete outsideFence;
+	delete mainWall;
+	delete sideWall;
+	delete penguin;
 
 	for (int i = 0; i < sceneLights.size(); i++)
 	{
@@ -69,7 +66,19 @@ HelloGL::~HelloGL()
 	}
 
 	delete basicMaterial;
+	delete woodMaterial;
+
+	delete mapTexture;
+	delete grassTexture;
+	delete fenceTexture;
+	delete fishTankTexture;
+	delete fishTexture;
+	delete penguinTexture;
+	delete fossilTexture;
+	delete blankTexture;
+
 	delete font;
+
 	delete skybox;
 }
 
@@ -215,6 +224,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitLights()
 {
+	lightsDim = false;
+
 	sceneLights.reserve(MAX_LIGHTS);
 
 	SceneLight* outsideLight = new SceneLight(glm::vec4(20.0f, 5.0f, 50.0f, 1.0f),
@@ -245,7 +256,6 @@ void HelloGL::InitLights()
 
 void HelloGL::InitObjects()
 {
-
 	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.2f, 0.5f)));
 
 	font = new Font("Res/Fonts/Press Start 2P.bmp", 32, 32, ' ', textShader);
@@ -254,45 +264,45 @@ void HelloGL::InitObjects()
 	skybox = new Skybox(cubeMesh, skyboxCubemap, skyboxShader);
 
 
-	SceneObject* entrance = new SceneObject(lightingShader, room1Texture, emptyMesh, basicMaterial, camera,
+	SceneObject* entrance = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 
-	SceneObject* entrance_LeftBackwall = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall3.obj", basicMaterial, camera,
+	SceneObject* entrance_LeftBackwall = new SceneObject(lightingShader, mapTexture, entranceWall3, basicMaterial, camera,
 		Transform(glm::vec3(-12.7427f, 3.0f, -9.019724f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, 1.0f)));
-	SceneObject* entrance_RightBackwall = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall3.obj", basicMaterial, camera,
+	SceneObject* entrance_RightBackwall = new SceneObject(lightingShader, mapTexture, entranceWall3, basicMaterial, camera,
 		Transform(glm::vec3(12.7427f, 3.0f, -9.019724f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, 1.0f)));
 
-	SceneObject* entrance_Door = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Door.obj", basicMaterial, camera,
+	SceneObject* entrance_Door = new SceneObject(lightingShader, mapTexture, "Res/Models/Entrance_Door.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 3.0f, 8.259536f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(2.088745f, 3.0f, 0.336964f)));
-	SceneObject* entrance_Floor = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Floor.obj", basicMaterial, camera,
+	SceneObject* entrance_Floor = new SceneObject(lightingShader, mapTexture, "Res/Models/Entrance_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(21.401081f, FLT_EPSILON, 9.019729f)));
 
-	SceneObject* entrance_LeftWall1 = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall1.obj", basicMaterial, camera,
+	SceneObject* entrance_LeftWall1 = new SceneObject(lightingShader, mapTexture, entranceWall1, basicMaterial, camera,
 		Transform(glm::vec3(-21.4011f, 3.0f, -2.640854f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 6.378870f)));
-	SceneObject* entrance_LeftWall2 = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall2.obj", basicMaterial, camera,
+	SceneObject* entrance_LeftWall2 = new SceneObject(lightingShader, mapTexture, entranceWall2, basicMaterial, camera,
 		Transform(glm::vec3(-19.3874f, 3.0f, 5.132866f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.997790f, 3.0f, 2.092283f)));
-	SceneObject* entrance_LeftWall3 = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall3.obj", basicMaterial, camera,
+	SceneObject* entrance_LeftWall3 = new SceneObject(lightingShader, mapTexture, entranceWall3, basicMaterial, camera,
 		Transform(glm::vec3(-9.74712f, 3.0f, 7.922576f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, 1.0f)));
 
-	SceneObject* entrance_RightWall1 = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall1.obj", basicMaterial, camera,
+	SceneObject* entrance_RightWall1 = new SceneObject(lightingShader, mapTexture, entranceWall1, basicMaterial, camera,
 		Transform(glm::vec3(21.4011f, 3.0f, -2.640854f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 6.378870f)));
-	SceneObject* entrance_RightWall2 = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall2.obj", basicMaterial, camera,
+	SceneObject* entrance_RightWall2 = new SceneObject(lightingShader, mapTexture, entranceWall2, basicMaterial, camera,
 		Transform(glm::vec3(19.3874f, 3.0f, 5.132866f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.997790f, 3.0f, 2.092283f)));
-	SceneObject* entrance_RightWall3 = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Wall3.obj", basicMaterial, camera,
+	SceneObject* entrance_RightWall3 = new SceneObject(lightingShader, mapTexture, entranceWall3, basicMaterial, camera,
 		Transform(glm::vec3(9.74712f, 3.0f, 7.922576f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.658378f, 3.0f, 1.0f)));
 
-	SceneObject* entrance_Roof = new SceneObject(lightingShader, room1Texture, "Res/Models/Entrance_Roof.obj", basicMaterial, camera,
+	SceneObject* entrance_Roof = new SceneObject(lightingShader, mapTexture, "Res/Models/Entrance_Roof.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 6.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(21.401081f, FLT_EPSILON, 9.019729f)));
 
@@ -310,18 +320,17 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(entrance);
 
 
-
-	SceneObject* outside = new SceneObject(lightingShader, room1Texture, emptyMesh, basicMaterial, camera,
+	SceneObject* outside = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 
 	SceneObject* outside_Floor = new SceneObject(lightingShader, grassTexture, "Res/Models/Outside_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, 10.1075f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(22.146629f, FLT_EPSILON, 14.277927f)));
-	SceneObject* outside_LeftFence = new SceneObject(lightingShader, fenceTexture, "Res/Models/Outside_Fence.obj", basicMaterial, camera,
+	SceneObject* outside_LeftFence = new SceneObject(lightingShader, fenceTexture, outsideFence, basicMaterial, camera,
 		Transform(glm::vec3(-22.3011f, 1.0f, 18.2439f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.098687f, 0.986865f, 14.505868f)));
-	SceneObject* outside_RightFence = new SceneObject(lightingShader, fenceTexture, "Res/Models/Outside_Fence.obj", basicMaterial, camera,
+	SceneObject* outside_RightFence = new SceneObject(lightingShader, fenceTexture, outsideFence, basicMaterial, camera,
 		Transform(glm::vec3(22.3011f, 1.0f, 18.2439f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.098687f, 0.986865f, 14.505868f)));
 	SceneObject* outside_BackFence = new SceneObject(lightingShader, fenceTexture, "Res/Models/Outside_BackFence.obj", basicMaterial, camera,
@@ -335,32 +344,32 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(outside);
 
 
-	SceneObject* mainRoom = new SceneObject(lightingShader, room1Texture, emptyMesh, basicMaterial, camera,
+	SceneObject* mainRoom = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 
-	SceneObject* main_Floor = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Floor.obj", basicMaterial, camera,
+	SceneObject* main_Floor = new SceneObject(lightingShader, mapTexture, "Res/Models/Main_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(22.146629f, FLT_EPSILON, 14.277927f)));
-	SceneObject* main_Roof = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Roof.obj", basicMaterial, camera,
+	SceneObject* main_Roof = new SceneObject(lightingShader, mapTexture, "Res/Models/Main_Roof.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 6.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(20.401100f, 2.0f, 33.010269f)));
 
-	SceneObject* main_LeftWall1 = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Wall.obj", basicMaterial, camera,
+	SceneObject* main_LeftWall1 = new SceneObject(lightingShader, mapTexture, mainWall, basicMaterial, camera,
 		Transform(glm::vec3(-21.4011f, 3.0f, -24.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 15.0f)));
-	SceneObject* main_LeftWall2 = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Wall.obj", basicMaterial, camera,
+	SceneObject* main_LeftWall2 = new SceneObject(lightingShader, mapTexture, mainWall, basicMaterial, camera,
 		Transform(glm::vec3(-21.4011f, 3.0f, -62.0197), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 15.0f)));
 
-	SceneObject* main_RightWall1 = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Wall.obj", basicMaterial, camera,
+	SceneObject* main_RightWall1 = new SceneObject(lightingShader, mapTexture, mainWall, basicMaterial, camera,
 		Transform(glm::vec3(21.4011f, 3.0f, -24.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 15.0f)));
-	SceneObject* main_RightWall2 = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Wall.obj", basicMaterial, camera,
+	SceneObject* main_RightWall2 = new SceneObject(lightingShader, mapTexture, mainWall, basicMaterial, camera,
 		Transform(glm::vec3(21.4011f, 3.0f, -62.0197), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 3.0f, 15.0f)));
 
-	SceneObject* main_Backwall = new SceneObject(lightingShader, room1Texture, "Res/Models/Main_Backwall.obj", basicMaterial, camera,
+	SceneObject* main_Backwall = new SceneObject(lightingShader, mapTexture, "Res/Models/Main_Backwall.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 3.0f, -76.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(20.401094f, 3.0f, 1.0f)));
 
@@ -373,32 +382,32 @@ void HelloGL::InitObjects()
 	mainRoom->AddChild(main_Backwall);
 	sceneObjects.push_back(mainRoom);
 
-	SceneObject* sideRoom = new SceneObject(lightingShader, room1Texture, emptyMesh, basicMaterial, camera,
+
+	SceneObject* sideRoom = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 
-	SceneObject* side_Floor = new SceneObject(lightingShader, room1Texture, "Res/Models/Side_Floor.obj", basicMaterial, camera,
+	SceneObject* side_Floor = new SceneObject(lightingShader, mapTexture, "Res/Models/Side_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(37.9655f, 0.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.51f, 0.0f), glm::vec3(22.146629f, FLT_EPSILON, 14.277927f)));
-	SceneObject* side_Roof = new SceneObject(lightingShader, room1Texture, "Res/Models/Side_Roof.obj", basicMaterial, camera,
+	SceneObject* side_Roof = new SceneObject(lightingShader, mapTexture, "Res/Models/Side_Roof.obj", basicMaterial, camera,
 		Transform(glm::vec3(37.9228f, 6.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(20.401100f, 2.0f, 33.010269f)));
 
-	SceneObject* side_LeftWall = new SceneObject(lightingShader, room1Texture, "Res/Models/Side_Wall.obj", basicMaterial, camera,
+	SceneObject* side_LeftWall = new SceneObject(lightingShader, mapTexture, sideWall, basicMaterial, camera,
 		Transform(glm::vec3(37.7019f, 3.0f, -76.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(15.300825f, 3.0f, 1.0f)));
-	SceneObject* side_RightWall = new SceneObject(lightingShader, room1Texture, "Res/Models/Side_Wall.obj", basicMaterial, camera,
+	SceneObject* side_RightWall = new SceneObject(lightingShader, mapTexture, sideWall, basicMaterial, camera,
 		Transform(glm::vec3(37.7019f, 3.0f, -10.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(15.300825f, 3.0f, 1.0f)));
-	SceneObject* side_BackWall = new SceneObject(lightingShader, room1Texture, "Res/Models/Side_Backwall.obj", basicMaterial, camera,
+	SceneObject* side_BackWall = new SceneObject(lightingShader, mapTexture, "Res/Models/Side_Backwall.obj", basicMaterial, camera,
 		Transform(glm::vec3(54.1661f, 2.51003f, -42.9568f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.163331f, 3.489993f, 33.937218f)));
 
 	SceneObject* side_Painting = new SceneObject(lightingShader, blankTexture, "Res/Models/Frame.obj", woodMaterial, camera,
 		Transform(glm::vec3(52.9548f, 3.0f, -42.9568f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-
-	SceneObject* picture = new SceneObject(lightingShader, parrotTexture, "Res/Models/Plane.obj", basicMaterial, camera,
+	SceneObject* picture = new SceneObject(lightingShader, blankTexture, "Res/Models/Plane.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, -0.027925), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.313236f, 0.347159f, 0.268114f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 	side_Painting->AddChild(picture);
@@ -411,7 +420,8 @@ void HelloGL::InitObjects()
 	sideRoom->AddChild(side_Painting);
 	sceneObjects.push_back(sideRoom);
 
-	SceneObject* sideRoom2 = new SceneObject(lightingShader, room1Texture, emptyMesh, basicMaterial, camera,
+
+	SceneObject* sideRoom2 = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, -86.0394f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 
@@ -423,24 +433,23 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(52.0028f, 2.0f, -46.0197f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 2.0f, 5.0f)));
 
-
-	SceneObject* side_Fence = new SceneObject(lightingShader, fenceTexture, "Res/Models/Outside_Fence.obj", basicMaterial, camera,
+	SceneObject* side_Fence = new SceneObject(lightingShader, fenceTexture, outsideFence, basicMaterial, camera,
 		Transform(glm::vec3(37.7019f, 0.5f, -28.0188f), glm::vec3(0.0f, glm::radians(90.0f), 0.0f), glm::vec3(1.0f, 0.5f, 1.05481f)),
 		RectCollider(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.098687f, 2.0f, 14.505868f)));
 
-	SceneObject* penguinController = new PenguinController(lightingShader, room1Texture, emptyMesh, basicMaterial, camera,
+	SceneObject* penguinController = new PenguinController(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(37.7019f, 0.0f, -19.01925f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-	SceneObject* side_Penguin = new Penguin(lightingShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+	SceneObject* side_Penguin = new Penguin(lightingShader, penguinTexture, penguin, basicMaterial, camera,
 		Transform(glm::vec3(2.0f, 0.0f, 2.0f), glm::vec3(0.0f, glm::radians(45.0), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 0.0f);
-	SceneObject* side_Penguin2 = new Penguin(lightingShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+	SceneObject* side_Penguin2 = new Penguin(lightingShader, penguinTexture, penguin, basicMaterial, camera,
 		Transform(glm::vec3(-2.0f, 0.0f, 2.0f), glm::vec3(0.0f, glm::radians(90.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 1.0f);
-	SceneObject* side_Penguin3 = new Penguin(lightingShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+	SceneObject* side_Penguin3 = new Penguin(lightingShader, penguinTexture, penguin, basicMaterial, camera,
 		Transform(glm::vec3(-2.0f, 0.0f, -2.0f), glm::vec3(0.0f, glm::radians(135.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 2.0f);
-	SceneObject* side_Penguin4 = new Penguin(lightingShader, penguinTexture, "Res/Models/Penguin.obj", basicMaterial, camera,
+	SceneObject* side_Penguin4 = new Penguin(lightingShader, penguinTexture, penguin, basicMaterial, camera,
 		Transform(glm::vec3(2.0f, 0.0f, -2.0f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 3.0f);
 	penguinController->AddChild(side_Penguin);
@@ -463,34 +472,12 @@ void HelloGL::InitObjects()
 	sideRoom2->AddChild(side_Fence);
 	sideRoom2->AddChild(side_Fossil);
 	sceneObjects.push_back(sideRoom2);
-
 }
 
 void HelloGL::LoadTextures()
 {
-	parrotTexture = new Texture2D();
-	parrotTexture->Load("Res/Textures/parrot.bmp");
-
-	parrotTexture32 = new Texture2D();
-	parrotTexture32->Load("Res/Textures/parrot32.bmp");
-
-	parrotTextureTGA = new Texture2D();
-	parrotTextureTGA->Load("Res/Textures/parrot.tga");
-
-	betterCubeTexture = new Texture2D();
-	betterCubeTexture->Load("Res/Textures/BetterCube32.bmp");
-
-	glassTexture = new Texture2D();
-	glassTexture->Load("Res/Textures/glass.bmp");
-
-	glassTexture2 = new Texture2D();
-	glassTexture2->Load("Res/Textures/glass2.bmp");
-
-	glassTexture3 = new Texture2D();
-	glassTexture3->Load("Res/Textures/glass3.bmp");
-
-	room1Texture = new Texture2D();
-	room1Texture->Load("Res/Textures/mapTexture.bmp");
+	mapTexture = new Texture2D();
+	mapTexture->Load("Res/Textures/mapTexture.bmp");
 
 	grassTexture = new Texture2D();
 	grassTexture->Load("Res/Textures/grass.bmp");
@@ -517,9 +504,18 @@ void HelloGL::LoadTextures()
 void HelloGL::LoadMeshes()
 {
 	cubeMesh = new Mesh("Res/Models/Cube.obj");
-	rectMesh = new Mesh("Res/Models/Rect.obj");
-	betterCubeMesh = new Mesh("Res/Models/BetterCube.obj");
 	emptyMesh = new Mesh("Res/Models/Empty.obj");
+
+	entranceWall1 = new Mesh("Res/Models/Entrance_Wall1.obj");
+	entranceWall2 = new Mesh("Res/Models/Entrance_Wall2.obj");
+	entranceWall3 = new Mesh("Res/Models/Entrance_Wall3.obj");
+
+	outsideFence = new Mesh("Res/Models/Outside_Fence.obj");
+
+	mainWall = new Mesh("Res/Models/Main_Wall.obj");
+	sideWall = new Mesh("Res/Models/Side_Wall.obj");
+
+	penguin = new Mesh("Res/Models/Penguin.obj");
 }
 
 void HelloGL::InitMaterials()

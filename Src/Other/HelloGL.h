@@ -56,9 +56,15 @@ private:
 	Shader* fishShader;
 
 	Mesh* cubeMesh;
-	Mesh* rectMesh;
-	Mesh* betterCubeMesh;
 	Mesh* emptyMesh;
+	Mesh* entranceWall1;
+	Mesh* entranceWall2;
+	Mesh* entranceWall3;
+	Mesh* outsideFence;
+	Mesh* mainWall;
+	Mesh* sideWall;
+	Mesh* penguin;
+
 
 	std::vector<SceneLight*> sceneLights;
 	bool lightsDim;
@@ -66,15 +72,7 @@ private:
 	Material* basicMaterial;
 	Material* woodMaterial;
 
-	Texture2D* parrotTexture;
-	Texture2D* parrotTexture32;
-	Texture2D* parrotTextureTGA;
-	Texture2D* betterCubeTexture;
-	Texture2D* glassTexture;
-	Texture2D* glassTexture2;
-	Texture2D* glassTexture3;
-
-	Texture2D* room1Texture;
+	Texture2D* mapTexture;
 	Texture2D* grassTexture;
 	Texture2D* fenceTexture;
 	Texture2D* fishTankTexture;
