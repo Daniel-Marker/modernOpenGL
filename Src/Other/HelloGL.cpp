@@ -380,6 +380,28 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(0.0f, 3.0f, -76.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(20.401094f, 3.0f, 1.0f)));
 
+	Artwork* main_Painting = new Artwork(&painting,
+		Transform(glm::vec3(10.7006f, 3.0f, -10.0676f), glm::vec3(0.0f, glm::radians(-180.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+	Artwork* main_Painting2 = new Artwork(&painting,
+		Transform(glm::vec3(-10.7006f, 3.0f, -10.0676f), glm::vec3(0.0f, glm::radians(-180.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+	Artwork* main_Painting3 = new Artwork(&painting,
+		Transform(glm::vec3(20.3532f, 3.0f, -24.8657f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+	Artwork* main_Painting4 = new Artwork(&painting,
+		Transform(glm::vec3(-20.3532f, 3.0f, -24.8657f), glm::vec3(0.0f, glm::radians(90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+	Artwork* main_Painting5 = new Artwork(&painting,
+		Transform(glm::vec3(20.3532f, 3.0f, -60.9136f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+	Artwork* main_Painting6 = new Artwork(&painting,
+		Transform(glm::vec3(-20.3532f, 3.0f, -60.9136f), glm::vec3(0.0f, glm::radians(90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+	Artwork* main_Painting7 = new Artwork(&painting,
+		Transform(glm::vec3(0.0f, 3.0f, -74.9718f), glm::vec3(0.0f, 0.0f, glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, blankTexture);
+
 	mainRoom->AddChild(main_Floor);
 	mainRoom->AddChild(main_Roof);
 	mainRoom->AddChild(main_LeftWall1);
@@ -387,6 +409,13 @@ void HelloGL::InitObjects()
 	mainRoom->AddChild(main_RightWall1);
 	mainRoom->AddChild(main_RightWall2);
 	mainRoom->AddChild(main_Backwall);
+	mainRoom->AddChild(main_Painting);
+	mainRoom->AddChild(main_Painting2);
+	mainRoom->AddChild(main_Painting3);
+	mainRoom->AddChild(main_Painting4);
+	mainRoom->AddChild(main_Painting5);
+	mainRoom->AddChild(main_Painting6);
+	mainRoom->AddChild(main_Painting7);
 	sceneObjects.push_back(mainRoom);
 
 
@@ -414,13 +443,18 @@ void HelloGL::InitObjects()
 	Artwork* side_Painting = new Artwork(&painting,
 		Transform(glm::vec3(52.9548f, 3.0f, -42.9568f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
 		&picture, grassTexture);
-
 	Artwork* side_Painting2 = new Artwork(&painting,
 		Transform(glm::vec3(52.9548f, 3.0f, -25.0f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
 		&picture, "Res/Textures/robbin.bmp");
 	Artwork* side_Painting3 = new Artwork(&painting,
 		Transform(glm::vec3(52.9548f, 3.0f, -60.9136f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
 		&picture, "Res/Textures/deer.bmp");
+	Artwork* side_Painting4 = new Artwork(&painting,
+		Transform(glm::vec3(37.7002f, 3.0f, -74.9718f), glm::vec3(0.0f, 0.0f, glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, "Res/Textures/frog.bmp");
+	Artwork* side_Painting5 = new Artwork(&painting,
+		Transform(glm::vec3(37.7002f, 3.0f, -11.0676f), glm::vec3(0.0f, glm::radians(-180.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
+		&picture, "Res/Textures/dove.bmp");
 
 	sideRoom->AddChild(side_Floor);
 	sideRoom->AddChild(side_Roof);
@@ -430,6 +464,8 @@ void HelloGL::InitObjects()
 	sideRoom->AddChild(side_Painting);
 	sideRoom->AddChild(side_Painting2);
 	sideRoom->AddChild(side_Painting3);
+	sideRoom->AddChild(side_Painting4);
+	sideRoom->AddChild(side_Painting5);
 	sceneObjects.push_back(sideRoom);
 
 
