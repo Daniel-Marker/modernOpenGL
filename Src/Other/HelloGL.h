@@ -81,6 +81,8 @@ private:
 	Texture2D* penguinTexture;
 	Texture2D* fossilTexture;
 	Texture2D* blankTexture;
+	Texture2D* glassTexture;
+	Texture2D* rockTexture;
 
 	Font* font;
 

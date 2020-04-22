@@ -4,8 +4,8 @@
 #include <string>
 
 //todo ASAP
-//Get images for main room
-//Display cases for main room
+//Also make the output string change depending on which room you're in (each room is a root parent, so do a collision check with each to get which room the player is in)
+//Have a collidable bool in sceneObject, and make a room class which sets it to false
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -381,27 +381,35 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(0.0f, 3.0f, -76.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(20.401094f, 3.0f, 1.0f)));
 
-	Artwork* main_Painting = new Artwork(&painting,
-		Transform(glm::vec3(10.7006f, 3.0f, -10.0676f), glm::vec3(0.0f, glm::radians(-180.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
-	Artwork* main_Painting2 = new Artwork(&painting,
-		Transform(glm::vec3(-10.7006f, 3.0f, -10.0676f), glm::vec3(0.0f, glm::radians(-180.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
-	Artwork* main_Painting3 = new Artwork(&painting,
-		Transform(glm::vec3(20.3532f, 3.0f, -24.8657f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
-	Artwork* main_Painting4 = new Artwork(&painting,
-		Transform(glm::vec3(-20.3532f, 3.0f, -24.8657f), glm::vec3(0.0f, glm::radians(90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
-	Artwork* main_Painting5 = new Artwork(&painting,
-		Transform(glm::vec3(20.3532f, 3.0f, -60.9136f), glm::vec3(0.0f, glm::radians(-90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
-	Artwork* main_Painting6 = new Artwork(&painting,
-		Transform(glm::vec3(-20.3532f, 3.0f, -60.9136f), glm::vec3(0.0f, glm::radians(90.0f), glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
-	Artwork* main_Painting7 = new Artwork(&painting,
-		Transform(glm::vec3(0.0f, 3.0f, -74.9718f), glm::vec3(0.0f, 0.0f, glm::radians(90.0f)), glm::vec3(4.0f, 4.0f, 1.0f)),
-		&picture, blankTexture);
+	SceneObject* main_DisplayCase1 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+		Transform(glm::vec3(12.7427f, 1.5f, -15.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
+	SceneObject* main_DisplayCase2 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+		Transform(glm::vec3(-12.7427f, 1.5f, -15.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
+	SceneObject* main_DisplayCase3 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+		Transform(glm::vec3(12.7427f, 1.5f, -70.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
+	SceneObject* main_DisplayCase4 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+		Transform(glm::vec3(-12.7427f, 1.5f, -70.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
+
+	SceneObject* pyramid = new SceneObject(lightingShader, rockTexture, "Res/Models/Pyramid.obj", basicMaterial, camera,
+		Transform(glm::vec3(0.0f, 0.0f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	SceneObject* sphere = new SceneObject(lightingShader, rockTexture, "Res/Models/Sphere.obj", basicMaterial, camera,
+		Transform(glm::vec3(0.0f, 0.0f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	SceneObject* toruses = new SceneObject(lightingShader, rockTexture, "Res/Models/Toruses.obj", basicMaterial, camera,
+		Transform(glm::vec3(0.0f, 0.0f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	SceneObject* icosphere = new SceneObject(lightingShader, rockTexture, "Res/Models/Icosphere.obj", basicMaterial, camera,
+		Transform(glm::vec3(0.0f, 0.0f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
+		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	main_DisplayCase1->AddChild(pyramid);
+	main_DisplayCase2->AddChild(sphere);
+	main_DisplayCase3->AddChild(toruses);
+	main_DisplayCase4->AddChild(icosphere);
 
 	mainRoom->AddChild(main_Floor);
 	mainRoom->AddChild(main_Roof);
@@ -410,13 +418,10 @@ void HelloGL::InitObjects()
 	mainRoom->AddChild(main_RightWall1);
 	mainRoom->AddChild(main_RightWall2);
 	mainRoom->AddChild(main_Backwall);
-	mainRoom->AddChild(main_Painting);
-	mainRoom->AddChild(main_Painting2);
-	mainRoom->AddChild(main_Painting3);
-	mainRoom->AddChild(main_Painting4);
-	mainRoom->AddChild(main_Painting5);
-	mainRoom->AddChild(main_Painting6);
-	mainRoom->AddChild(main_Painting7);
+	mainRoom->AddChild(main_DisplayCase1);
+	mainRoom->AddChild(main_DisplayCase2);
+	mainRoom->AddChild(main_DisplayCase3);
+	mainRoom->AddChild(main_DisplayCase4);
 	sceneObjects.push_back(mainRoom);
 
 
@@ -548,6 +553,12 @@ void HelloGL::LoadTextures()
 
 	blankTexture = new Texture2D();
 	blankTexture->Load("Res/Textures/blank.bmp");
+
+	glassTexture = new Texture2D();
+	glassTexture->Load("Res/Textures/Glass.bmp");
+
+	rockTexture = new Texture2D();
+	rockTexture->Load("Res/Textures/rock.bmp");
 }
 
 void HelloGL::LoadMeshes()
