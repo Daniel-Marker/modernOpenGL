@@ -88,6 +88,10 @@ void SceneObject::Update(float deltaTime)
 	}
 }
 
+void SceneObject::OnTrigger()
+{
+}
+
 const Transform SceneObject::GetTransform()
 {
 	return _transform;

@@ -1,7 +1,7 @@
 #include "RectCollider.h"
 
-RectCollider::RectCollider(glm::vec3 centre, glm::vec3 size):
-	_centre(centre), _size(size)
+RectCollider::RectCollider(glm::vec3 centre, glm::vec3 size, bool isTrigger):
+	_centre(centre), _size(size), _isTrigger(isTrigger)
 {
 }
 

@@ -19,6 +19,7 @@
 #include "PenguinController.h"
 #include "Penguin.h"
 #include "Artwork.h"
+#include "Room.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -92,5 +93,7 @@ private:
 
 	int windowWidth, windowHeight;
 	float aspectRatio;
+
+	std::string roomString;
 };
 

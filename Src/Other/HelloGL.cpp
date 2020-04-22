@@ -4,8 +4,7 @@
 #include <string>
 
 //todo ASAP
-//Also make the output string change depending on which room you're in (each room is a root parent, so do a collision check with each to get which room the player is in)
-//Have a collidable bool in sceneObject, and make a room class which sets it to false
+
 
 //todo whenever
 //Have code actually use the return value of texture load
@@ -150,7 +149,7 @@ void HelloGL::Display()
 	for (int i = 0; i < transparentObjects.size(); i++)
 		transparentObjects[i]->Render();
 
-	font->OutputString("Room test", glm::vec2(0.3f, 0.975f), 0.0f, glm::vec2(0.025f, 0.025f), cUISpaceRight, cUISpaceTop);
+	font->OutputString(roomString, glm::vec2(0.3f, 0.975f), 0.0f, glm::vec2(0.025f, 0.025f), cUISpaceRight, cUISpaceTop);
 
 	glFlush();
 	glutSwapBuffers();
@@ -272,9 +271,9 @@ void HelloGL::InitObjects()
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
 
 
-	SceneObject* entrance = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
+	SceneObject* entrance = new Room(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(44.8022f, 18.9423f, 8.0f), true), "Entrance", &roomString);
 
 	SceneObject* entrance_LeftBackwall = new SceneObject(lightingShader, mapTexture, entranceWall3, basicMaterial, camera,
 		Transform(glm::vec3(-12.7427f, 3.0f, -9.019724f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -328,9 +327,9 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(entrance);
 
 
-	SceneObject* outside = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
+	SceneObject* outside = new Room(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+		RectCollider(glm::vec3(0.0f, 0.0f, 10.1075f), glm::vec3(44.8022f, 29.2109f, 2.0f), true), "Outside", &roomString);
 
 	SceneObject* outside_Floor = new SceneObject(lightingShader, grassTexture, "Res/Models/Outside_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, 10.1075f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -352,9 +351,9 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(outside);
 
 
-	SceneObject* mainRoom = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
+	SceneObject* mainRoom = new Room(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+		RectCollider(glm::vec3(0.0f, 6.0f, -42.03f), glm::vec3(20.4011f, 4.0f, 33.0103f), true), "Main Room", &roomString);
 
 	SceneObject* main_Floor = new SceneObject(lightingShader, mapTexture, "Res/Models/Main_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -425,9 +424,9 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(mainRoom);
 
 
-	SceneObject* sideRoom = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
+	SceneObject* sideRoom = new Room(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+		RectCollider(glm::vec3(37.9228f, 6.0f, -42.03f), glm::vec3(17.5217f, 4.48997f, 33.0103f), true), "Right side room", &roomString);
 
 	SceneObject* side_Floor = new SceneObject(lightingShader, mapTexture, "Res/Models/Side_Floor.obj", basicMaterial, camera,
 		Transform(glm::vec3(37.9655f, 0.0f, -42.03f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -475,9 +474,9 @@ void HelloGL::InitObjects()
 	sceneObjects.push_back(sideRoom);
 
 
-	SceneObject* sideRoom2 = new SceneObject(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
+	SceneObject* sideRoom2 = new Room(lightingShader, mapTexture, emptyMesh, basicMaterial, camera,
 		Transform(glm::vec3(0.0f, -2.0f, -86.0394f), glm::vec3(0.0f, glm::radians(180.0f), 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
-		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+		RectCollider(glm::vec3(37.9228f, 6.0f, -42.03f), glm::vec3(17.5217f, 4.48997f, 33.0103f), true), "Left side room", &roomString);
 
 	SceneObject* side_FishTank = new SceneObject(lightingShader, fishTankTexture, "Res/Models/FishTank.obj", basicMaterial, camera,
 		Transform(glm::vec3(52.0028f, 2.0f, -46.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),

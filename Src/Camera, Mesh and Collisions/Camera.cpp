@@ -27,10 +27,13 @@ void Camera::Move(glm::vec3 movement, std::vector<SceneObject*>& sceneObjects)
 	bool colliding = false;
 	for (int i = 0; i < sceneObjects.size(); i++)
 	{
-		if (_rectCollider.CollisionCheck(cameraMatrix, sceneObjects[i]->GetRectCollider(), sceneObjects[i]->GetTransformMatrix()))
+		if (!sceneObjects[i]->GetRectCollider().IsTrigger())
 		{
-			colliding = true;
-			break;
+			if (_rectCollider.CollisionCheck(cameraMatrix, sceneObjects[i]->GetRectCollider(), sceneObjects[i]->GetTransformMatrix()))
+			{
+				colliding = true;
+				break;
+			}
 		}
 	}
 	if (!colliding)
@@ -41,6 +44,8 @@ void Camera::Update(float deltaTime, std::vector<SceneObject*>& sceneObjects)
 {
 	HandleMouseInput(deltaTime);
 	HandleMovement(deltaTime, sceneObjects);
+	HandleTriggers(sceneObjects);
+
 }
 
 void Camera::HandleMovement(float deltaTime, std::vector<SceneObject*>& sceneObjects)
@@ -82,6 +87,21 @@ void Camera::HandleMouseInput(float deltaTime)
 		_rotation.y = cCameraMin;
 
 	_direction = LookRotation(_rotation);
+}
+
+void Camera::HandleTriggers(std::vector<SceneObject*>& sceneObjects)
+{
+	glm::mat4 cameraMatrix =
+		glm::translate(glm::mat4(1.0f), _position) *
+		glm::eulerAngleXYZ(_rotation.y, _rotation.x, 0.0f);
+	for (int i = 0; i < sceneObjects.size(); i++)
+	{
+		if (sceneObjects[i]->GetRectCollider().IsTrigger())
+		{
+			if (_rectCollider.CollisionCheck(cameraMatrix, sceneObjects[i]->GetRectCollider(), sceneObjects[i]->GetTransformMatrix()))
+				sceneObjects[i]->OnTrigger();
+		}
+	}
 }
 
 glm::mat4 Camera::GetViewMatrix()

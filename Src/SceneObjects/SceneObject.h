@@ -45,6 +45,7 @@ public:
 	virtual ~SceneObject();
 	virtual void Render();
 	virtual void Update(float deltaTime);
+	virtual void OnTrigger();
 	const Transform GetTransform();
 	void SetTransform(Transform transform);
 	bool GetTransparent() { return _isTransparent; };
