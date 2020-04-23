@@ -103,8 +103,3 @@ void Camera::HandleTriggers(std::vector<SceneObject*>& sceneObjects)
 		}
 	}
 }
-
-glm::mat4 Camera::GetViewMatrix()
-{
-	return glm::lookAt(_position, _position + _direction, _up);
-}

@@ -34,11 +34,13 @@ public:
 	HelloGL(int argc, char* argv[]);
 	~HelloGL();
 	void Display();
+	void SetUniforms();
 	void Update(float deltaTime);
 	void OnResize(int height, int width);
 	void InitGL(int argc, char* argv[]);
 	void InitLights();
 	void InitObjects();
+	void InitMap();
 	void LoadTextures();
 	void LoadMeshes();
 	void InitMaterials();
@@ -66,6 +68,7 @@ private:
 	Mesh* mainWall;
 	Mesh* sideWall;
 	Mesh* penguin;
+	Mesh* displayCase;
 
 
 	std::vector<SceneLight*> sceneLights;

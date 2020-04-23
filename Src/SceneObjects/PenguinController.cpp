@@ -16,7 +16,7 @@ PenguinController::~PenguinController()
 
 void PenguinController::Update(float deltaTime)
 {
-	_transform.rotation.y += deltaTime * -1.0f;
+	_transform.rotation.y += -deltaTime;
 
 	SceneObject::Update(deltaTime);
 }

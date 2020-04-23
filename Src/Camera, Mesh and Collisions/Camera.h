@@ -28,7 +28,7 @@ public:
 	void HandleMouseInput(float deltaTime);
 	void HandleTriggers(std::vector<SceneObject*>& sceneObjects);
 
-	glm::mat4 GetViewMatrix();
+	glm::mat4 GetViewMatrix() { return glm::lookAt(_position, _position + _direction, _up); };
 	glm::vec3 GetPosition() { return _position; };
 	glm::vec3 GetDirection() { return _direction; };
 };

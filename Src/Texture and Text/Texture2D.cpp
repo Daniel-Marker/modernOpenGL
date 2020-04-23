@@ -213,6 +213,9 @@ void Texture2D::Bind()
 
 bool Texture2D::Load(std::string path, int width, int height)
 {
+	if(_TextureID == 0)
+		glDeleteTextures(1, &_TextureID);
+
 	GenerateTexture();
 	return LoadImage(path, width, height);
 }

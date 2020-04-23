@@ -8,8 +8,6 @@
 
 class Renderer
 {
-private:
-
 public:
 	void Render(Vao* vao, Shader* shader, Texture2D* texture);
 };

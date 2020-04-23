@@ -31,38 +31,19 @@ bool Mesh::LoadFromFile(std::string path)
 	tempVertexPositions = LoadPositionData(path, inFile, tempVertexCount);
 	tempUVCoords = LoadUVCoordData(path, inFile, tempUVCount);
 	tempVertexNormals = LoadNormalData(path, inFile, tempNormalCount);
+
+	//if any == nullptr, then it failed to load one of the following, so return false
 	if (tempVertexPositions == nullptr || tempUVCoords == nullptr || tempVertexNormals == nullptr)
 	{
 		return false;
 	}
 
-	inFile.close();
-	inFile.open(path, std::ios::in);	//For some reason, trying to read more from the file here didn't work. But reopening it fixed it
-	while (currentLine.substr(0, 2) != "f " && !inFile.eof())
-	{
-		std::getline(inFile, currentLine);
-		faceStart += currentLine.length() + 1;	//add the no of characters from the line
-	}
-	if (inFile.eof())
-	{
-		std::cerr << "Obj file has no faces " << std::endl;
-		return false;
-	}
-	faceStart -= currentLine.length() + 1;		//subtract so that we are at the start of the first face
-
-
-	tempFaceCount = 0;
-	while (currentLine.substr(0, 2) == "f ")
-	{
-		tempFaceCount++;
-		std::getline(inFile, currentLine);
-	}
+	tempFaceCount = LoadFaceCount(path, inFile, faceStart);
 
 	//no of indices = no of faces * 3, as each face has 3 vertices
 	_indexCount = tempFaceCount * 3;
 	_indices = new unsigned int[_indexCount];
 
-	
 	_vertexCount = tempFaceCount * 3;
 	_vertexPositions = new glm::vec3[_vertexCount];
 
@@ -260,6 +241,36 @@ glm::vec3* Mesh::LoadNormalData(std::string path, std::ifstream& inFile, int& te
 	return tempVertexNormals;
 }
 
+int Mesh::LoadFaceCount(std::string path, std::ifstream& inFile, int& faceStart)
+{
+	std::string currentLine = "";
+	int tempFaceCount;
+
+	inFile.close();
+	inFile.open(path, std::ios::in);	//For some reason, trying to read more from the file here didn't work. But reopening it fixed it
+	while (currentLine.substr(0, 2) != "f " && !inFile.eof())
+	{
+		std::getline(inFile, currentLine);
+		faceStart += currentLine.length() + 1;	//add the no of characters from the line
+	}
+	if (inFile.eof())
+	{
+		std::cerr << "Obj file has no faces " << std::endl;
+		return false;
+	}
+	faceStart -= currentLine.length() + 1;		//subtract so that we are at the start of the first face
+
+
+	tempFaceCount = 0;
+	while (currentLine.substr(0, 2) == "f ")
+	{
+		tempFaceCount++;
+		std::getline(inFile, currentLine);
+	}
+
+	return tempFaceCount;
+}
+
 Mesh::Mesh(std::string path)
 {
 	if (!LoadFromFile(path))
@@ -272,5 +283,6 @@ Mesh::~Mesh()
 {
 	delete[] _vertexPositions;
 	delete[] _uvCoords;
+	delete[] _vertexNormals;
 	delete[] _indices;
 }

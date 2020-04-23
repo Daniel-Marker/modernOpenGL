@@ -3,20 +3,6 @@
 #include <iostream>
 #include <string>
 
-//todo ASAP
-
-
-//todo whenever
-//Have code actually use the return value of texture load
-//fix repeated vertices problem, so that _vertexCount = tempVertexCount * 3, instead of _vertexCount = tempFaceCount * 3;
-//auto triangulate faces in obj loader if they consist of more than 3 vertices
-//Have obj loader be able to handle files with multiple objects
-//add special keys callback
-//Fix bug where rotating text scales wrt rotation
-//Implement order-independent transparency
-//Loading screen for the specific scene
-//Better way to control falloff for lighting
-
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	InitGL(argc, argv);
@@ -59,11 +45,13 @@ HelloGL::~HelloGL()
 	delete mainWall;
 	delete sideWall;
 	delete penguin;
+	delete displayCase;
 
 	for (int i = 0; i < sceneLights.size(); i++)
 	{
 		delete sceneLights[i];
 	}
+	sceneLights.clear();
 
 	delete basicMaterial;
 	delete woodMaterial;
@@ -76,6 +64,8 @@ HelloGL::~HelloGL()
 	delete penguinTexture;
 	delete fossilTexture;
 	delete blankTexture;
+	delete glassTexture;
+	delete rockTexture;
 
 	delete font;
 
@@ -86,52 +76,11 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 viewMatrix = camera->GetViewMatrix();
-	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
-	lightingShader->SetUniformMatrix(viewMatrix, "u_View");
-	lightingShader->SetUniformMatrix(projMatrix, "u_Proj");
-
-	basicShader->SetUniformMatrix(viewMatrix, "u_View");
-	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
-
-	fishShader->SetUniformMatrix(viewMatrix, "u_View");
-	fishShader->SetUniformMatrix(projMatrix, "u_Proj");
-
-	skyboxShader->SetUniformMatrix(glm::mat4(glm::mat3(viewMatrix)), "u_View");
-	skyboxShader->SetUniformMatrix(projMatrix, "u_Proj");
-
-	glm::mat4 uiProjMatrix = glm::ortho(0.0f, cUISpaceRight, 0.0f, cUISpaceTop, -1.0f, 1.0f);
-	textShader->SetUniformMatrix(uiProjMatrix, "u_Proj");
-
-	for (int i = 0; i < sceneLights.size(); i++) 
-	{
-		std::string light = "u_Lights[]";
-		light.insert(9, std::to_string(i));
-
-		if (lightsDim)
-		{
-			SceneLight current = *sceneLights[i];
-
-			current.SetDiffuseIntensity(current.GetDiffuseIntensity() * cDimMultiplier);
-			current.SetAmbientIntensity(current.GetAmbientIntensity() * cDimMultiplier);
-			current.SetSpecularIntensity(current.GetSpecularIntensity() * cDimMultiplier);
-			
-			current.SetLightUniforms(camera->GetPosition(), light, lightingShader);
-			current.SetLightUniforms(camera->GetPosition(), light, fishShader);
-		}
-		else
-		{
-			sceneLights[i]->SetLightUniforms(camera->GetPosition(), light, lightingShader);
-			sceneLights[i]->SetLightUniforms(camera->GetPosition(), light, fishShader);
-		}
-	}
-	fishShader->SetUniformInt(sceneLights.size(), "u_NumLights");
-	lightingShader->SetUniformInt(sceneLights.size(), "u_NumLights");
-	if (sceneLights.size() > MAX_LIGHTS)
-		std::cerr << "Warning: there are more lights that the maximum number allowed" << std::endl;
+	SetUniforms();
 
 	skybox->Render();
 
+	//for transparency, objects need to be split into groups of transparent and opaque objects
 	std::vector<SceneObject*> transparentObjects;
 	std::vector<SceneObject*> opaqueObjects;
 	glm::mat4 worldTransform(1.0f);
@@ -153,6 +102,53 @@ void HelloGL::Display()
 
 	glFlush();
 	glutSwapBuffers();
+}
+
+void HelloGL::SetUniforms()
+{
+	glm::mat4 viewMatrix = camera->GetViewMatrix();
+	glm::mat4 projMatrix = glm::perspective(cFOV, aspectRatio, cNearClippingPlaneDist, cFarClippingPlaneDist);
+	lightingShader->SetUniformMatrix(viewMatrix, "u_View");
+	lightingShader->SetUniformMatrix(projMatrix, "u_Proj");
+
+	basicShader->SetUniformMatrix(viewMatrix, "u_View");
+	basicShader->SetUniformMatrix(projMatrix, "u_Proj");
+
+	fishShader->SetUniformMatrix(viewMatrix, "u_View");
+	fishShader->SetUniformMatrix(projMatrix, "u_Proj");
+
+	skyboxShader->SetUniformMatrix(glm::mat4(glm::mat3(viewMatrix)), "u_View");
+	skyboxShader->SetUniformMatrix(projMatrix, "u_Proj");
+
+	glm::mat4 uiProjMatrix = glm::ortho(0.0f, cUISpaceRight, 0.0f, cUISpaceTop, -1.0f, 1.0f);
+	textShader->SetUniformMatrix(uiProjMatrix, "u_Proj");
+
+	for (int i = 0; i < sceneLights.size(); i++)
+	{
+		std::string light = "u_Lights[]";
+		light.insert(9, std::to_string(i));
+
+		if (lightsDim)
+		{
+			SceneLight current = *sceneLights[i];
+
+			current.SetDiffuseIntensity(current.GetDiffuseIntensity() * cDimMultiplier);
+			current.SetAmbientIntensity(current.GetAmbientIntensity() * cDimMultiplier);
+			current.SetSpecularIntensity(current.GetSpecularIntensity() * cDimMultiplier);
+
+			current.SetLightUniforms(camera->GetPosition(), light, lightingShader);
+			current.SetLightUniforms(camera->GetPosition(), light, fishShader);
+		}
+		else
+		{
+			sceneLights[i]->SetLightUniforms(camera->GetPosition(), light, lightingShader);
+			sceneLights[i]->SetLightUniforms(camera->GetPosition(), light, fishShader);
+		}
+	}
+	fishShader->SetUniformInt(sceneLights.size(), "u_NumLights");
+	lightingShader->SetUniformInt(sceneLights.size(), "u_NumLights");
+	if (sceneLights.size() > MAX_LIGHTS)
+		std::cerr << "Warning: there are more lights that the maximum number allowed" << std::endl;
 }
 
 void HelloGL::Update(float deltaTime)
@@ -189,7 +185,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(cInitWindowWidth, cInitWindowHeight);
 	glutInitWindowPosition(cInitWindowPositionX, cInitWindowPositionY);
-	glutCreateWindow("Simple OpenGL Program");
+	glutCreateWindow("Museum");
 
 	windowHeight = cInitWindowHeight;
 	windowWidth = cInitWindowWidth;
@@ -263,6 +259,11 @@ void HelloGL::InitObjects()
 	Cubemap* skyboxCubemap = new Cubemap("Res/Textures/top.bmp", "Res/Textures/bottom.bmp", "Res/Textures/left.bmp", "Res/Textures/right.bmp", "Res/Textures/front.bmp", "Res/Textures/back.bmp");
 	skybox = new Skybox(cubeMesh, skyboxCubemap, skyboxShader);
 
+	InitMap();
+}
+
+void HelloGL::InitMap()
+{
 	SceneObject painting = SceneObject(lightingShader, blankTexture, "Res/Models/Frame.obj", woodMaterial, camera,
 		Transform(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(4.0f, 4.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
@@ -315,7 +316,6 @@ void HelloGL::InitObjects()
 
 	entrance->AddChild(entrance_LeftBackwall);
 	entrance->AddChild(entrance_RightBackwall);
-	//entrance->AddChild(entrance_Door);
 	entrance->AddChild(entrance_Floor);
 	entrance->AddChild(entrance_LeftWall1);
 	entrance->AddChild(entrance_LeftWall2);
@@ -380,16 +380,16 @@ void HelloGL::InitObjects()
 		Transform(glm::vec3(0.0f, 3.0f, -76.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(20.401094f, 3.0f, 1.0f)));
 
-	SceneObject* main_DisplayCase1 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+	SceneObject* main_DisplayCase1 = new SceneObject(lightingShader, glassTexture, displayCase, basicMaterial, camera,
 		Transform(glm::vec3(12.7427f, 1.5f, -15.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
-	SceneObject* main_DisplayCase2 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+	SceneObject* main_DisplayCase2 = new SceneObject(lightingShader, glassTexture, displayCase, basicMaterial, camera,
 		Transform(glm::vec3(-12.7427f, 1.5f, -15.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
-	SceneObject* main_DisplayCase3 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+	SceneObject* main_DisplayCase3 = new SceneObject(lightingShader, glassTexture, displayCase, basicMaterial, camera,
 		Transform(glm::vec3(12.7427f, 1.5f, -70.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
-	SceneObject* main_DisplayCase4 = new SceneObject(lightingShader, glassTexture, "Res/Models/DisplayCase.obj", basicMaterial, camera,
+	SceneObject* main_DisplayCase4 = new SceneObject(lightingShader, glassTexture, displayCase, basicMaterial, camera,
 		Transform(glm::vec3(-12.7427f, 1.5f, -70.0197f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)),
 		RectCollider(glm::vec3(0.0f, -0.0f, 0.0f), glm::vec3(1.0f, 1.5f, 1.0f)));
 
@@ -575,6 +575,8 @@ void HelloGL::LoadMeshes()
 	sideWall = new Mesh("Res/Models/Side_Wall.obj");
 
 	penguin = new Mesh("Res/Models/Penguin.obj");
+
+	displayCase = new Mesh("Res/Models/DisplayCase.obj");
 }
 
 void HelloGL::InitMaterials()

@@ -20,6 +20,7 @@ private:
 	glm::vec3* LoadPositionData(std::string path, std::ifstream& inFile, int& tempVertexCount);
 	glm::vec2* LoadUVCoordData(std::string path, std::ifstream& inFile, int& tempUVCount);
 	glm::vec3* LoadNormalData(std::string path, std::ifstream& inFile, int& tempNormalCount);
+	int LoadFaceCount(std::string path, std::ifstream& inFile, int& faceStart);
 
 public:
 	Mesh(std::string path);

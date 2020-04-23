@@ -42,6 +42,12 @@ Font::Font(std::string fontPath, int characterHeight, int characterWidth, char f
 	_vao->CreateIndexBuffer(indices, sizeof(indices));
 }
 
+Font::~Font()
+{
+	delete _vao;
+	delete _sourceFont;
+}
+
 void Font::OutputString(std::string output, glm::vec2 position, float rotation, glm::vec2 scale, float rightScreenCoord, float topScreenCoord)
 {
 	int charactersPerLine = _sourceFont->GetWidth() / _characterWidth;
@@ -80,7 +86,7 @@ void Font::OutputString(std::string output, glm::vec2 position, float rotation, 
 			rightCoord, 1.0f - bottomCoord
 		};
 
-		_vao->UpdateVertexBuffer(4 * 2 * sizeof(float), sizeof(newUVCoords), &newUVCoords);
+		_vao->UpdateVertexBuffer(0.5f * sizeof(vertexData), sizeof(newUVCoords), &newUVCoords);
 
 		glm::mat4 transformMatrix =
 			rotateMatrix *

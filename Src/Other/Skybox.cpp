@@ -15,6 +15,11 @@ Skybox::Skybox(Mesh* mesh, Cubemap* cubemap, Shader* shader):
 	_vao->CreateIndexBuffer(_mesh);
 }
 
+Skybox::~Skybox()
+{
+	delete _vao;
+}
+
 void Skybox::Render()
 {
 	Renderer renderer;

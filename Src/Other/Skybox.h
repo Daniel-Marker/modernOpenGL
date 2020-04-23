@@ -16,6 +16,7 @@ private:
 
 public:
 	Skybox(Mesh* mesh, Cubemap* cubemap, Shader* shader);
+	~Skybox();
 	void Render();
 };
 

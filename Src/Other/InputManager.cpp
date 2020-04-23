@@ -15,7 +15,7 @@ namespace InputManager
 	{
 		if (key >= 'a' && key <= 'z')
 		{
-			keyarr[(int)key - ('a' - 'A')] = PUSHED;
+			keyarr[(int)key - ('a' - 'A')] = PUSHED; //uses 'a'-'A' so that if a character is uppercase, it gets shifted down to lowercase
 		}
 		else
 			keyarr[(int)key] = PUSHED;
@@ -25,7 +25,7 @@ namespace InputManager
 	{
 		if (key >= 'a' && key <= 'z')
 		{
-			keyarr[(int)key - ('a' - 'A')] = NOT_PUSHED;
+			keyarr[(int)key - ('a' - 'A')] = NOT_PUSHED; //uses 'a'-'A' so that if a character is uppercase, it gets shifted down to lowercase
 		}
 		else
 			keyarr[(int)key] = NOT_PUSHED;
@@ -43,7 +43,7 @@ namespace InputManager
 	{
 		if (key >= 'a' && key <= 'z')
 		{
-			return((keyarr[(int)key] == PUSHED) || (keyarr[(int)key - ('a' - 'A')] == PUSHED));
+			return((keyarr[(int)key] == PUSHED) || (keyarr[(int)key - ('a' - 'A')] == PUSHED)); //uses 'a'-'A' so that if a character is uppercase, it gets shifted down to lowercase
 		}
 
 		return (keyarr[(int)key] == PUSHED);

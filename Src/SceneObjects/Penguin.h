@@ -12,6 +12,7 @@ private:
 	const float _cPeriod;
 	const float _cAmplitude;
 	const float _cTimeHeldMultiplier;
+	const float _cMaxRotation;
 
 public:
 	Penguin(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera, Transform transform, RectCollider collisionRect, float timeOffset);

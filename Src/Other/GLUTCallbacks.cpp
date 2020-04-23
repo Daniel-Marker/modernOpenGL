@@ -1,10 +1,8 @@
 #include "GLUTCallbacks.h"
 #include "HelloGL.h"
 #include "InputManager.h"
+#include "Constants.h"
 
-#include <iostream>
-
-//Namespace implementation
 namespace GLUTCallbacks
 {
 	namespace
@@ -31,7 +29,8 @@ namespace GLUTCallbacks
 		deltaTime = updateTime - timeSinceLastFrame;
 		timeSinceLastFrame = updateTime;
 
-		helloGL->Update(deltaTime / 1000.0f);
+		if(helloGL != nullptr)
+			helloGL->Update(deltaTime / cDeltaTimeDivisor);
 
 		glutTimerFunc(preferredRefresh - deltaTime, GLUTCallbacks::Timer, preferredRefresh);
 	}
@@ -48,16 +47,19 @@ namespace GLUTCallbacks
 
 	void WindowResize(int height, int width)
 	{
-		helloGL->OnResize(width, height);
+		if (helloGL != nullptr)
+			helloGL->OnResize(width, height);
 	}
 
 	void MotionFunc(int x, int y)
 	{
-		InputManager::MouseMovement(x, y, helloGL->GetWidth(), helloGL->GetHeight());
+		if (helloGL != nullptr)
+			InputManager::MouseMovement(x, y, helloGL->GetWidth(), helloGL->GetHeight());
 	}
 
 	void PassiveMotionFunc(int x, int y)
 	{
-		InputManager::MouseMovement(x, y, helloGL->GetWidth(), helloGL->GetHeight());
+		if (helloGL != nullptr)
+			InputManager::MouseMovement(x, y, helloGL->GetWidth(), helloGL->GetHeight());
 	}
 }

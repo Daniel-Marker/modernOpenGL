@@ -4,6 +4,7 @@ const int cInitWindowWidth = 1920;
 const int cInitWindowHeight = 1080;
 const int cInitWindowPositionX = 0;
 const int cInitWindowPositionY = 0;
+const float cDeltaTimeDivisor = 1000.0f;
 
 const float cFOV = 45.0f;
 const float cNearClippingPlaneDist = 0.1f;
