@@ -2,15 +2,15 @@
 
 Penguin::Penguin(Shader* shader, Texture2D* texture, Mesh* mesh, Material* material, Camera* camera,
 	Transform transform, RectCollider collisionRect, float timeOffset):
-	SceneObject(shader, texture, mesh, material, camera, transform, collisionRect), _time(timeOffset), _cInitPos(transform.position), _cInitRot(transform.rotation),
-	_cPeriod(4.0f), _cAmplitude(2.0f), _timeHeld(0.0f), _cTimeHeldMultiplier(5.0f), _cMaxRotation(15.0f)
+	SceneObject(shader, texture, mesh, material, camera, transform, collisionRect), _time(timeOffset), cInitPos(transform.position), cInitRot(transform.rotation),
+	cPeriod(4.0f), cAmplitude(2.0f), _timeHeld(0.0f), cTimeHeldMultiplier(5.0f), cMaxRotation(15.0f)
 {
 }
 
 Penguin::Penguin(Shader* shader, Texture2D* texture, std::string meshPath, Material* material, Camera* camera,
 	Transform transform, RectCollider collisionRect, float timeOffset):
-	SceneObject(shader, texture, meshPath, material, camera, transform, collisionRect), _time(timeOffset), _cInitPos(transform.position), _cInitRot(transform.rotation),
-	_cPeriod(4.0f), _cAmplitude(2.0f), _timeHeld(0.0f), _cTimeHeldMultiplier(5.0f), _cMaxRotation(15.0f)
+	SceneObject(shader, texture, meshPath, material, camera, transform, collisionRect), _time(timeOffset), cInitPos(transform.position), cInitRot(transform.rotation),
+	cPeriod(4.0f), cAmplitude(2.0f), _timeHeld(0.0f), cTimeHeldMultiplier(5.0f), cMaxRotation(15.0f)
 {
 }
 
@@ -22,16 +22,16 @@ void Penguin::Update(float deltaTime)
 {
 	_time += deltaTime;
 
-	_transform.position.z = _cInitPos.z + _cAmplitude * glm::sin(_time * 2.0f * glm::pi<float>() / _cPeriod);
+	_transform.position.z = cInitPos.z + cAmplitude * glm::sin(_time * 2.0f * glm::pi<float>() / cPeriod);
 
 	if (InputManager::GetKeyDown('p'))
 	{
 		_timeHeld += deltaTime;
-		_transform.rotation.z = glm::radians(_cMaxRotation * glm::sin(_timeHeld * _cTimeHeldMultiplier));
+		_transform.rotation.z = glm::radians(cMaxRotation * glm::sin(_timeHeld * cTimeHeldMultiplier));
 	}
 	else
 	{
 		_timeHeld = 0.0f;
-		_transform.rotation.z = _cInitRot.z;
+		_transform.rotation.z = cInitRot.z;
 	}
 }

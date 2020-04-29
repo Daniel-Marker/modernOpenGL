@@ -151,7 +151,7 @@ void Shader::SetUniformVec3(const glm::vec3& vector, std::string uniformName)
 		glUniform3fv(location, 1, &vector.x);
 }
 
-void Shader::SetUniformVec4(glm::vec4& vector, std::string uniformName)
+void Shader::SetUniformVec4(const glm::vec4& vector, std::string uniformName)
 {
 	BindShader();
 

@@ -1,0 +1,23 @@
+Dove image: https://www.publicdomainpictures.net/en/view-image.php?image=59077&picture=white-dove
+Frog image: https://www.publicdomainpictures.net/en/view-image.php?image=252344&picture=chinese-flying-frog
+Robin image: https://www.publicdomainpictures.net/en/view-image.php?image=6068&picture=robin-on-branch
+Deer image: https://www.publicdomainpictures.net/en/view-image.php?image=7134&picture=baby-antelope
+Frame model: https://opengameart.org/content/frame-with-paintingvan-gogh
+Fossil model and texture: https://sketchfab.com/3d-models/hauffiopteryx-typicus-tu246-c283bde01d464783a2c3fafb9e94b666
+Penguin model and texture: https://opengameart.org/content/pinguin-low-poly
+Fish model and texture: https://opengameart.org/content/perch-fish
+Glass texture: https://opengameart.org/content/glass
+Fence texture: https://www.publicdomainpictures.net/en/view-image.php?image=17467&picture=wooden-fence
+Grass texture: https://www.publicdomainpictures.net/en/view-image.php?image=61678&picture=grass-background
+Brick texture: https://www.publicdomainpictures.net/en/view-image.php?image=43841&picture=gray-brick-wall-texture
+Wood texture: https://www.publicdomainpictures.net/en/view-image.php?image=63744&picture=old-wood-texture
+Skybox texture: https://opengameart.org/content/forest-skyboxes
+Press Start 2P Font: https://www.fontspace.com/press-start-2p-font-f11591
+Tool used to create bitmap of font: http://www.codehead.co.uk/cbfg/
+Stone texture: https://www.publicdomainpictures.net/en/view-image.php?image=4397&picture=stone-wall-background
+
+Tutorial series that Buffer, BufferLayout, Renderer, Shader and VAO classes are based off (videos 1-26): https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
+Tutorial that Cubemap class and Skybox shaders are based off: https://learnopengl.com/Advanced-OpenGL/Cubemaps
+Tutorial that Camera is based off: https://learnopengl.com/Getting-started/Camera
+Source used to get the axis and formula for SAT: https://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf
+Tutorials used for lighting and materials in shaders: https://learnopengl.com/Lighting/Basic-Lighting https://learnopengl.com/Lighting/Materials

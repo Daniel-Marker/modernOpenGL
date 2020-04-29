@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+//Code for this class is based off of code from this tutorial: https://learnopengl.com/Getting-started/Camera
+
 glm::vec3 Camera::LookRotation(glm::vec2 rotation)
 {
 	glm::vec3 LookDirection;

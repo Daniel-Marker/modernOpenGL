@@ -1,5 +1,7 @@
 #version 450 core
 
+//Code for this shader is based off of code from this tutorial: https://learnopengl.com/Advanced-OpenGL/Cubemaps
+
 layout (location = 0) in vec3 position;
 
 uniform mat4 u_Proj;

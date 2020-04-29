@@ -5,9 +5,9 @@ class Fish :
 {
 private:
 	float _time;
-	glm::vec3 _initPos;
-	glm::vec3 _initRot;
 
+	const glm::vec3 cInitPos;
+	const glm::vec3 cInitRot;
 	const float cZAmplitude = 4.0f;
 	const float cWobbleFreq = 48.8224258f;
 	const float cWobbleAmplitude = 0.0440003984f;

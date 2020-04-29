@@ -11,9 +11,9 @@ class Vao
 {
 private:
 	GLuint _vaoID;
-
 	Buffer* _vertexBuffer;
 	Buffer* _indexBuffer;
+
 	void SetUpAttributes(BufferLayout& layout);
 
 public:

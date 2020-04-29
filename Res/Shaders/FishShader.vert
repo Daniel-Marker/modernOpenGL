@@ -1,5 +1,7 @@
 #version 450 core
 
+//Code for this shader is based off of code from these tutorials: https://learnopengl.com/Lighting/Basic-Lighting https://learnopengl.com/Lighting/Materials
+
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec2 textureCoord;
 layout (location = 2) in vec3 normal;

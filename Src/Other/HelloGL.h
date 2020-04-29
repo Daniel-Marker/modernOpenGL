@@ -34,9 +34,14 @@ public:
 	HelloGL(int argc, char* argv[]);
 	~HelloGL();
 	void Display();
-	void SetUniforms();
 	void Update(float deltaTime);
 	void OnResize(int height, int width);
+
+	int GetWidth() { return windowWidth; };
+	int GetHeight() { return windowHeight; };
+
+private:
+	void SetUniforms();
 	void InitGL(int argc, char* argv[]);
 	void InitLights();
 	void InitObjects();
@@ -46,10 +51,6 @@ public:
 	void InitMaterials();
 	void InitShaders();
 
-	int GetWidth() { return windowWidth; };
-	int GetHeight() { return windowHeight; };
-
-private:
 	Camera* camera;
 	std::vector<SceneObject*> sceneObjects;
 

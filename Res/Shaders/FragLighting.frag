@@ -1,5 +1,7 @@
 #version 450 core
 
+//Code for this shader is based off of code from these tutorials: https://learnopengl.com/Lighting/Basic-Lighting https://learnopengl.com/Lighting/Materials
+
 in vec2 vs_textureCoord;
 
 in vec3 vs_DiffuseLight;

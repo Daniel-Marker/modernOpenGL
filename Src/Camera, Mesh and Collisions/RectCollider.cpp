@@ -1,5 +1,7 @@
 #include "RectCollider.h"
 
+//This uses the Separating Axis Theorem to detect collisions. The formula used and the axis used in each check was determined from this source: https://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf
+
 RectCollider::RectCollider(glm::vec3 centre, glm::vec3 size, bool isTrigger):
 	_centre(centre), _size(size), _isTrigger(isTrigger)
 {

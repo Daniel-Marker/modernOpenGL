@@ -5,7 +5,7 @@ SceneObject::SceneObject(Shader* shader, Texture2D* texture, Mesh* mesh, Materia
 	_shader(shader), _texture(texture), _mesh(mesh), _material(material), _camera(camera), _worldTransform(1.0f), _transform(transform), _collisionRect(collisionRect)
 {
 	_isTransparent = texture->GetTransparent();
-	uniqueMesh = false;
+	_uniqueMesh = false;
 
 	_vao = new Vao();
 	_vao->BindVao();
@@ -31,7 +31,7 @@ SceneObject::SceneObject(Shader* shader, Texture2D* texture, std::string meshPat
 	_isTransparent = texture->GetTransparent();
 
 	_mesh = new Mesh(meshPath);
-	uniqueMesh = true;
+	_uniqueMesh = true;
 
 	_vao = new Vao();
 	_vao->BindVao();
@@ -58,7 +58,7 @@ SceneObject::~SceneObject()
 	for (int i = 0; i < _children.size(); i++)
 		delete _children[i];
 
-	if (uniqueMesh)
+	if (_uniqueMesh)
 		delete _mesh;
 
 	_children.clear();

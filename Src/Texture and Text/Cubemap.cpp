@@ -1,6 +1,8 @@
 #include "Cubemap.h"
 #include <vector>
 
+//Code for this class is based off of code from this tutorial: https://learnopengl.com/Advanced-OpenGL/Cubemaps
+
 Cubemap::Cubemap(std::string top, std::string bottom, std::string left, std::string right, std::string front, std::string back)
 {
 	_textureType = GL_TEXTURE_CUBE_MAP;

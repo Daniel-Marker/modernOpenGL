@@ -24,7 +24,7 @@ class SceneObject
 protected:
 	Transform _transform;
 	Mesh* _mesh;
-	bool uniqueMesh;
+	bool _uniqueMesh;
 
 	Vao* _vao;
 	Shader* _shader;
